@@ -1,0 +1,446 @@
+/* ============================================================
+   saturday.css — Chrono-Celebration Nexus
+   Palette: deep space black, neon purple, electric blue, chrome
+   ============================================================ */
+
+:root {
+  --sp-black:   #050810;
+  --sp-purple:  #8020e0;
+  --sp-blue:    #2060e0;
+  --sp-cyan:    #00d4ff;
+  --sp-green:   #20e060;
+  --sp-red:     #e04020;
+  --sp-chrome:  #c0d0e0;
+  --sp-dim:     #101828;
+  --sp-border:  #203050;
+  --sp-text:    #b0c8e0;
+  --sp-muted:   #506080;
+}
+
+@keyframes sp-stars {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+@keyframes sp-glow {
+  0%, 100% { box-shadow: 0 0 10px var(--sp-purple), 0 0 20px rgba(128,32,224,0.3); }
+  50%       { box-shadow: 0 0 20px var(--sp-cyan),  0 0 40px rgba(0,212,255,0.3); }
+}
+
+@keyframes sp-scan {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(100vh); }
+}
+
+@keyframes sp-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+@keyframes sp-pulse-red {
+  0%, 100% { color: var(--sp-red); }
+  50%       { color: #ff8060; }
+}
+
+@keyframes sp-fadein {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sp-rotate-ring {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes sp-count {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+body {
+  background: var(--sp-black);
+  color: var(--sp-text);
+  font-family: 'Courier New', Courier, monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Starfield */
+.sp-stars {
+  position: fixed;
+  inset: -100% 0 0;
+  height: 200%;
+  background-image:
+    radial-gradient(1px 1px at 10% 15%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 40%, #fff 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 8%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 62%, #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 70% 30%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 82% 55%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 10%, #fff 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 15% 78%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 85%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 63% 48%, #fff 0%, transparent 100%),
+    radial-gradient(2px 2px at 77% 72%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 5% 95%, #fff 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 25%, rgba(200,220,255,0.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 90%, #fff 0%, transparent 100%),
+    radial-gradient(1px 1px at 20% 58%, rgba(255,255,255,0.8) 0%, transparent 100%);
+  animation: sp-stars 60s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scan line overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: -100%;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(transparent, rgba(0,212,255,0.03), transparent);
+  animation: sp-scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Header */
+.sp-header {
+  position: relative;
+  z-index: 10;
+  background: rgba(5,8,16,0.9);
+  border-bottom: 1px solid var(--sp-border);
+  padding: 12px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(8px);
+}
+
+.sp-logo {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sp-cyan);
+}
+
+.sp-logo strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--sp-text);
+  letter-spacing: 0.1em;
+}
+
+.sp-header-right {
+  font-size: 0.65rem;
+  color: var(--sp-muted);
+  text-align: right;
+  line-height: 1.8;
+}
+
+/* Main content */
+.sp-main {
+  position: relative;
+  z-index: 5;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* Portal ring */
+.sp-portal-ring {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 3px solid var(--sp-border);
+  border-top-color: var(--sp-purple);
+  border-right-color: var(--sp-cyan);
+  animation: sp-rotate-ring 8s linear infinite;
+  margin: 0 auto 32px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sp-portal-inner {
+  animation: sp-rotate-ring 8s linear reverse infinite;
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.sp-portal-label {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sp-red);
+  animation: sp-pulse-red 1s ease-in-out infinite;
+}
+
+/* Title */
+.sp-title {
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 400;
+  text-align: center;
+  color: var(--sp-chrome);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+
+.sp-subtitle {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--sp-muted);
+  letter-spacing: 0.15em;
+  margin-bottom: 48px;
+}
+
+/* Status panel */
+.sp-status-panel {
+  border: 1px solid var(--sp-border);
+  background: rgba(16,24,40,0.6);
+  padding: 24px;
+  margin-bottom: 24px;
+  animation: sp-fadein 0.5s ease;
+}
+
+.sp-panel-title {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--sp-cyan);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--sp-border);
+}
+
+.sp-status-rows {
+  display: grid;
+  gap: 8px;
+}
+
+.sp-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(32,48,80,0.5);
+}
+
+.sp-status-row:last-child { border-bottom: none; }
+
+.sp-status-label {
+  color: var(--sp-muted);
+  letter-spacing: 0.05em;
+}
+
+.sp-status-value {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.sp-status-value.red    { color: var(--sp-red);   animation: sp-blink 1.5s step-end infinite; }
+.sp-status-value.yellow { color: #d0a020; }
+.sp-status-value.green  { color: var(--sp-green); }
+.sp-status-value.cyan   { color: var(--sp-cyan);  }
+
+/* Countdown */
+.sp-countdown {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.sp-countdown-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sp-muted);
+  margin-bottom: 8px;
+}
+
+.sp-countdown-digits {
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  letter-spacing: 0.1em;
+  color: var(--sp-cyan);
+}
+
+.sp-countdown-digits span {
+  background: var(--sp-dim);
+  border: 1px solid var(--sp-border);
+  padding: 6px 12px;
+  margin: 0 4px;
+}
+
+/* Emergency access */
+.sp-emergency {
+  border: 1px solid var(--sp-red);
+  background: rgba(224,64,32,0.05);
+  padding: 24px;
+  animation: sp-glow 3s ease-in-out infinite;
+}
+
+.sp-emergency-title {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--sp-red);
+  margin-bottom: 12px;
+}
+
+.sp-emergency p {
+  font-size: 0.8rem;
+  color: var(--sp-muted);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.sp-emergency-btn {
+  background: var(--sp-red);
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 12px 32px;
+  border: none;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.sp-emergency-btn:hover {
+  background: #c03010;
+  box-shadow: 0 0 20px rgba(224,64,32,0.4);
+}
+
+/* CAPTCHA Modal */
+.sp-captcha-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.sp-captcha-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.sp-captcha-panel {
+  background: var(--sp-dim);
+  border: 1px solid var(--sp-border);
+  padding: 32px;
+  max-width: 480px;
+  width: 100%;
+  animation: sp-fadein 0.3s ease;
+}
+
+.sp-captcha-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sp-cyan);
+  margin-bottom: 6px;
+}
+
+.sp-captcha-instruction {
+  font-size: 0.88rem;
+  color: var(--sp-text);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.sp-captcha-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sp-captcha-cell {
+  background: rgba(5,8,16,0.8);
+  border: 2px solid var(--sp-border);
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 2rem;
+  transition: border-color 0.2s, background 0.2s;
+  padding: 8px;
+  position: relative;
+}
+
+.sp-captcha-cell:hover {
+  border-color: var(--sp-blue);
+  background: rgba(32,96,224,0.1);
+}
+
+.sp-captcha-cell.selected {
+  border-color: var(--sp-cyan);
+  background: rgba(0,212,255,0.1);
+}
+
+.sp-captcha-cell-label {
+  font-size: 0.6rem;
+  color: var(--sp-muted);
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.sp-captcha-verify-btn {
+  width: 100%;
+  background: var(--sp-blue);
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 10px;
+  margin-bottom: 12px;
+  transition: background 0.2s;
+}
+
+.sp-captcha-verify-btn:hover { background: #1040b0; }
+
+.sp-captcha-error {
+  font-size: 0.8rem;
+  color: var(--sp-red);
+  line-height: 1.5;
+  min-height: 2.5em;
+  text-align: center;
+}
+
+.sp-captcha-close {
+  display: block;
+  margin-top: 12px;
+  background: none;
+  border: none;
+  color: var(--sp-muted);
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.sp-captcha-close:hover { color: var(--sp-text); }

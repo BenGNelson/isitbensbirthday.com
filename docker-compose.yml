@@ -1,0 +1,10 @@
+services:
+  web:
+    build: .
+    ports:
+      - "${HOST_PORT:-8080}:80"
+    volumes:
+      # Hot-reload: mount site/ directly so file changes are served immediately
+      # without rebuilding the image. Remove this volume for production builds.
+      - ./site:/usr/share/nginx/html:ro
+    restart: unless-stopped

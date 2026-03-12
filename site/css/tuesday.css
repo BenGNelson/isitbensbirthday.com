@@ -1,0 +1,362 @@
+/* ============================================================
+   tuesday.css — URGENT: Form BDY-404 Required
+   Palette: US government blue/grey, official serif fonts
+   ============================================================ */
+
+:root {
+  --gov-blue:    #003366;
+  --gov-blue-lt: #dce4f0;
+  --gov-red:     #9b1717;
+  --gov-gold:    #b8962e;
+  --gov-grey:    #f4f4f2;
+  --gov-border:  #ccc9c0;
+  --gov-text:    #1a1a1a;
+  --gov-muted:   #555;
+}
+
+@keyframes gov-fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gov-rejected {
+  0%, 100% { border-color: var(--gov-border); }
+  50%       { border-color: var(--gov-red); box-shadow: 0 0 10px rgba(155,23,23,0.3); }
+}
+
+body {
+  background: var(--gov-grey);
+  color: var(--gov-text);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Header */
+.gov-header {
+  background: var(--gov-blue);
+  color: #fff;
+  padding: 0 32px;
+}
+
+.gov-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.gov-seal {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.gov-header-title {
+  text-align: center;
+}
+
+.gov-header-title h1 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.gov-header-title p {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.gov-header-right {
+  font-size: 0.7rem;
+  text-align: right;
+  opacity: 0.7;
+  line-height: 1.8;
+}
+
+.gov-header-nav {
+  display: flex;
+  gap: 24px;
+  padding: 10px 0;
+  font-size: 0.78rem;
+}
+
+.gov-header-nav a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+}
+
+.gov-header-nav a:hover { color: #fff; }
+
+/* Alert banner */
+.gov-alert {
+  background: var(--gov-red);
+  color: #fff;
+  padding: 12px 32px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Arial', sans-serif;
+}
+
+.gov-alert-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* Main content */
+.gov-main {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* Notice box */
+.gov-notice {
+  border: 2px solid var(--gov-blue);
+  padding: 20px 24px;
+  margin-bottom: 28px;
+  animation: gov-fadein 0.4s ease;
+  background: #fff;
+}
+
+.gov-notice-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gov-border);
+}
+
+.gov-notice-seal {
+  font-size: 2rem;
+}
+
+.gov-notice-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--gov-blue);
+  font-family: Arial, sans-serif;
+}
+
+.gov-notice h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gov-blue);
+  margin-bottom: 8px;
+}
+
+.gov-notice p {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--gov-text);
+}
+
+.gov-regulation {
+  background: var(--gov-blue-lt);
+  border-left: 4px solid var(--gov-blue);
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  font-family: 'Courier New', monospace;
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* Form */
+.gov-form-container {
+  background: #fff;
+  border: 1px solid var(--gov-border);
+  padding: 28px 32px;
+  animation: gov-fadein 0.4s ease 0.1s both;
+}
+
+.gov-form-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gov-blue);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.gov-form-ref {
+  font-size: 0.75rem;
+  color: var(--gov-muted);
+  margin-bottom: 24px;
+  font-family: 'Courier New', monospace;
+}
+
+.gov-form-section {
+  border-top: 1px solid var(--gov-border);
+  padding-top: 20px;
+  margin-bottom: 20px;
+}
+
+.gov-form-section-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--gov-muted);
+  font-family: Arial, sans-serif;
+  margin-bottom: 16px;
+}
+
+.gov-field {
+  margin-bottom: 18px;
+}
+
+.gov-field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-family: Arial, sans-serif;
+}
+
+.gov-field label .gov-required {
+  color: var(--gov-red);
+  margin-left: 2px;
+}
+
+.gov-field input[type="text"],
+.gov-field input[type="date"],
+.gov-field select,
+.gov-field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--gov-border);
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  background: #fff;
+  color: var(--gov-text);
+}
+
+.gov-field input:focus,
+.gov-field select:focus,
+.gov-field textarea:focus {
+  outline: 2px solid var(--gov-blue);
+  outline-offset: 1px;
+}
+
+.gov-field input:disabled,
+.gov-field select option:disabled {
+  background: #eee;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.gov-field .gov-helper {
+  font-size: 0.72rem;
+  color: var(--gov-muted);
+  margin-top: 3px;
+  font-family: Arial, sans-serif;
+  font-style: italic;
+}
+
+/* Radio/checkbox groups */
+.gov-radio-group,
+.gov-check-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gov-radio-group label,
+.gov-check-group label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.gov-radio-group input[type="radio"],
+.gov-check-group input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Submit button */
+.gov-submit-row {
+  border-top: 1px solid var(--gov-border);
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gov-submit-btn {
+  background: var(--gov-blue);
+  color: #fff;
+  padding: 10px 32px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: Arial, sans-serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+}
+
+.gov-submit-btn:hover { background: #002244; }
+
+.gov-submit-note {
+  font-size: 0.72rem;
+  color: var(--gov-muted);
+  font-family: Arial, sans-serif;
+  font-style: italic;
+}
+
+/* Rejection box */
+.gov-rejection {
+  border: 2px solid var(--gov-red);
+  background: #fdf0f0;
+  padding: 20px 24px;
+  margin-top: 24px;
+  display: none;
+  animation: gov-rejected 0.3s ease;
+}
+
+.gov-rejection.visible { display: block; }
+
+.gov-rejection-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gov-red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+  font-family: Arial, sans-serif;
+}
+
+.gov-rejection p {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--gov-text);
+}
+
+.gov-rejection .gov-ticket {
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  background: var(--gov-blue-lt);
+  padding: 8px 12px;
+  margin-top: 12px;
+  border-left: 3px solid var(--gov-blue);
+  line-height: 1.6;
+}
+
+/* Footer */
+.gov-footer {
+  background: var(--gov-blue);
+  color: rgba(255,255,255,0.6);
+  padding: 20px 32px;
+  font-size: 0.72rem;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  line-height: 1.8;
+}
