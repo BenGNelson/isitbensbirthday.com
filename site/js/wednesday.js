@@ -22,11 +22,11 @@ window.Wednesday = {
     { at: 42, text: 'Fun fact: this loading screen has been running since July 6th.' },
     { at: 51, text: 'The progress bar is not lying to you. It is simply… optimistic.' },
     { at: 60, text: 'ERROR: Birthday not found in temporal index. Expanding search radius.' },
-    { at: 68, text: 'Getting closer. Or further. It's genuinely hard to say.' },
-    { at: 77, text: 'You can click the bar but it won't help. We've tried.' },
+    { at: 68, text: 'Getting closer. Or further. It\'s genuinely hard to say.' },
+    { at: 77, text: 'You can click the bar but it won\'t help. We\'ve tried.' },
     { at: 85, text: 'We found something. It was a hot dog. Continuing.' },
     { at: 92, text: 'So close. SO CLOSE. Actually not that close. We apologize.' },
-    { at: 99, text: 'We've been at 99.97% since last July 5th. Please hold. We are so tired.' },
+    { at: 99, text: 'We\'ve been at 99.97% since last July 5th. Please hold. We are so tired.' },
   ],
 
   tabTitles: [
@@ -209,7 +209,7 @@ window.Wednesday = {
       'Clicking the bar does not make it faster.',
       'We appreciate your enthusiasm. We do not appreciate the clicking.',
       'The bar is trying its best. Please let it try.',
-      'You have now clicked the bar enough times that we've lost count.',
+      'You have now clicked the bar enough times that we\'ve lost count.',
       'The bar has filed a formal complaint. We are processing it. The processing bar is also stuck.',
       'Fine. We will add 0.001% for the click. Happy now? Good. That is the last one.',
     ];
