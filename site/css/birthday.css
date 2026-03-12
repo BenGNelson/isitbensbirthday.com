@@ -1,0 +1,350 @@
+/* ============================================================
+   birthday.css — July 5th: Maximum Chaos Birthday
+   Palette: hot pink, electric yellow, cyan, neon green, purple
+   ============================================================ */
+
+:root {
+  --bd-pink:   #ff0080;
+  --bd-yellow: #ffee00;
+  --bd-cyan:   #00eeff;
+  --bd-green:  #00ff80;
+  --bd-purple: #cc00ff;
+  --bd-orange: #ff6600;
+}
+
+@keyframes bd-rainbow-bg {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bd-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px) rotate(-1deg); }
+  40%       { transform: translateX(6px) rotate(1deg); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+@keyframes bd-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.06); }
+}
+
+@keyframes bd-float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes bd-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes bd-ticker {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(-100%); }
+}
+
+@keyframes bd-ach-in {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+@keyframes bd-ach-out {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(120%); opacity: 0; }
+}
+
+@keyframes bd-flame {
+  0%, 100% { transform: scaleX(1) scaleY(1); }
+  25%       { transform: scaleX(0.8) scaleY(1.15); }
+  75%       { transform: scaleX(1.1) scaleY(0.9); }
+}
+
+@keyframes bd-glow {
+  0%, 100% { text-shadow: 0 0 20px var(--bd-pink), 0 0 40px var(--bd-pink); }
+  33%       { text-shadow: 0 0 20px var(--bd-cyan), 0 0 40px var(--bd-cyan); }
+  66%       { text-shadow: 0 0 20px var(--bd-yellow), 0 0 40px var(--bd-yellow); }
+}
+
+/* Escalating chaos modifiers */
+body.chaos-3 .bd-title  { animation: bd-shake 0.5s infinite, bd-glow 1s infinite; }
+body.chaos-6 #app       { animation: bd-rainbow-bg 3s linear infinite;
+                           background: linear-gradient(270deg, var(--bd-pink), var(--bd-yellow), var(--bd-cyan), var(--bd-green), var(--bd-purple));
+                           background-size: 400% 400%; }
+body.chaos-10 .bd-main  { animation: bd-shake 0.15s infinite; }
+body.chaos-10 .bd-title { font-size: clamp(3rem, 15vw, 10rem); animation: bd-spin 2s linear infinite, bd-glow 0.3s infinite; }
+
+/* Confetti canvas sits behind everything */
+#confetti-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Breaking news ticker */
+.bd-news-ticker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #cc0000;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.bd-ticker-label {
+  background: var(--bd-yellow);
+  color: #000;
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.bd-ticker-track {
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.bd-ticker-track span {
+  display: inline-block;
+  white-space: nowrap;
+  animation: bd-ticker 18s linear infinite;
+  padding-left: 100%;
+}
+
+/* Main content */
+.bd-main {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  background: #0a0010;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px 40px;
+}
+
+.bd-hero {
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+}
+
+.bd-pre-title {
+  font-size: 1rem;
+  color: var(--bd-yellow);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  animation: bd-pulse 1s ease-in-out infinite;
+}
+
+.bd-title {
+  font-size: clamp(3.5rem, 12vw, 8rem);
+  font-weight: 900;
+  line-height: 0.95;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  animation: bd-glow 2s ease-in-out infinite;
+}
+
+.bd-name {
+  color: var(--bd-pink);
+  display: block;
+  animation: bd-pulse 0.7s ease-in-out infinite;
+}
+
+.bd-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 48px;
+  font-style: italic;
+}
+
+/* Candles section */
+.bd-candles {
+  margin-bottom: 40px;
+}
+
+.bd-candle-label {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.bd-candle-row {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.bd-candle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  font-size: 1.5rem;
+}
+
+.bd-candle:hover:not([data-blown]) {
+  transform: scale(1.2);
+}
+
+.bd-flame {
+  display: block;
+  animation: bd-flame 0.4s ease-in-out infinite;
+  font-size: 1.6rem;
+}
+
+.bd-candle-body {
+  font-size: 2rem;
+  color: var(--bd-pink);
+  line-height: 1;
+  font-weight: 900;
+}
+
+.bd-candle.blown .bd-flame {
+  animation: none;
+}
+
+.bd-candle-status {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.bd-candle-status.wish {
+  color: var(--bd-yellow);
+  font-weight: 700;
+  font-size: 1.1rem;
+  animation: bd-pulse 1s infinite;
+}
+
+/* Celebrate button */
+.bd-celebrate-btn {
+  background: linear-gradient(135deg, var(--bd-pink), var(--bd-purple));
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 900;
+  padding: 18px 48px;
+  border-radius: 50px;
+  border: 3px solid var(--bd-yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: transform 0.1s, box-shadow 0.1s;
+  animation: bd-float 2.5s ease-in-out infinite;
+  box-shadow: 0 0 30px var(--bd-pink), 0 8px 32px rgba(0,0,0,0.4);
+  margin-bottom: 12px;
+}
+
+.bd-celebrate-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 50px var(--bd-pink), 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.bd-celebrate-btn:active {
+  transform: scale(0.96);
+}
+
+.bd-chaos-label {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+  transition: color 0.3s;
+}
+
+body.chaos-10 .bd-chaos-label {
+  color: var(--bd-yellow);
+  font-size: 1rem;
+  font-weight: 700;
+  animation: bd-shake 0.2s infinite;
+}
+
+/* Achievement toasts */
+#achievements-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+  max-width: 320px;
+}
+
+.bd-achievement {
+  background: #1a0030;
+  border: 2px solid var(--bd-yellow);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 20px rgba(255,238,0,0.2);
+}
+
+.bd-achievement.visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.bd-ach-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.bd-ach-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--bd-yellow);
+  font-weight: 700;
+}
+
+.bd-ach-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.bd-ach-desc {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.bd-ach-desc em {
+  color: var(--bd-cyan);
+  font-style: normal;
+}

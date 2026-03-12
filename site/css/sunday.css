@@ -1,0 +1,447 @@
+/* ============================================================
+   sunday.css — The Institute of Pre-Birthday Contemporary Art
+   Palette: beige, sepia, cream, dark mahogany
+   ============================================================ */
+
+:root {
+  --mu-cream:   #f5f0e8;
+  --mu-beige:   #e8dcc8;
+  --mu-tan:     #c8b89a;
+  --mu-brown:   #4a3728;
+  --mu-dark:    #2a1a10;
+  --mu-gold:    #8a6a2a;
+  --mu-red:     #8a2010;
+}
+
+@keyframes mu-fadein {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes mu-thermometer {
+  from { width: 0; }
+  to   { width: 0.3%; } /* $3 of $1,000,000 */
+}
+
+body {
+  background: var(--mu-cream);
+  color: var(--mu-dark);
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+/* Header */
+.mu-header {
+  background: var(--mu-dark);
+  color: var(--mu-cream);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  border-bottom: 4px solid var(--mu-gold);
+}
+
+.mu-logo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.mu-logo span {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mu-tan);
+  margin-top: 2px;
+}
+
+.mu-nav {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+}
+
+.mu-nav a {
+  color: var(--mu-cream);
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.mu-nav a:hover { opacity: 1; }
+
+/* Hero banner */
+.mu-hero {
+  background: var(--mu-beige);
+  border-bottom: 1px solid var(--mu-tan);
+  padding: 48px 32px;
+  text-align: center;
+}
+
+.mu-hero-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--mu-gold);
+  margin-bottom: 12px;
+}
+
+.mu-hero h1 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--mu-dark);
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.mu-hero p {
+  font-size: 1rem;
+  color: var(--mu-brown);
+  max-width: 600px;
+  margin: 0 auto;
+  font-style: italic;
+}
+
+/* Audio guide bar */
+.mu-audio-bar {
+  background: var(--mu-gold);
+  color: #fff;
+  text-align: center;
+  padding: 12px 24px;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.mu-audio-btn {
+  background: #fff;
+  color: var(--mu-gold);
+  border: none;
+  padding: 6px 18px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: Georgia, serif;
+}
+
+.mu-audio-btn:hover {
+  background: var(--mu-dark);
+  color: #fff;
+}
+
+/* Gallery grid */
+.mu-gallery-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+.mu-section-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--mu-gold);
+  margin-bottom: 32px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--mu-tan);
+}
+
+.mu-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.mu-artwork {
+  animation: mu-fadein 0.6s ease both;
+  cursor: pointer;
+}
+
+.mu-artwork:nth-child(1) { animation-delay: 0.1s; }
+.mu-artwork:nth-child(2) { animation-delay: 0.2s; }
+.mu-artwork:nth-child(3) { animation-delay: 0.3s; }
+.mu-artwork:nth-child(4) { animation-delay: 0.4s; }
+.mu-artwork:nth-child(5) { animation-delay: 0.5s; }
+.mu-artwork:nth-child(6) { animation-delay: 0.6s; }
+
+.mu-frame {
+  background: var(--mu-dark);
+  padding: 20px;
+  margin-bottom: 14px;
+  border: 8px solid var(--mu-brown);
+  box-shadow: 4px 4px 0 var(--mu-tan), 8px 8px 20px rgba(0,0,0,0.2);
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.mu-artwork:hover .mu-frame {
+  transform: scale(1.02);
+}
+
+.mu-frame-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  color: var(--mu-tan);
+  background: var(--mu-beige);
+  opacity: 0.9;
+  border: 1px solid var(--mu-tan);
+}
+
+.mu-frame-inner.dark-bg {
+  background: #111;
+  color: #333;
+}
+
+.mu-artwork-title {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--mu-dark);
+  margin-bottom: 4px;
+}
+
+.mu-artwork-meta {
+  font-size: 0.78rem;
+  color: var(--mu-brown);
+  line-height: 1.5;
+}
+
+.mu-artwork-price {
+  font-size: 0.75rem;
+  color: var(--mu-red);
+  font-weight: 700;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* Audio guide modal */
+.mu-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.mu-modal-overlay.open {
+  opacity: 1;
+}
+
+.mu-modal {
+  background: var(--mu-cream);
+  max-width: 520px;
+  width: 100%;
+  padding: 40px;
+  position: relative;
+  border-top: 6px solid var(--mu-gold);
+  transform: translateY(20px);
+  transition: transform 0.3s;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+.mu-modal-overlay.open .mu-modal {
+  transform: translateY(0);
+}
+
+.mu-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--mu-brown);
+}
+
+.mu-modal-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mu-gold);
+  margin-bottom: 8px;
+}
+
+.mu-modal h2 {
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--mu-dark);
+  margin-bottom: 16px;
+}
+
+.mu-modal p {
+  font-size: 0.9rem;
+  color: var(--mu-brown);
+  line-height: 1.8;
+}
+
+/* Donation section */
+.mu-donation {
+  background: var(--mu-dark);
+  color: var(--mu-cream);
+  padding: 40px 32px;
+  text-align: center;
+}
+
+.mu-donation h2 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.mu-donation p {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 24px;
+}
+
+.mu-thermometer-wrap {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.mu-thermometer-bg {
+  background: #4a3728;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.mu-thermometer-fill {
+  background: var(--mu-gold);
+  height: 100%;
+  border-radius: 12px;
+  width: 0;
+  animation: mu-thermometer 2s ease 0.5s forwards;
+}
+
+.mu-thermometer-label {
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.mu-thermometer-label strong {
+  color: var(--mu-gold);
+}
+
+/* Gift shop */
+.mu-giftshop {
+  background: var(--mu-beige);
+  padding: 48px 32px;
+  text-align: center;
+  border-top: 1px solid var(--mu-tan);
+}
+
+.mu-giftshop h2 {
+  font-size: 1.6rem;
+  font-style: italic;
+  margin-bottom: 8px;
+  color: var(--mu-dark);
+}
+
+.mu-giftshop .mu-eyebrow {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--mu-gold);
+  margin-bottom: 24px;
+}
+
+.mu-shop-items {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.mu-shop-item {
+  background: var(--mu-cream);
+  border: 1px solid var(--mu-tan);
+  padding: 24px 20px;
+  width: 180px;
+  text-align: center;
+  box-shadow: 2px 2px 0 var(--mu-tan);
+}
+
+.mu-shop-item-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.mu-shop-item-name {
+  font-size: 0.85rem;
+  color: var(--mu-dark);
+  margin-bottom: 6px;
+  font-style: italic;
+}
+
+.mu-shop-item-price {
+  font-size: 0.75rem;
+  color: var(--mu-red);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.mu-shop-item-btn {
+  background: var(--mu-dark);
+  color: var(--mu-cream);
+  font-family: Georgia, serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.mu-shop-item-btn:hover {
+  background: var(--mu-brown);
+}
+
+.mu-shop-coming-soon {
+  font-size: 0.65rem;
+  color: var(--mu-gold);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Footer */
+.mu-footer {
+  background: var(--mu-dark);
+  color: var(--mu-tan);
+  text-align: center;
+  padding: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  border-top: 3px solid var(--mu-gold);
+}
