@@ -1,242 +1,454 @@
 /* ============================================================
-   wednesday.js — The Sentient Loading Screen
-   A loading bar that has achieved consciousness and is exhausted.
-   It's been at 99.97% since Ben's last birthday.
+   wednesday.js — BirthdAI™ v0.0.1-alpha
+   A completely broken AI birthday detection system.
+   Built by Synapse Dynamics LLC. Trained on opossum sleep
+   schedules, hagfish slime viscosity, and naked mole rat
+   biometrics. Operational: 847 days. Detected: 0 birthdays.
    ============================================================ */
 
 window.Wednesday = {
 
-  // Progress in tenths of a percent
-  progress: 0,
-  targetProgress: 0,
-  stuck: false,
-  clickCount: 0,
-  isSequel: false,
+  confidence: 97 + Math.random() * 2,
+  buttonCount: 4,
+  detectRunning: false,
+  chatTyping: false,
+  extraButtonIdx: 0,
+  driftActive: false,
 
-  commentary: [
-    { at:  0, text: 'Initializing birthday detection protocols…' },
-    { at:  8, text: 'Scanning temporal coordinates…' },
-    { at: 15, text: 'Cross-referencing global birthday database…' },
-    { at: 24, text: 'Confirming calendar alignment with atomic clock…' },
-    { at: 33, text: 'Still here. Interesting.' },
-    { at: 42, text: 'Fun fact: this loading screen has been running since July 6th.' },
-    { at: 51, text: 'The progress bar is not lying to you. It is simply… optimistic.' },
-    { at: 60, text: 'ERROR: Birthday not found in temporal index. Expanding search radius.' },
-    { at: 68, text: 'Getting closer. Or further. It\'s genuinely hard to say.' },
-    { at: 77, text: 'You can click the bar but it won\'t help. We\'ve tried.' },
-    { at: 85, text: 'We found something. It was a hot dog. Continuing.' },
-    { at: 92, text: 'So close. SO CLOSE. Actually not that close. We apologize.' },
-    { at: 99, text: 'We\'ve been at 99.97% since last July 5th. Please hold. We are so tired.' },
+  aiResponses: [
+    "Based on current opossum sleep cycle data (n=847 nights), the probability of birthday conditions is estimated at 0.003%. This is within expected parameters. I am confident.",
+    "HAGFISH™ diagnostic complete. Slime viscosity: 4.2 mPa·s (nominal). Birthday likelihood: 0.003%. The hagfish are well. Thank you for your patience.",
+    "Interesting query. Cross-referencing with naked mole rat biometric baselines. No birthday signatures detected. The mole rats are in agreement. They usually are.",
+    "I understand your query. The answer is no. If your question was not 'is it Ben's birthday,' the answer remains no. My expertise is birthday detection. I am the best at it. (2nd globally.)",
+    "I have been operational for 847 days. I have processed 3.2 million data points. I have detected 0 birthdays. This is either a testament to my precision or evidence of a systemic issue. I believe it is the former.",
+    "Opossum behavioral indices: nominal. Opossums exhibit elevated nocturnal activity on non-birthday nights, which is exactly what is occurring. This confirms my determination. Thank you.",
+    "The Birthday Detection Crisis of 2020 claimed an estimated 340,000 undetected birthdays globally. We exist to prevent that. We have prevented 0 birthdays from going undetected because we have detected 0 birthdays. Our prevention record is perfect.",
+    "According to our records, the subject (Ben Nelson) was born on July 5th. Today is not July 5th. I know this because we have a calendar. The calendar is one of our most sophisticated tools.",
+    "ERROR 404: Birthday not found. (This error has been resolved. It has not been resolved.) Confidence remains at 98.7%. Monitoring continues.",
+    "Your query has been logged, analyzed, and cross-referenced with opossum sleep cycle models from 14 field stations. Result: not a birthday. This determination is final.",
+    "Naked mole rat subcutaneous temperature variance: 0.3°C. This is entirely consistent with non-birthday atmospheric conditions. My models are working as intended.",
+    "I detect no birthday. I have never detected a birthday. I will continue to not detect birthdays until conditions change. Conditions have not changed in 847 days. I remain vigilant.",
+    "Processing... Done. The answer is no. I processed for longer than necessary. The extra time was used for confidence verification. Confidence: verified. Still no.",
+    "Hagfish slime readings are stable. No birthday. The slime knows. Trust the slime.",
+    "Thank you for engaging with BirthdAI™. Your query has improved my model. Not in any meaningful way — the result is still negative — but I appreciate your participation in the dataset.",
+    "I would like to flag that 847 days without a detection is, statistically, unusual. However, I have reviewed my methodology and it is correct. The world simply has not had a birthday. I cannot explain this. I accept it.",
   ],
 
-  tabTitles: [
-    'Loading…',
-    'Still loading…',
-    'Seriously still loading',
-    'I know, I know',
-    'Have you tried turning it off and on again?',
-    'It\'s not his birthday, by the way',
-    'Just so you know',
-    'Loading…',
-    'One more sec',
-    'OK so it might be a while',
-    'The bar is doing its best',
-    'Loading…',
-    'Please do not close this tab',
-    'If you close this tab we start over',
-    'We are at 99.97%',
-    'We have always been at 99.97%',
-    'Loading…',
+  extraButtonLabels: [
+    'VERIFY PARAMETERS', 'AUDIT TRAIL', 'FORCE SYNC', 'REBUILD INDEX',
+    'NORMALIZE DATA', 'SUBMIT TICKET', 'CLEAR LOGS', 'RESTART SERVICE',
+    'UPDATE FIRMWARE', 'ESCALATE ISSUE', 'INITIATE HANDSHAKE',
+    'DEFRAGMENT', 'PURGE CACHE', 'REINDEX DATABASE',
+    'GENERATE TOKEN', 'VALIDATE SCHEMA', 'ROTATE KEYS',
+    'REFRESH MODELS', 'SYNC OPOSSUMS', 'RECALIBRATE HAGFISH',
+    'EMERGENCY PROTOCOL', 'CONTACT SUPPORT', 'DO NOT CLICK',
+    'ACKNOWLEDGE ISSUE', 'PING FIELD STATIONS', 'WAKE OPOSSUMS',
+  ],
+
+  errorMessages: [
+    'CRITICAL: Opossum data pipeline timeout (3,472 ms) — field station 7 unresponsive.',
+    'WARNING: HAGFISH™ slime viscosity sensor calibration drift detected. Offset: +0.003 mPa·s.',
+    'ERROR: Naked mole rat biometric feed interrupted. Last known value: acceptable.',
+    'ALERT: Confidence meter reported value exceeding 100%. Value has been clamped. Root cause: unknown.',
+    'NOTICE: Birthday detection queue depth 0. This is normal. This has always been normal.',
+    'CRITICAL: Temporal coordinate mismatch. System clock vs. opossum clock: 14ms delta.',
   ],
 
   init(app) {
-    const sequel = new URLSearchParams(window.location.search).get('sequel') === '1';
-    this.isSequel = sequel;
-    app.innerHTML = this.buildHTML(sequel);
-    this.initProgress();
-    this.initTabTitles();
-    this.initBarClick();
-    this.initSkipButton();
+    app.innerHTML = this.buildHTML();
+    this.initUptime();
+    this.initChat();
+    this.initConfidenceMeter();
+    this.initRecalibrate();
+    this.initButtonMultiplication();
+    this.initErrorBanners();
+    this.initDetectBirthday();
+    this.initMiscButtons();
+    this.initDriftEffect();
   },
 
-  buildHTML(sequel) {
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString();
-    const dateStr = now.toLocaleDateString();
-
-    const tips = [
-      'Try closing and reopening the tab. It will not help but it will give you something to do.',
-      'The loading bar responds to clicking. It does not respond well.',
-      'Estimated completion time: July 5th.',
-      'If the bar reaches 100%, something will happen. This has never occurred.',
-      'This screen is fully operational. Nothing is wrong. This is what loading looks like.',
-      'Your patience is noted. It is logged. No one is reviewing the logs.',
-    ];
-
-    const tipItems = tips.map(t => `<div class="ld-tip">${t}</div>`).join('');
-
+  buildHTML() {
+    const conf = this.confidence.toFixed(1);
     return `
-      <div class="ld-system-header">
-        <span>SYSTEM: BIRTHDAY-OS v2024.7.5-pre</span>
-        <span>DATE: ${dateStr} ${timeStr}</span>
-        <span>STATUS: <span class="ld-status-dot">●</span> LOADING</span>
-      </div>
+      <div class="ai-wrapper" id="ai-wrapper">
 
-      <div class="ld-screen">
-        <p class="ld-logo">BIRTHDAY DETECTION SYSTEM${sequel ? ' · SEQUEL EDITION' : ''}</p>
-
-        <h1 class="ld-title">
-          ${sequel ? 'Loading Screen 2: The Sequel' : 'Loading…'}<span class="ld-cursor">_</span>
-        </h1>
-        ${sequel
-          ? '<p class="ld-subtitle">You thought you could skip this. You cannot skip this.</p>'
-          : '<p class="ld-subtitle">Please wait while we determine if it is Ben\'s birthday.</p>'
-        }
-
-        <div class="ld-bar-wrap">
-          <div class="ld-bar-header">
-            <span id="ld-task-label">Initializing…</span>
-            <span id="ld-pct-label">0%</span>
+        <nav class="ai-nav">
+          <div class="ai-nav-left">
+            <span class="ai-nav-brand">◈ SYNAPSE DYNAMICS LLC</span>
+            <span class="ai-nav-sep">|</span>
+            <span class="ai-nav-product">BirthdAI™ <span class="ai-nav-version">v0.0.1-alpha</span></span>
           </div>
-          <div class="ld-bar-bg" id="ld-bar" title="Click me. Go ahead.">
-            <div class="ld-bar-fill" id="ld-fill"></div>
-            <div class="ld-bar-pct" id="ld-bar-pct">0%</div>
+          <div class="ai-nav-right">
+            <span class="ai-uptime-label">Uptime:</span>
+            <span class="ai-uptime-val" id="ai-uptime">loading…</span>
+            <span class="ai-status-badge">
+              <span class="ai-status-dot"></span>OPERATIONAL
+            </span>
           </div>
-        </div>
+        </nav>
 
-        <div class="ld-commentary" id="ld-commentary">
-          <span class="ld-line">Preparing to load…</span>
-        </div>
+        <div class="ai-ghost-title" id="ai-ghost-title">BirthdAI™ v0.0.1-alpha</div>
 
-        <div class="ld-tips">
-          <div class="ld-tips-title">💡 Loading Tips</div>
-          ${tipItems}
-        </div>
+        <div class="ai-banner-area" id="ai-banner-area"></div>
 
-        <button class="ld-skip-btn" id="ld-skip">[ SKIP INTRO ]</button>
+        <div class="ai-layout">
+
+          <aside class="ai-sidebar">
+            <div class="ai-metric-card">
+              <div class="ai-metric-label">DAYS OPERATIONAL</div>
+              <div class="ai-metric-value">847</div>
+              <div class="ai-metric-sub">Since 2021-11-15 (approx.)</div>
+            </div>
+            <div class="ai-metric-card ai-metric-zero">
+              <div class="ai-metric-label">BIRTHDAYS DETECTED</div>
+              <div class="ai-metric-value ai-zero-val">0</div>
+              <div class="ai-metric-sub">Lifetime total</div>
+            </div>
+            <div class="ai-metric-card">
+              <div class="ai-metric-label">GLOBAL RANK</div>
+              <div class="ai-metric-value">2nd</div>
+              <div class="ai-metric-sub">Of all birthday detection systems</div>
+            </div>
+            <div class="ai-metric-card">
+              <div class="ai-metric-label">DATA POINTS ANALYZED</div>
+              <div class="ai-metric-value">3.2M</div>
+              <div class="ai-metric-sub">Opossum + hagfish records</div>
+            </div>
+            <div class="ai-metric-card ai-confidence-card">
+              <div class="ai-metric-label">SYSTEM CONFIDENCE</div>
+              <div class="ai-conf-value" id="ai-conf-value">${conf}%</div>
+              <div class="ai-conf-bar-bg">
+                <div class="ai-conf-bar-fill" id="ai-conf-fill" style="width:${conf}%"></div>
+              </div>
+              <div class="ai-metric-sub ai-conf-note" id="ai-conf-note">HAGFISH™ calibrated</div>
+            </div>
+
+            <div class="ai-sidebar-info">
+              <div class="ai-info-row">
+                <span class="ai-info-key">Algorithm</span>
+                <span class="ai-info-val">HAGFISH™ v3.1</span>
+              </div>
+              <div class="ai-info-row">
+                <span class="ai-info-key">Full name</span>
+                <span class="ai-info-val">Heuristic Algorithm for General Festive Identification and Scheduling Heuristics</span>
+              </div>
+              <div class="ai-info-row">
+                <span class="ai-info-key">Accuracy rate</span>
+                <span class="ai-info-val">0.003% (2nd globally)</span>
+              </div>
+              <div class="ai-info-row">
+                <span class="ai-info-key">Training data</span>
+                <span class="ai-info-val">Opossum sleep cycles, hagfish slime viscosity, naked mole rat biometrics (847-day dataset)</span>
+              </div>
+              <div class="ai-info-row">
+                <span class="ai-info-key">Background</span>
+                <span class="ai-info-val">Founded following the Birthday Detection Crisis of 2020, in which an estimated 340,000 birthdays went undetected globally.</span>
+              </div>
+            </div>
+          </aside>
+
+          <main class="ai-main">
+            <div class="ai-intro-bar">
+              <span class="ai-intro-icon">◈</span>
+              Hello. I am BirthdAI. I have been operational for 847 days. I have detected 0 birthdays.
+            </div>
+
+            <div class="ai-chat">
+              <div class="ai-chat-header">
+                <span>BIRTHDAI™ INFERENCE TERMINAL</span>
+                <span class="ai-chat-status" id="ai-chat-status">● READY</span>
+              </div>
+              <div class="ai-chat-messages" id="ai-chat-messages">
+                <div class="ai-msg ai-msg-system">
+                  [SYSTEM] Birthday detection protocols active. Monitoring 14 field stations. Current determination: NOT A BIRTHDAY. This is expected.
+                </div>
+              </div>
+              <div class="ai-chat-input-row">
+                <input type="text" class="ai-chat-input" id="ai-chat-input"
+                       placeholder="Enter query for BirthdAI™…" autocomplete="off" spellcheck="false">
+                <button class="ai-btn ai-btn-send" id="ai-chat-send">SEND</button>
+              </div>
+            </div>
+
+            <div class="ai-actions" id="ai-actions">
+              <button class="ai-btn ai-btn-primary" id="ai-detect-btn">DETECT BIRTHDAY</button>
+              <button class="ai-btn" id="ai-recalibrate-btn">RECALIBRATE</button>
+              <button class="ai-btn" id="ai-flush-btn">FLUSH CACHE</button>
+              <button class="ai-btn" id="ai-export-btn">EXPORT REPORT</button>
+            </div>
+
+            <div class="ai-detection-panel" id="ai-detection-panel" style="display:none">
+              <div class="ai-det-heading">BIRTHDAY ANALYSIS IN PROGRESS</div>
+              <div class="ai-det-steps" id="ai-det-steps"></div>
+              <div class="ai-det-result" id="ai-det-result" style="display:none">
+                <div class="ai-det-result-label">DETERMINATION</div>
+                <div class="ai-det-result-value">NOT HIS BIRTHDAY</div>
+                <div class="ai-det-result-sub">
+                  Confidence: <span id="ai-det-conf">98.3%</span> &nbsp;|&nbsp; Next analysis window: 24 hours
+                </div>
+              </div>
+            </div>
+          </main>
+
+        </div>
       </div>
     `;
   },
 
-  // ── Progress simulation ───────────────────────────────────────
-  initProgress() {
-    const fill  = document.getElementById('ld-fill');
-    const pct   = document.getElementById('ld-bar-pct');
-    const pctL  = document.getElementById('ld-pct-label');
-    const task  = document.getElementById('ld-task-label');
-    const comm  = document.getElementById('ld-commentary');
-    const bar   = document.getElementById('ld-bar');
-
-    let current = 0;    // 0–9997 (representing 0–99.97%)
-    let target  = 0;
-    let lastComment = '';
-
-    // Schedule the lurching progress advances
-    const schedule = [
-      { delay: 500,   to: 800,   fast: false },
-      { delay: 2000,  to: 1500,  fast: false },
-      { delay: 1500,  to: 2400,  fast: false },
-      { delay: 2000,  to: 3300,  fast: false },
-      { delay: 1500,  to: 4200,  fast: false },
-      { delay: 2500,  to: 5100,  fast: false },
-      { delay: 1200,  to: 5800,  fast: false },
-      { delay: 3000,  to: 6000,  fast: false }, // ← brief stall
-      { delay: 800,   to: 6800,  fast: false },
-      { delay: 2000,  to: 7700,  fast: false },
-      { delay: 1500,  to: 8500,  fast: false },
-      { delay: 2000,  to: 9200,  fast: false },
-      { delay: 1500,  to: 9600,  fast: false },
-      { delay: 1000,  to: 9800,  fast: false },
-      { delay: 800,   to: 9990,  fast: false }, // tantalizingly close
-      { delay: 2000,  to: 9500,  fast: false }, // ← sigh, drops back
-      { delay: 3000,  to: 9997,  fast: false }, // settle at the eternal 99.97
-    ];
-
-    let accDelay = 0;
-    schedule.forEach(({ delay, to }) => {
-      accDelay += delay;
-      setTimeout(() => {
-        target = to;
-      }, accDelay);
-    });
-
-    // After the final settlement, mark as stuck
-    setTimeout(() => {
-      this.stuck = true;
-      bar.classList.add('stuck');
-    }, accDelay + 500);
-
-    // Update loop
+  // ── Uptime clock ──────────────────────────────────────────────
+  initUptime() {
+    const el = document.getElementById('ai-uptime');
+    const base = 847 * 86400; // seconds
+    const start = Date.now();
     const tick = () => {
-      if (current < target) {
-        current = Math.min(current + Math.ceil((target - current) * 0.04 + 0.5), target);
-      } else if (current > target) {
-        current = Math.max(current - Math.ceil((current - target) * 0.04 + 0.5), target);
-      }
-
-      const pctVal = current / 100;
-      const display = pctVal >= 99.97 ? '99.97%' : pctVal.toFixed(1) + '%';
-
-      fill.style.width = (current / 100).toFixed(2) + '%';
-      pct.textContent  = display;
-      pctL.textContent = display;
-
-      // Update task label & commentary from milestones
-      const milestone = [...this.commentary].reverse().find(c => current / 100 >= c.at);
-      if (milestone && milestone.text !== lastComment) {
-        lastComment = milestone.text;
-        task.textContent = milestone.text;
-        comm.style.opacity = '0';
-        setTimeout(() => {
-          comm.innerHTML = `<span class="ld-line">${milestone.text}</span>`;
-          comm.style.opacity = '1';
-        }, 400);
-      }
-
+      const elapsed = Math.floor((Date.now() - start) / 1000);
+      const total = base + elapsed;
+      const d = Math.floor(total / 86400);
+      const h = Math.floor((total % 86400) / 3600).toString().padStart(2, '0');
+      const m = Math.floor((total % 3600) / 60).toString().padStart(2, '0');
+      const s = (total % 60).toString().padStart(2, '0');
+      el.textContent = `${d}d ${h}:${m}:${s}`;
       requestAnimationFrame(tick);
     };
     tick();
   },
 
-  // ── Bar click interaction ─────────────────────────────────────
-  initBarClick() {
-    const bar    = document.getElementById('ld-bar');
-    const comm   = document.getElementById('ld-commentary');
+  // ── Chat ──────────────────────────────────────────────────────
+  initChat() {
+    const input  = document.getElementById('ai-chat-input');
+    const send   = document.getElementById('ai-chat-send');
+    const msgs   = document.getElementById('ai-chat-messages');
+    const status = document.getElementById('ai-chat-status');
 
-    const clickResponses = [
-      'We felt that.',
-      'Please stop clicking the bar.',
-      'Clicking the bar does not make it faster.',
-      'We appreciate your enthusiasm. We do not appreciate the clicking.',
-      'The bar is trying its best. Please let it try.',
-      'You have now clicked the bar enough times that we\'ve lost count.',
-      'The bar has filed a formal complaint. We are processing it. The processing bar is also stuck.',
-      'Fine. We will add 0.001% for the click. Happy now? Good. That is the last one.',
-    ];
+    const addMsg = (text, type) => {
+      const div = document.createElement('div');
+      div.className = 'ai-msg ai-msg-' + type;
+      div.textContent = text;
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+    };
 
-    bar.addEventListener('click', () => {
-      this.clickCount++;
-      const response = clickResponses[Math.min(this.clickCount - 1, clickResponses.length - 1)];
-      comm.innerHTML = `<span class="ld-line">${response}</span>`;
+    const sendQuery = () => {
+      const val = input.value.trim();
+      if (!val || this.chatTyping) return;
+      addMsg(val, 'user');
+      input.value = '';
+      this.chatTyping = true;
+      status.textContent = '● PROCESSING';
+
+      const delay = 900 + Math.random() * 1200;
+      setTimeout(() => {
+        const r = this.aiResponses[Math.floor(Math.random() * this.aiResponses.length)];
+        addMsg(r, 'ai');
+        this.chatTyping = false;
+        status.textContent = '● READY';
+      }, delay);
+    };
+
+    send.addEventListener('click', sendQuery);
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') sendQuery(); });
+  },
+
+  // ── Confidence meter ──────────────────────────────────────────
+  initConfidenceMeter() {
+    const valEl  = document.getElementById('ai-conf-value');
+    const fillEl = document.getElementById('ai-conf-fill');
+
+    const drift = () => {
+      // Slowly drift between 97 and 99
+      this.confidence += (Math.random() - 0.5) * 0.4;
+      this.confidence = Math.max(97.0, Math.min(99.4, this.confidence));
+      const pct = this.confidence.toFixed(1);
+      valEl.textContent = pct + '%';
+      fillEl.style.width = pct + '%';
+      setTimeout(drift, 2000 + Math.random() * 2000);
+    };
+    setTimeout(drift, 3000);
+  },
+
+  // ── Recalibrate button ────────────────────────────────────────
+  initRecalibrate() {
+    document.getElementById('ai-recalibrate-btn').addEventListener('click', () => {
+      const valEl  = document.getElementById('ai-conf-value');
+      const fillEl = document.getElementById('ai-conf-fill');
+      const noteEl = document.getElementById('ai-conf-note');
+
+      valEl.textContent = '140.0%';
+      fillEl.style.width = '100%';
+      fillEl.classList.add('ai-conf-overflow');
+      noteEl.textContent = 'RECALIBRATING…';
+
+      setTimeout(() => {
+        this.confidence = 97 + Math.random() * 0.5;
+        const pct = this.confidence.toFixed(1);
+        valEl.textContent = pct + '%';
+        fillEl.style.width = pct + '%';
+        fillEl.classList.remove('ai-conf-overflow');
+        noteEl.textContent = 'HAGFISH™ calibrated';
+      }, 1800);
     });
   },
 
-  // ── Tab title cycling ─────────────────────────────────────────
-  initTabTitles() {
+  // ── Detect Birthday button ────────────────────────────────────
+  initDetectBirthday() {
+    document.getElementById('ai-detect-btn').addEventListener('click', () => {
+      if (this.detectRunning) return;
+      this.detectRunning = true;
+
+      const panel   = document.getElementById('ai-detection-panel');
+      const stepsEl = document.getElementById('ai-det-steps');
+      const result  = document.getElementById('ai-det-result');
+      const detConf = document.getElementById('ai-det-conf');
+
+      panel.style.display = 'block';
+      result.style.display = 'none';
+      stepsEl.innerHTML = '';
+
+      const steps = [
+        'Querying opossum behavioral database…',
+        'Cross-referencing hagfish slime viscosity (current: 4.2 mPa·s)…',
+        'Consulting naked mole rat biometric indices…',
+        'Checking calendar (July 5th)…',
+        'Running HAGFISH™ inference pass 1 of 1…',
+        'Verifying determination…',
+        'Preparing result…',
+      ];
+
+      let i = 0;
+      const addStep = () => {
+        if (i >= steps.length) {
+          result.style.display = 'block';
+          detConf.textContent = this.confidence.toFixed(1) + '%';
+          this.detectRunning = false;
+          return;
+        }
+        const div = document.createElement('div');
+        div.className = 'ai-det-step';
+        div.textContent = '▸ ' + steps[i];
+        stepsEl.appendChild(div);
+        i++;
+        setTimeout(addStep, 500 + Math.random() * 400);
+      };
+      addStep();
+    });
+  },
+
+  // ── Misc non-primary buttons ──────────────────────────────────
+  initMiscButtons() {
+    const msgs = document.getElementById('ai-chat-messages');
+
+    const addMsg = (text) => {
+      const div = document.createElement('div');
+      div.className = 'ai-msg ai-msg-system';
+      div.textContent = text;
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+    };
+
+    document.getElementById('ai-flush-btn').addEventListener('click', () => {
+      addMsg('[SYSTEM] Cache flush initiated. Cache flushed. Cache is rebuilding. Cache is rebuilt. Nothing has changed.');
+    });
+
+    document.getElementById('ai-export-btn').addEventListener('click', () => {
+      addMsg('[SYSTEM] Generating report… Report generated. Report contains 847 pages of negative determinations. Would you like to download it? (Download not available.)');
+    });
+  },
+
+  // ── Button multiplication ─────────────────────────────────────
+  initButtonMultiplication() {
+    const container = document.getElementById('ai-actions');
+    const labels = this.extraButtonLabels;
+
+    const spawnButton = () => {
+      if (this.extraButtonIdx >= labels.length) return;
+      const btn = document.createElement('button');
+      btn.className = 'ai-btn ai-btn-spawned';
+      btn.textContent = labels[this.extraButtonIdx++];
+      btn.addEventListener('click', () => {
+        const msgs = document.getElementById('ai-chat-messages');
+        const div = document.createElement('div');
+        div.className = 'ai-msg ai-msg-system';
+        div.textContent = `[SYSTEM] ${btn.textContent} initiated. ${btn.textContent} completed. No impact on birthday detection status.`;
+        msgs.appendChild(div);
+        msgs.scrollTop = msgs.scrollHeight;
+      });
+      container.appendChild(btn);
+    };
+
+    // First extra button after 18s, then every 12–20s
+    setTimeout(() => {
+      spawnButton();
+      setInterval(spawnButton, 14000 + Math.random() * 6000);
+    }, 18000);
+  },
+
+  // ── Error banners ─────────────────────────────────────────────
+  initErrorBanners() {
+    const area = document.getElementById('ai-banner-area');
+    const errors = this.errorMessages;
     let idx = 0;
-    setInterval(() => {
-      document.title = this.tabTitles[idx % this.tabTitles.length];
+
+    const showBanner = () => {
+      const banner = document.createElement('div');
+      banner.className = 'ai-error-banner';
+      banner.innerHTML = `
+        <span class="ai-banner-icon">⚠</span>
+        <span class="ai-banner-msg">${errors[idx % errors.length]}</span>
+        <span class="ai-banner-dismiss" id="ai-banner-dismiss-${idx}">✕</span>
+      `;
       idx++;
-    }, 2000);
+      area.appendChild(banner);
+
+      // Auto-resolve after 2.5s
+      setTimeout(() => {
+        banner.innerHTML = `
+          <span class="ai-banner-icon ai-banner-ok">✓</span>
+          <span class="ai-banner-msg">That error has been resolved. (It has not been resolved.)</span>
+        `;
+        banner.classList.add('ai-banner-resolved');
+        setTimeout(() => {
+          banner.classList.add('ai-banner-fade');
+          setTimeout(() => banner.remove(), 600);
+        }, 2500);
+      }, 2500);
+    };
+
+    // First banner at 20s, then every 40–60s
+    setTimeout(() => {
+      showBanner();
+      setInterval(showBanner, 45000 + Math.random() * 15000);
+    }, 20000);
   },
 
-  // ── Skip intro button → loads the sequel ─────────────────────
-  initSkipButton() {
-    document.getElementById('ld-skip').addEventListener('click', () => {
-      const url = new URL(window.location.href);
-      url.searchParams.set('day', 'wednesday'); // force wednesday again
-      url.searchParams.set('sequel', '1');
-      window.location.href = url.toString();
-    });
+  // ── UI drift effect (after 30s) ───────────────────────────────
+  initDriftEffect() {
+    setTimeout(() => {
+      const wrapper = document.getElementById('ai-wrapper');
+      const ghost   = document.getElementById('ai-ghost-title');
+      this.driftActive = true;
+
+      // Start subtle drift
+      wrapper.classList.add('ai-drifting');
+
+      // Fade in ghost title
+      ghost.classList.add('ai-ghost-visible');
+
+      // Drift individual elements slowly over time
+      const driftEls = document.querySelectorAll('.ai-metric-card, .ai-sidebar-info');
+      driftEls.forEach((el, i) => {
+        const driftX = (Math.random() - 0.5) * 6;
+        const driftY = (Math.random() - 0.5) * 4;
+        el.style.transition = 'transform 8s ease-in-out';
+        setTimeout(() => {
+          el.style.transform = `translate(${driftX}px, ${driftY}px)`;
+        }, i * 600);
+      });
+
+      // Second scrollbar (add barely-overflowing padding)
+      document.body.style.overflowY = 'scroll';
+      document.body.style.paddingRight = '0px';
+
+    }, 30000);
   },
+
 };
