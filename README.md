@@ -10,9 +10,9 @@ A single-page birthday website that detects your local date and shows one of 8 c
 | **Sunday** | The Institute of Pre-Birthday Contemporary Art | Stuffy fine-art museum. Every exhibit is an object that is not Ben's birthday. |
 | **Monday** | BirthdayCorp™ Enterprise Suite | Corporate dashboard. Login never works. KPIs are bad. Progress bar stuck at 47%. |
 | **Tuesday** | URGENT: Form BDY-404 Required | Government portal. 47 fields. Always rejected. |
-| **Wednesday** | The Sentient Loading Screen | A loading bar that has achieved consciousness and is exhausted. It's been at 99.97% since last July 5th. |
+| **Wednesday** | BirthdAI™ v0.0.1-alpha | A broken AI birthday detection system by Synapse Dynamics LLC. Trained on opossum sleep schedules and hagfish slime viscosity. Operational: 847 days. Detected: 0 birthdays. Buttons multiply over time. |
 | **Thursday** | The Hot Dog Appreciation Society | An extremely earnest professional website about hot dogs. The JOIN NOW button runs away from your cursor. |
-| **Friday** | The Birthday Code: Classified Investigation | A corkboard conspiracy wall. Type `july5` into the hidden crack-the-code terminal to solve it. |
+| **Friday** | Opossum Behavioral Research Institute | A completely sincere academic institute conducting continuous field observation to determine whether it is Ben's birthday. Every study concludes it is not. Founded in 1987 / Est. 2003 / Since 1991. |
 | **Saturday** | Chrono-Celebration Nexus (Offline) | Sci-fi portal, currently offline. The CAPTCHA only shows hot dogs. It always fails. |
 
 ---
@@ -54,9 +54,9 @@ Add a URL parameter to force a specific day without waiting for the right date:
 | `http://localhost:8080/?day=0` | Sunday (Museum) |
 | `http://localhost:8080/?day=1` | Monday (Corporate) |
 | `http://localhost:8080/?day=2` | Tuesday (Government) |
-| `http://localhost:8080/?day=3` | Wednesday (Loading) |
+| `http://localhost:8080/?day=3` | Wednesday (BirthdAI™) |
 | `http://localhost:8080/?day=4` | Thursday (Hot Dogs) |
-| `http://localhost:8080/?day=5` | Friday (Conspiracy) |
+| `http://localhost:8080/?day=5` | Friday (OBRI) |
 | `http://localhost:8080/?day=6` | Saturday (Space Portal) |
 | `http://localhost:8080/?date=2025-07-05` | Treat today as July 5th |
 
