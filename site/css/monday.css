@@ -199,6 +199,79 @@ body {
 .co-error-box.visible { display: block; }
 .co-error-box strong  { display: block; font-size: 0.85rem; margin-bottom: 4px; }
 
+/* Password field with show/hide toggle */
+.co-pw-wrap {
+  position: relative;
+}
+
+.co-pw-wrap input {
+  padding-right: 38px;
+}
+
+.co-pw-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--co-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.co-pw-toggle:hover { color: var(--co-text); }
+
+/* Row below password: remember-me + forgot link */
+.co-pw-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.co-remember {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--co-muted);
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.co-remember input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+  cursor: pointer;
+}
+
+.co-forgot-link {
+  font-size: 0.75rem;
+  color: var(--co-blue);
+  text-decoration: none;
+}
+
+.co-forgot-link:hover { text-decoration: underline; }
+
+.co-forgot-note {
+  font-size: 0.72rem;
+  color: var(--co-muted);
+  font-style: italic;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+/* Error state on the password input itself */
+input.co-input-error {
+  border-color: var(--co-red) !important;
+  box-shadow: 0 0 0 2px rgba(204, 16, 22, 0.1);
+}
+
 /* ── KPI Dashboard ── */
 .co-dash-title {
   font-size: 0.75rem;

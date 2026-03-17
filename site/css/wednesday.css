@@ -204,9 +204,9 @@ input {
 }
 
 .ai-error-banner {
-  background: rgba(239, 68, 68, 0.12);
-  border-bottom: 1px solid rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
+  background: #b91c1c;
+  border-bottom: 1px solid #991b1b;
+  color: #fff;
   font-size: 0.75rem;
   padding: 8px 20px;
   display: flex;
@@ -217,9 +217,9 @@ input {
 }
 
 .ai-error-banner.ai-banner-resolved {
-  background: rgba(34, 197, 94, 0.08);
-  border-bottom-color: rgba(34, 197, 94, 0.25);
-  color: #86efac;
+  background: #15803d;
+  border-bottom-color: #166534;
+  color: #fff;
 }
 
 .ai-error-banner.ai-banner-fade {
@@ -232,7 +232,7 @@ input {
 }
 
 .ai-banner-ok {
-  color: var(--ai-green);
+  color: #fff;
 }
 
 .ai-banner-msg {
