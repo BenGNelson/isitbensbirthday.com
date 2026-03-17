@@ -348,3 +348,42 @@ body.chaos-10 .bd-chaos-label {
   color: var(--bd-cyan);
   font-style: normal;
 }
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .bd-main {
+    padding: 48px 20px 32px;
+  }
+
+  .bd-subtitle {
+    font-size: 1rem;
+    margin-bottom: 32px;
+  }
+
+  .bd-celebrate-btn {
+    font-size: 1.1rem;
+    padding: 16px 28px;
+  }
+
+  .bd-candle-row {
+    gap: 10px;
+  }
+
+  /* Achievement toasts: full-width on mobile so they don't crowd the edge */
+  #achievements-container {
+    right: 12px;
+    left: 12px;
+    max-width: none;
+  }
+}
+
+/* ── Reduced motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  /* The global rule in main.css already stops everything —
+     re-enable just the ticker so the birthday text stays legible */
+  .bd-ticker-track span {
+    animation: bd-ticker 40s linear infinite;
+    animation-duration: 40s !important;
+    animation-iteration-count: infinite !important;
+  }
+}

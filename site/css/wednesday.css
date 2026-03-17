@@ -616,3 +616,85 @@ input {
   background: var(--ai-border2);
   border-radius: 3px;
 }
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Nav: tighten and hide uptime on very small screens */
+  .ai-nav {
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .ai-nav-brand {
+    display: none; /* "SYNAPSE DYNAMICS LLC" text — too long for mobile */
+  }
+
+  .ai-nav-sep {
+    display: none;
+  }
+
+  .ai-uptime-label,
+  .ai-uptime-val {
+    display: none;
+  }
+
+  /* Ghost title: hide on mobile (fixed position would be wrong) */
+  .ai-ghost-title {
+    display: none;
+  }
+
+  /* Collapse sidebar + main to vertical stack */
+  .ai-layout {
+    flex-direction: column;
+  }
+
+  /* Sidebar: full width, compact two-column metric grid */
+  .ai-sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--ai-border);
+    padding: 12px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  /* Confidence card and info block span both columns */
+  .ai-confidence-card,
+  .ai-sidebar-info {
+    grid-column: 1 / -1;
+  }
+
+  /* Main: tighter padding */
+  .ai-main {
+    padding: 16px;
+  }
+
+  /* Chat: shorter message area on mobile */
+  .ai-chat-messages {
+    max-height: 220px;
+    min-height: 140px;
+  }
+
+  /* All action buttons: meet 44px tap target */
+  .ai-btn {
+    min-height: 44px;
+  }
+
+  .ai-btn-send {
+    min-height: 44px;
+    padding: 12px 16px;
+  }
+
+  /* Detection panel */
+  .ai-detection-panel {
+    padding: 16px;
+  }
+}
+
+/* ── Tablet ───────────────────────────────────────────────── */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .ai-sidebar {
+    width: 200px;
+  }
+}

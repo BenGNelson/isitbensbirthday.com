@@ -600,18 +600,119 @@ input, select, textarea {
   margin-top: 4px;
 }
 
-/* ── Responsive simplification ───────────────────────────── */
-@media (max-width: 720px) {
+/* ── Responsive ───────────────────────────────────────────── */
+/* Tablet and below */
+@media (max-width: 900px) {
   .ob-two-col {
     flex-direction: column;
   }
+
   .ob-aside {
     width: 100%;
   }
+
   .ob-header-inner {
     flex-direction: column;
+    gap: 12px;
   }
+
   .ob-determination-box {
     width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  /* Header: compact */
+  .ob-header {
+    padding: 12px 16px;
+  }
+
+  .ob-header-left {
+    gap: 10px;
+  }
+
+  .ob-institute-name {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+  }
+
+  .ob-institute-tagline {
+    font-size: 0.65rem;
+  }
+
+  /* Hide the address line — not critical on mobile */
+  .ob-institute-address {
+    display: none;
+  }
+
+  /* Opossum photo: slightly less "too large" so it doesn't dominate */
+  .ob-opossum-photo {
+    width: 72px;
+  }
+
+  .ob-opossum-inner {
+    width: 72px;
+    height: 62px;
+    font-size: 2.2rem;
+  }
+
+  /* Determination box */
+  .ob-det-value {
+    font-size: 0.95rem;
+  }
+
+  /* Nav tabs: ensure 44px tap targets */
+  .ob-nav {
+    padding: 0 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ob-tab {
+    padding: 10px 14px;
+    min-height: 44px;
+    white-space: nowrap;
+    font-size: 0.78rem;
+  }
+
+  /* Content */
+  .ob-content {
+    padding: 20px 16px;
+  }
+
+  /* Log: shorter on mobile */
+  .ob-log {
+    max-height: 320px;
+  }
+
+  /* Form */
+  .ob-submit-btn {
+    min-height: 44px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Rejection letter */
+  .ob-rejection-letter {
+    padding: 20px 16px;
+  }
+
+  /* Publications: slightly tighter */
+  .ob-pub-entry {
+    padding: 14px 0;
+  }
+
+  /* Footer */
+  .ob-footer {
+    padding: 14px 16px;
+    font-size: 0.65rem;
+  }
+}
+
+/* ── Reduced motion: keep the live dot but stop it flashing ── */
+@media (prefers-reduced-motion: reduce) {
+  .ob-live-dot {
+    animation: none;
+    opacity: 1;
   }
 }
