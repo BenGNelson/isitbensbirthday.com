@@ -445,3 +445,82 @@ body {
   letter-spacing: 0.05em;
   border-top: 3px solid var(--mu-gold);
 }
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Header: stack logo above nav */
+  .mu-header {
+    height: auto;
+    padding: 16px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Nav: wrap and tighten gaps */
+  .mu-nav {
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  .mu-nav li a {
+    display: inline-block;
+    padding: 8px 12px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Sections: tighter padding */
+  .mu-hero {
+    padding: 28px 20px;
+  }
+
+  .mu-gallery-section {
+    padding: 28px 20px;
+  }
+
+  /* Gallery: smaller minimum so two columns can appear */
+  .mu-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  /* Modal: reduce inner padding on small screens */
+  .mu-modal {
+    padding: 24px 20px;
+  }
+
+  /* Touch targets for small buttons */
+  .mu-audio-btn {
+    min-height: 44px;
+    padding: 10px 18px;
+  }
+
+  .mu-shop-item-btn {
+    min-height: 44px;
+  }
+
+  /* Gift shop */
+  .mu-giftshop {
+    padding: 28px 20px;
+  }
+
+  .mu-shop-item {
+    width: 145px;
+    padding: 16px 12px;
+  }
+
+  /* Donation */
+  .mu-donation {
+    padding: 28px 20px;
+  }
+
+  /* Audio guide bar: allow wrap on very small screens */
+  .mu-audio-bar {
+    flex-wrap: wrap;
+    text-align: center;
+    padding: 10px 16px;
+    gap: 10px;
+  }
+}

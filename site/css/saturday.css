@@ -444,3 +444,103 @@ body::after {
 }
 
 .sp-captcha-close:hover { color: var(--sp-text); }
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Header: hide right-side status text to prevent overflow */
+  .sp-header {
+    padding: 10px 16px;
+  }
+
+  .sp-header-right {
+    display: none;
+  }
+
+  /* Main content */
+  .sp-main {
+    padding: 36px 20px;
+  }
+
+  /* Portal ring: slightly smaller on mobile */
+  .sp-portal-ring {
+    width: 150px;
+    height: 150px;
+  }
+
+  .sp-portal-inner {
+    font-size: 2.6rem;
+  }
+
+  /* Status panel */
+  .sp-status-panel {
+    padding: 16px;
+  }
+
+  /* Emergency panel */
+  .sp-emergency {
+    padding: 16px;
+  }
+
+  .sp-emergency-btn {
+    min-height: 44px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Captcha panel: tighter padding on small screens */
+  .sp-captcha-panel {
+    padding: 24px 20px;
+  }
+
+  /* Captcha cells: ensure good tap target size */
+  .sp-captcha-cell {
+    font-size: 1.6rem;
+  }
+
+  /* Captcha verify button */
+  .sp-captcha-verify-btn {
+    min-height: 44px;
+  }
+
+  /* Countdown digits */
+  .sp-countdown-digits {
+    font-size: clamp(1rem, 4vw, 1.5rem);
+  }
+
+  .sp-countdown-digits span {
+    padding: 4px 8px;
+    margin: 0 2px;
+  }
+}
+
+/* ── Reduced motion: stop the heavy space animations ─────── */
+@media (prefers-reduced-motion: reduce) {
+  /* Stars and scan are purely decorative — stop them */
+  .sp-stars {
+    animation: none;
+  }
+
+  body::after {
+    display: none;
+  }
+
+  /* Portal ring: stop spinning */
+  .sp-portal-ring {
+    animation: none;
+  }
+
+  .sp-portal-inner {
+    animation: none;
+  }
+
+  /* Emergency glow: stop pulsing */
+  .sp-emergency {
+    animation: none;
+    box-shadow: none;
+  }
+
+  /* Blink: freeze on visible */
+  .sp-status-value.red {
+    animation: none;
+  }
+}

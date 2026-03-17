@@ -394,3 +394,71 @@ body.hd-birthday-mode .hd-header {
 body.hd-birthday-mode .hd-hero {
   background: linear-gradient(135deg, var(--hd-mustard), var(--hd-ketchup));
 }
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Header: stack logo above (hidden) nav */
+  .hd-header {
+    padding: 0 16px;
+  }
+
+  .hd-header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 0;
+    gap: 0;
+  }
+
+  /* Hide decorative nav on mobile — all links are "#" anyway */
+  .hd-nav {
+    display: none;
+  }
+
+  /* Hero */
+  .hd-hero {
+    padding: 36px 20px;
+  }
+
+  .hd-hero p {
+    font-size: 0.95rem;
+  }
+
+  /* Menu section */
+  .hd-section {
+    padding: 36px 20px;
+  }
+
+  /* Menu items: ensure tap target on Order Now buttons */
+  .hd-item-btn {
+    min-height: 44px;
+  }
+
+  /* Members section */
+  .hd-members-inner {
+    padding: 36px 20px;
+  }
+
+  /* Members grid: single column on mobile */
+  .hd-members-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* Join panel: tighter padding */
+  .hd-join-panel {
+    padding: 24px 20px;
+  }
+
+  /* Ensure the JOIN NOW button wrapper doesn't overflow */
+  .hd-join-btn-wrap {
+    min-width: 160px;
+  }
+
+  /* Footer: stack items */
+  .hd-footer {
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+}

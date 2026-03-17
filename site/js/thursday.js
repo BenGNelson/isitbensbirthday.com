@@ -196,7 +196,7 @@ window.Thursday = {
     });
   },
 
-  // ── JOIN NOW button flees the cursor ──────────────────────────
+  // ── JOIN NOW button flees the cursor (desktop) / teleports (mobile) ──
   initMovingButton() {
     const btn  = document.getElementById('hd-join-btn');
     const note = document.getElementById('hd-join-note');
@@ -204,7 +204,8 @@ window.Thursday = {
     let offsetX = 0;
     let offsetY = 0;
 
-    const escapeMessages = [
+    // Desktop: flee from cursor in real time
+    const mouseEscapeMessages = [
       '(Requirements: love of hot dogs, hot dog invitation, valid ID)',
       '(Please stop trying to click this)',
       '(The button is exercising its right to not be clicked)',
@@ -236,11 +237,39 @@ window.Thursday = {
 
         btn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
         escaped++;
-        note.textContent = escapeMessages[Math.min(escaped - 1, escapeMessages.length - 1)];
+        note.textContent = mouseEscapeMessages[Math.min(escaped - 1, mouseEscapeMessages.length - 1)];
       }
     });
 
-    // Reset on touch (for mobile give-up)
+    // Mobile: teleport on touchstart (up to 5 times, then yield)
+    const touchEscapeMessages = [
+      '(Requirements: love of hot dogs, hot dog invitation, valid ID)',
+      '(It felt the vibration. It has relocated.)',
+      '(The button practices evasive maneuvers. Twice weekly.)',
+      '(At this point you are tapping your screen with increasing urgency.)',
+      '(The button has filed a formal complaint. One more and it will yield.)',
+    ];
+    let touchEscapes = 0;
+    const maxTouchEscapes = 5;
+
+    btn.addEventListener('touchstart', (e) => {
+      if (touchEscapes >= maxTouchEscapes) return; // let the click fire
+      e.preventDefault();
+
+      // Teleport to a new random position (not cumulative — fresh each time)
+      const angle = Math.random() * Math.PI * 2;
+      const dist  = 90 + Math.random() * 70;
+      const maxX  = Math.min(window.innerWidth / 2 - 80, 150);
+      const maxY  = Math.min(window.innerHeight / 5, 120);
+      offsetX = Math.max(-maxX, Math.min(maxX, Math.cos(angle) * dist));
+      offsetY = Math.max(-maxY, Math.min(maxY, Math.sin(angle) * dist * 0.4));
+
+      btn.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+      note.textContent = touchEscapeMessages[Math.min(touchEscapes, touchEscapeMessages.length - 1)];
+      touchEscapes++;
+    }, { passive: false });
+
+    // Fires after desktop catch or after mobile exhausts escapes
     btn.addEventListener('click', () => {
       note.textContent = '(You caught it. It let you. There is no membership form.)';
       btn.disabled = true;
