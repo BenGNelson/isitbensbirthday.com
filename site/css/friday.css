@@ -1,28 +1,28 @@
 /* ============================================================
-   friday.css — Opossum Behavioral Research Institute (OBRI)
-   Institutional. Muted blues and grays. Georgia serif.
+   friday.css — Anuran Behavioral Research Institute (ABRI)
+   Institutional. Monochromatic greens. Georgia serif.
    Looks like a university department page from 2011.
    ============================================================ */
 
 :root {
-  --ob-bg:        #f4f4f1;
+  --ob-bg:        #f2f5f0;
   --ob-white:     #ffffff;
-  --ob-border:    #c8ccd4;
-  --ob-border-l:  #dde0e6;
-  --ob-header-bg: #1e3a5f;
-  --ob-header-t:  #e8edf4;
-  --ob-nav-bg:    #2d5080;
-  --ob-nav-t:     #ccd8e8;
+  --ob-border:    #b8c9bc;
+  --ob-border-l:  #d4e3d8;
+  --ob-header-bg: #1a3d2b;
+  --ob-header-t:  #d8f0e2;
+  --ob-nav-bg:    #245c3f;
+  --ob-nav-t:     #b8d9c4;
   --ob-nav-act:   #ffffff;
-  --ob-blue:      #1e4d8c;
-  --ob-blue-l:    #2d6bbf;
+  --ob-blue:      #1a6b3a;
+  --ob-blue-l:    #2a8f50;
   --ob-text:      #1a1a1a;
-  --ob-muted:     #5a5e66;
-  --ob-muted-l:   #888c96;
-  --ob-det-bg:    #0f2744;
-  --ob-red:       #8b0000;
-  --ob-aside-bg:  #eef1f6;
-  --ob-link:      #1e4d8c;
+  --ob-muted:     #566359;
+  --ob-muted-l:   #8a9e8e;
+  --ob-det-bg:    #0e2618;
+  --ob-live:      #1f7a43;
+  --ob-aside-bg:  #eaf2ec;
+  --ob-link:      #1a6b3a;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,7 +59,7 @@ input, select, textarea {
   background: var(--ob-header-bg);
   color: var(--ob-header-t);
   padding: 18px 28px;
-  border-bottom: 4px solid #0a1e36;
+  border-bottom: 4px solid #091a10;
 }
 
 .ob-header-inner {
@@ -86,7 +86,7 @@ input, select, textarea {
 }
 
 .ob-opossum-inner {
-  background: #c8d0b8;
+  background: #b8d4c0;
   width: 90px;
   height: 78px;
   display: flex;
@@ -176,7 +176,7 @@ input, select, textarea {
 /* ── Tab nav ──────────────────────────────────────────────── */
 .ob-nav {
   background: var(--ob-nav-bg);
-  border-bottom: 2px solid #1a3a60;
+  border-bottom: 2px solid #163326;
   padding: 0 28px;
   display: flex;
   gap: 0;
@@ -398,9 +398,9 @@ input, select, textarea {
   font-size: 0.72rem;
   font-weight: bold;
   letter-spacing: 0.1em;
-  color: var(--ob-red);
-  background: #fff0f0;
-  border: 1px solid #e8b0b0;
+  color: var(--ob-live);
+  background: #f0faf3;
+  border: 1px solid #a8d4b4;
   padding: 6px 12px;
   flex-shrink: 0;
 }
@@ -414,7 +414,7 @@ input, select, textarea {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--ob-red);
+  background: var(--ob-live);
   display: inline-block;
   animation: ob-live-pulse 1.5s ease-in-out infinite;
 }
@@ -438,7 +438,7 @@ input, select, textarea {
 }
 
 .ob-log-entry:first-child {
-  background: #f0f4ff;
+  background: #f0f7f2;
 }
 
 .ob-log-entry.ob-log-old {
@@ -489,12 +489,12 @@ input, select, textarea {
 
 .ob-input:focus {
   border-color: var(--ob-blue-l);
-  box-shadow: 0 0 0 2px rgba(45, 107, 191, 0.12);
+  box-shadow: 0 0 0 2px rgba(42, 143, 80, 0.12);
 }
 
 .ob-select {
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a5e66' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23566359' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 10px center;
   padding-right: 30px;
