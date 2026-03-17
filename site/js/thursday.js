@@ -212,7 +212,7 @@ window.Thursday = {
       '(This is a certified evasion button)',
       '(The button has filed for restraining order)',
       '(You cannot catch it. It has been trained for this.)',
-      '(The button is faster than you. Accept this.)',
+      '(Just click it!)',
     ];
 
     btn.addEventListener('mousemove', (e) => {

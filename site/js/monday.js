@@ -31,32 +31,36 @@ window.Monday = {
         <!-- LEFT: Login panel -->
         <aside>
           <div class="co-card">
-            <h1 class="co-login-title">Sign In</h1>
-            <p class="co-login-subtitle">BirthdayCorp™ Secure Portal</p>
+            <h1 class="co-login-title">Sign in</h1>
+            <p class="co-login-subtitle">BirthdayCorp™ Enterprise Suite &mdash; Secure Portal</p>
 
             <div class="co-form-group">
-              <label for="co-username">Username</label>
-              <input id="co-username" type="text" value="admin" readonly>
+              <label for="co-username">Email or username</label>
+              <input id="co-username" type="text" placeholder="Email or username" autocomplete="username">
             </div>
             <div class="co-form-group">
               <label for="co-password">Password</label>
-              <input id="co-password" type="password" placeholder="Enter password…" autocomplete="off">
-              <p class="co-password-hint">
-                Password must contain: 1 uppercase letter, 1 number, 1 candle,
-                1 birthday wish, and the precise moment you blow them out.
-              </p>
+              <div class="co-pw-wrap">
+                <input id="co-password" type="password" placeholder="Password" autocomplete="current-password">
+                <button type="button" class="co-pw-toggle" id="co-pw-toggle" tabindex="-1" aria-label="Show password">
+                  <svg class="co-eye-show" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="co-eye-hide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+              <div class="co-pw-row">
+                <label class="co-remember"><input type="checkbox" id="co-remember"> Keep me signed in</label>
+                <a href="#" class="co-forgot-link" id="co-forgot-link">Forgot password?</a>
+              </div>
+              <div class="co-forgot-note" id="co-forgot-note" style="display:none"></div>
             </div>
 
             <button class="co-login-btn" id="co-login-btn">
-              <span class="btn-text">AUTHENTICATE</span>
+              <span class="btn-text">Sign in</span>
               <span class="co-spinner"></span>
             </button>
 
             <div class="co-error-box" id="co-error-box">
-              <strong>AUTHENTICATION FAILED</strong>
-              Birthday not detected on current system date.
-              Please contact your Birthday Administrator, or return on July 5th.<br><br>
-              <em>Error code: <code>NO_CAKE_DETECTED</code></em>
+              <strong>Incorrect username or password.</strong>Please try again.
             </div>
           </div>
 
@@ -216,33 +220,86 @@ window.Monday = {
   },
 
   initLogin() {
-    const btn   = document.getElementById('co-login-btn');
-    const error = document.getElementById('co-error-box');
-    const pass  = document.getElementById('co-password');
+    const btn        = document.getElementById('co-login-btn');
+    const error      = document.getElementById('co-error-box');
+    const pass       = document.getElementById('co-password');
+    const toggle     = document.getElementById('co-pw-toggle');
+    const forgot     = document.getElementById('co-forgot-link');
+    const forgotNote = document.getElementById('co-forgot-note');
     let attempts = 0;
 
+    const user = document.getElementById('co-username');
+
+    // Auto-focus username since it's now blank
+    user.focus();
+
+    // Show / hide password toggle
+    toggle.addEventListener('click', () => {
+      const showing = pass.type === 'text';
+      pass.type = showing ? 'password' : 'text';
+      toggle.querySelector('.co-eye-show').style.display = showing ? '' : 'none';
+      toggle.querySelector('.co-eye-hide').style.display = showing ? 'none' : '';
+      toggle.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+    });
+
+    // Forgot password — standard corporate response, no visible joke
+    forgot.addEventListener('click', (e) => {
+      e.preventDefault();
+      forgotNote.textContent = 'If an account exists for this email address, password reset instructions have been sent.';
+      forgotNote.style.display = 'block';
+    });
+
+    // Error messages cycle through realistic corporate failures
+    const messages = [
+      { strong: 'Incorrect username or password.', body: 'Please try again.' },
+      { strong: 'Authentication failed.', body: 'Your credentials could not be verified. Please try again.' },
+      { strong: 'Too many failed sign-in attempts.', body: 'Your account has been temporarily locked. Please contact your IT administrator or try again later.' },
+    ];
+
     const attempt = () => {
+      if (!user.value) {
+        user.classList.add('co-input-error');
+        error.innerHTML = '<strong>Email or username is required.</strong>Please enter your email or username to continue.';
+        error.classList.add('visible');
+        user.focus();
+        return;
+      }
+      if (!pass.value) {
+        pass.classList.add('co-input-error');
+        error.innerHTML = '<strong>Password is required.</strong>Please enter your password to continue.';
+        error.classList.add('visible');
+        pass.focus();
+        return;
+      }
+
       btn.classList.add('loading');
       btn.classList.remove('shaking');
       error.classList.remove('visible');
+      pass.classList.remove('co-input-error');
 
+      // Variable delay — feels like a real auth round-trip
+      const delay = 900 + Math.random() * 900;
       setTimeout(() => {
         btn.classList.remove('loading');
         btn.classList.add('shaking');
+        pass.classList.add('co-input-error');
+
+        const msg = messages[Math.min(attempts, messages.length - 1)];
+        error.innerHTML = `<strong>${msg.strong}</strong>${msg.body}`;
         error.classList.add('visible');
         attempts++;
 
-        // After multiple attempts, get more snarky
-        if (attempts === 2) {
-          error.innerHTML = '<strong>STILL WRONG</strong>The password cannot be correct because it is not Ben\'s birthday. This is not a password problem. This is a calendar problem.<br><br><em>Error code: <code>TEMPORAL_MISMATCH</code></em>';
-        } else if (attempts >= 4) {
-          error.innerHTML = '<strong>WE BEG YOU TO STOP</strong>There is no password that will work today. Please come back on July 5th. We have logged this attempt. Gerald has been notified.<br><br><em>Error code: <code>GERALD_NOTIFIED</code></em>';
-        }
-
-        // Reset shake class so it can fire again next time
         setTimeout(() => btn.classList.remove('shaking'), 700);
-      }, 1200);
+      }, delay);
     };
+
+    // Clear error state as soon as the user starts typing again
+    [user, pass].forEach(input => {
+      input.addEventListener('input', () => {
+        input.classList.remove('co-input-error');
+        error.classList.remove('visible');
+      });
+    });
 
     btn.addEventListener('click', attempt);
     pass.addEventListener('keydown', e => { if (e.key === 'Enter') attempt(); });
