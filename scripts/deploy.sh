@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# deploy.sh — Deploy isitbensbirthday to a DigitalOcean droplet
+# deploy.sh — Deploy isitbensbirthday to a remote server
 #
 # Usage:
 #   ./scripts/deploy.sh
