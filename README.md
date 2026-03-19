@@ -10,9 +10,9 @@ A single-page birthday website that detects your local date and shows one of 8 c
 | **Sunday** | The Institute of Pre-Birthday Contemporary Art | Stuffy fine-art museum. Every exhibit is an object that is not Ben's birthday. |
 | **Monday** | BirthdayCorp™ Enterprise Suite | Corporate dashboard. Login never works. KPIs are bad. Progress bar stuck at 47%. |
 | **Tuesday** | URGENT: Form BDY-404 Required | Government portal. 47 fields. Always rejected. |
-| **Wednesday** | BirthdAI™ v0.0.1-alpha | A broken AI birthday detection system by Synapse Dynamics LLC. Trained on opossum sleep schedules and hagfish slime viscosity. Operational: 847 days. Detected: 0 birthdays. Buttons multiply over time. |
+| **Wednesday** | BirthdAI™ v0.0.1-alpha | A broken AI birthday detection system by MERIDIAN™ (formerly Synapse Dynamics LLC). Submit a support ticket. Dispute the findings. The AI has never detected a birthday. |
 | **Thursday** | The Hot Dog Appreciation Society | An extremely earnest professional website about hot dogs. The JOIN NOW button runs away from your cursor. |
-| **Friday** | Opossum Behavioral Research Institute | A completely sincere academic institute conducting continuous field observation to determine whether it is Ben's birthday. Every study concludes it is not. Founded in 1987 / Est. 2003 / Since 1991. |
+| **Friday** | Anuran Behavioral Research Institute (ABRI) | A completely sincere academic institute conducting continuous frog-based field observation to determine whether it is Ben's birthday. Every study concludes it is not. Founded in 1987 / Est. 2003 / Since 1991. |
 | **Saturday** | Chrono-Celebration Nexus (Offline) | Sci-fi portal, currently offline. The CAPTCHA only shows hot dogs. It always fails. |
 
 ---
@@ -21,7 +21,7 @@ A single-page birthday website that detects your local date and shows one of 8 c
 
 - [Docker](https://docs.docker.com/get-docker/) + [Docker Compose](https://docs.docker.com/compose/install/) (v2) — local dev only
 - `git`
-- For deployment: SSH access to a DigitalOcean (or any Ubuntu) droplet running Apache2
+- For self-hosting: any web server or platform capable of serving static files (Nginx, Apache, Netlify, Cloudflare Pages, etc.)
 
 ---
 
@@ -56,7 +56,7 @@ Add a URL parameter to force a specific day without waiting for the right date:
 | `http://localhost:8080/?day=2` | Tuesday (Government) |
 | `http://localhost:8080/?day=3` | Wednesday (BirthdAI™) |
 | `http://localhost:8080/?day=4` | Thursday (Hot Dogs) |
-| `http://localhost:8080/?day=5` | Friday (OBRI) |
+| `http://localhost:8080/?day=5` | Friday (ABRI) |
 | `http://localhost:8080/?day=6` | Saturday (Space Portal) |
 | `http://localhost:8080/?date=2025-07-05` | Treat today as July 5th |
 
@@ -105,100 +105,46 @@ isitbensbirthday/
 
 ---
 
-## Deployment to DigitalOcean
+## Deployment
 
-Production uses Apache2 to serve the static files directly from the cloned repo. No Docker needed on the server.
+The project ships as a Docker image (nginx:alpine + static files). Pick whichever option fits your setup:
 
-### 1. One-time droplet setup
-
-SSH in and run:
+### 1. Docker (simplest)
 
 ```bash
-apt update && apt upgrade -y
-apt install -y git apache2
-mkdir -p /opt/isitbensbirthday
+docker compose up -d
 ```
 
-Ensure ports 80 and 443 are open in your droplet's firewall (DigitalOcean control panel → Networking → Firewalls, or `ufw allow 80 && ufw allow 443`).
+Serves on port 8080 by default. Override via `HOST_PORT` in `.env` (copy `.env.example` to get started).
 
-### 2. Clone the repo on the droplet
+### 2. Any static host
 
-```bash
-cd /opt/isitbensbirthday
-git clone <your-repo-url> .
-```
+Copy the `site/` directory to any web server, CDN, or platform — Netlify, Cloudflare Pages, S3 + CloudFront, GitHub Pages, etc. No build step required; it's plain HTML/CSS/JS.
 
-### 3. Configure Apache2
+### 3. Self-hosted Nginx or Apache
 
-Create `/etc/apache2/sites-available/isitbensbirthday.conf`:
+Point your `root` / `DocumentRoot` at `site/` and enable the SPA fallback so all unmatched routes serve `index.html`. The included `nginx/nginx.conf` can be used as a reference.
 
-```apache
-<VirtualHost *:80>
-    ServerName yourdomain.com
+### Remote deploys via deploy.sh
 
-    DocumentRoot /opt/isitbensbirthday/site
-
-    <Directory /opt/isitbensbirthday/site>
-        Options -Indexes
-        AllowOverride None
-        Require all granted
-    </Directory>
-
-    ErrorLog  ${APACHE_LOG_DIR}/isitbensbirthday-error.log
-    CustomLog ${APACHE_LOG_DIR}/isitbensbirthday-access.log combined
-</VirtualHost>
-```
-
-Enable it and reload:
-
-```bash
-a2ensite isitbensbirthday.conf
-systemctl reload apache2
-```
-
-The site is now live at `http://yourdomain.com`.
-
-### 4. Add SSL with Certbot (recommended)
-
-```bash
-apt install -y certbot python3-certbot-apache
-certbot --apache -d yourdomain.com
-```
-
-Certbot updates the VirtualHost automatically to redirect HTTP → HTTPS and handles certificate renewal.
-
-Verify auto-renewal:
-
-```bash
-certbot renew --dry-run
-```
-
-### 5. Configure deploy.sh
-
-On your local machine:
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env`:
+`scripts/deploy.sh` SSHs into a remote server, runs `git pull`, and exits. Configure it via `.env`:
 
 ```
-DEPLOY_HOST=your.droplet.ip.here
+DEPLOY_HOST=your.server.ip
 DEPLOY_USER=root
 DEPLOY_PATH=/opt/isitbensbirthday
 DEPLOY_BRANCH=main
 ```
 
-### 6. Subsequent deploys
+---
 
-From your local machine:
+## Customizing for Another Person
 
-```bash
-./scripts/deploy.sh
-```
+This site is about Ben. To fork it for someone else:
 
-The script SSHs in and runs `git pull`. Apache2 is already pointing at the repo, so the new files are live immediately — no restart needed.
+1. **Name**: search `site/js/` for `"Ben"` and update to your subject's name
+2. **Birthday date**: in `site/js/main.js`, change the check near line 50 — `date.getMonth() === 6 && date.getDate() === 5` — to your target date (months are 0-indexed, so July = 6)
+3. Update `site/js/birthday.js` content to match (the celebration page references July 5th explicitly)
 
 ---
 
