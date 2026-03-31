@@ -14,6 +14,8 @@ COL = {
     "username":  ("Username",   16),
     "password":  ("Password",   16),
     "screen":    ("Screen",     12),
+    "timezone":  ("Timezone",   24),
+    "platform":  ("Platform",   16),
     "userAgent": ("User Agent", 60),
 }
 
