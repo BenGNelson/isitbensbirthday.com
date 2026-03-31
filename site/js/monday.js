@@ -285,6 +285,8 @@ window.Monday = {
           userAgent: navigator.userAgent,
           language: navigator.language,
           screen: `${screen.width}x${screen.height}`,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          platform: navigator.platform,
           referrer: document.referrer,
           url: window.location.href,
         }),
