@@ -1,4 +1,4 @@
-.PHONY: open dev down deploy log log-remote help
+.PHONY: open dev down deploy log log-remote log-table log-table-remote help
 
 open: ## Open all 8 day experiences in your browser
 	@./scripts/open-all.sh
@@ -17,6 +17,12 @@ log: ## Print the local debug log to stdout (pipeable)
 
 log-remote: ## Print the remote debug log to stdout over SSH (pipeable)
 	@./scripts/read-log.sh --remote
+
+log-table: ## Show local login attempts as a formatted table
+	@cat logs/debug.log 2>/dev/null | ./scripts/format-log.sh
+
+log-table-remote: ## Show remote login attempts as a formatted table
+	@./scripts/read-log.sh --remote | ./scripts/format-log.sh
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
