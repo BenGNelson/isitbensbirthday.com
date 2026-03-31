@@ -48,6 +48,9 @@ set -euo pipefail
 echo "--- Checking for required tools ---"
 command -v git || { echo "ERROR: git not installed"; exit 1; }
 
+echo "--- Configuring git safe directory ---"
+git config --global --add safe.directory "${DEPLOY_PATH}"
+
 echo "--- Setting up deploy path: ${DEPLOY_PATH} ---"
 mkdir -p "${DEPLOY_PATH}"
 cd "${DEPLOY_PATH}"
@@ -57,7 +60,12 @@ if [ ! -d ".git" ]; then
   git clone . . 2>/dev/null || true
   # If no remote is configured, just ensure files are here
 else
-  echo "--- Pulling latest code from branch: ${DEPLOY_BRANCH} ---"
+  echo "--- Switching remote to HTTPS ---"
+  CURRENT_URL=\$(git remote get-url origin)
+  HTTPS_URL=\$(echo "\${CURRENT_URL}" | sed 's|git@github.com:|https://github.com/|')
+  git remote set-url origin "\${HTTPS_URL}"
+
+echo "--- Pulling latest code from branch: ${DEPLOY_BRANCH} ---"
   git fetch origin
   git checkout "${DEPLOY_BRANCH}"
   git pull origin "${DEPLOY_BRANCH}"

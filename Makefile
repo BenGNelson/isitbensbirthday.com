@@ -1,4 +1,4 @@
-.PHONY: open dev down deploy help
+.PHONY: open dev down deploy log log-remote help
 
 open: ## Open all 8 day experiences in your browser
 	@./scripts/open-all.sh
@@ -11,6 +11,12 @@ down: ## Stop the local dev server
 
 deploy: ## Deploy to production
 	./scripts/deploy.sh
+
+log: ## Print the local debug log to stdout (pipeable)
+	@cat logs/debug.log 2>/dev/null || echo "(no log file yet)"
+
+log-remote: ## Print the remote debug log to stdout over SSH (pipeable)
+	@./scripts/read-log.sh --remote
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
