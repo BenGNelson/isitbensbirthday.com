@@ -1,4 +1,4 @@
-.PHONY: open dev down deploy log log-remote log-table log-table-remote help
+.PHONY: open dev down deploy test test-static test-smoke check-secrets log log-remote log-table log-table-remote help
 
 open: ## Open all 8 day experiences in your browser
 	@./scripts/open-all.sh
@@ -9,8 +9,20 @@ dev: ## Start the local dev server (docker compose up)
 down: ## Stop the local dev server
 	docker compose down
 
-deploy: ## Deploy to production
-	./scripts/deploy.sh
+test: ## Run all checks (static + smoke + secrets); needs `make dev` running
+	@./scripts/test.sh
+
+test-static: ## Run offline checks only (no server needed)
+	@./scripts/test.sh --static
+
+test-smoke: ## Run HTTP checks against the running dev container
+	@./scripts/test.sh --smoke
+
+check-secrets: ## Fail if any personal info would be committed
+	@./scripts/check-secrets.sh
+
+deploy: ## Deploy to production (runs tests + secret scan first)
+	@./scripts/test.sh --static && ./scripts/check-secrets.sh && ./scripts/deploy.sh
 
 log: ## Print the local debug log to stdout (pipeable)
 	@cat logs/debug.log 2>/dev/null || echo "(no log file yet)"
