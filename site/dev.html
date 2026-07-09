@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Console — Is It Ben's Birthday?</title>
+  <!--
+    Developer console. Not linked from the site. Loads each experience in an
+    iframe via the real router (?day=N / ?date=YYYY-MM-DD) so you can flip
+    between all of them and test responsive widths without leaving the page.
+    Pure static, self-contained, no personal info. Keyboard: 0–6, b, r, and
+    [ ] to cycle; 1/2/3 with Shift for phone/tablet/desktop widths.
+  -->
+  <style>
+    :root {
+      --bg: #0f1216; --panel: #171b21; --panel2: #1e242c; --line: #2a323c;
+      --text: #e6edf3; --muted: #8b97a3; --accent: #ffcc33; --accent2: #4aa3ff;
+      --ok: #37d67a;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: grid; grid-template-columns: 300px 1fr; height: 100vh;
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--text);
+    }
+    /* Sidebar */
+    aside {
+      background: var(--panel); border-right: 1px solid var(--line);
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    .brand { padding: 18px 18px 12px; border-bottom: 1px solid var(--line); }
+    .brand h1 { font-size: 15px; margin: 0; letter-spacing: .3px; }
+    .brand p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .brand .badge { color: var(--accent); }
+    .group-label {
+      padding: 14px 18px 6px; color: var(--muted); font-size: 11px;
+      text-transform: uppercase; letter-spacing: .8px;
+    }
+    .exp-list { list-style: none; margin: 0; padding: 0 10px; }
+    .exp {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      padding: 9px 10px; margin: 2px 0; border: 0; border-radius: 8px;
+      background: transparent; color: var(--text); text-align: left;
+      cursor: pointer; font-size: 13.5px;
+    }
+    .exp:hover { background: var(--panel2); }
+    .exp.active { background: var(--accent2); color: #07121f; font-weight: 600; }
+    .exp .key {
+      margin-left: auto; font-size: 11px; color: var(--muted);
+      border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .exp.active .key { color: #07121f; border-color: rgba(0,0,0,.25); }
+    .exp .emoji { font-size: 16px; width: 20px; text-align: center; }
+    .exp .name { display: flex; flex-direction: column; }
+    .exp .sub { font-size: 11px; color: var(--muted); }
+    .exp.active .sub { color: rgba(7,18,31,.7); }
+
+    .controls { padding: 14px 18px; border-top: 1px solid var(--line); margin-top: auto; }
+    .controls label { display: block; font-size: 11px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .6px; margin: 12px 0 5px; }
+    .row { display: flex; gap: 8px; }
+    input[type=date] {
+      flex: 1; background: var(--panel2); border: 1px solid var(--line);
+      color: var(--text); border-radius: 7px; padding: 7px 9px; font: inherit;
+    }
+    button.mini {
+      background: var(--panel2); border: 1px solid var(--line); color: var(--text);
+      border-radius: 7px; padding: 7px 11px; cursor: pointer; font: inherit;
+    }
+    button.mini:hover { border-color: var(--accent2); }
+    .seg { display: flex; gap: 6px; }
+    .seg button { flex: 1; }
+    .seg button.on { background: var(--accent2); color: #07121f; border-color: var(--accent2); font-weight: 600; }
+
+    /* Preview */
+    main { display: flex; flex-direction: column; min-width: 0; }
+    .topbar {
+      display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+      background: var(--panel); border-bottom: 1px solid var(--line);
+    }
+    .url {
+      flex: 1; min-width: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12.5px; color: var(--muted); background: var(--panel2);
+      border: 1px solid var(--line); border-radius: 7px; padding: 7px 10px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .url b { color: var(--accent); }
+    .stage {
+      flex: 1; display: flex; align-items: flex-start; justify-content: center;
+      overflow: auto; padding: 18px; background:
+        repeating-linear-gradient(45deg, #0c0f13 0 10px, #0e1216 10px 20px);
+    }
+    .frame-wrap {
+      background: #fff; box-shadow: 0 8px 40px rgba(0,0,0,.5); border-radius: 6px;
+      overflow: hidden; transition: width .18s ease; height: 100%;
+    }
+    iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .hint { color: var(--muted); font-size: 11.5px; }
+    kbd {
+      font-family: ui-monospace, Menlo, monospace; font-size: 11px;
+      background: var(--panel2); border: 1px solid var(--line);
+      border-radius: 4px; padding: 1px 5px;
+    }
+  </style>
+</head>
+<body>
+  <aside>
+    <div class="brand">
+      <h1>🎂 Dev Console</h1>
+      <p><span class="badge">Is It Ben's Birthday?</span> — local preview harness</p>
+    </div>
+
+    <div class="group-label">Experiences</div>
+    <ul class="exp-list" id="exp-list"></ul>
+
+    <div class="controls">
+      <label>Date override (?date)</label>
+      <div class="row">
+        <input type="date" id="date-input">
+        <button class="mini" id="date-go">Load</button>
+      </div>
+      <label>Viewport</label>
+      <div class="seg" id="viewport-seg">
+        <button data-w="375" title="Phone (375px) — Shift+1">📱 375</button>
+        <button data-w="768" title="Tablet (768px) — Shift+2">▭ 768</button>
+        <button data-w="0" class="on" title="Full width — Shift+3">🖥 Full</button>
+      </div>
+      <label>Actions</label>
+      <div class="row">
+        <button class="mini" id="open-tab" style="flex:1">↗ New tab</button>
+        <button class="mini" id="open-all" style="flex:1" title="Open all in tabs">⧉ Open all</button>
+      </div>
+      <p class="hint" style="margin-top:12px">
+        Keys: <kbd>0</kbd>–<kbd>6</kbd> weekday · <kbd>b</kbd> birthday ·
+        <kbd>r</kbd> real today · <kbd>[</kbd> <kbd>]</kbd> cycle
+      </p>
+    </div>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div class="url" id="url-bar">—</div>
+      <button class="mini" id="reload">⟳ Reload</button>
+    </div>
+    <div class="stage">
+      <div class="frame-wrap" id="frame-wrap" style="width:100%">
+        <iframe id="preview" title="preview" src="about:blank"></iframe>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Each experience: how the router selects it, plus a label.
+    const EXPERIENCES = [
+      { id: 'birthday', key: 'b', emoji: '🎉', name: 'Birthday',  sub: 'July 5th — the big one',        query: '?day=birthday' },
+      { id: '0',        key: '0', emoji: '🏛️', name: 'Sunday',    sub: 'Museum of non-birthdays',       query: '?day=0' },
+      { id: '1',        key: '1', emoji: '📊', name: 'Monday',    sub: 'BirthdayCorp™ dashboard',       query: '?day=1' },
+      { id: '2',        key: '2', emoji: '📋', name: 'Tuesday',   sub: 'Form BDY-404 portal',           query: '?day=2' },
+      { id: '3',        key: '3', emoji: '🤖', name: 'Wednesday', sub: 'BirthdAI™ v0.0.1-alpha',        query: '?day=3' },
+      { id: '4',        key: '4', emoji: '🌭', name: 'Thursday',  sub: 'Hot Dog Appreciation Society',  query: '?day=4' },
+      { id: '5',        key: '5', emoji: '🐸', name: 'Friday',    sub: 'Anuran Research Institute',      query: '?day=5' },
+      { id: '6',        key: '6', emoji: '🛸', name: 'Saturday',  sub: 'Chrono-Celebration Nexus',      query: '?day=6' },
+    ];
+
+    const listEl  = document.getElementById('exp-list');
+    const frame   = document.getElementById('preview');
+    const wrap    = document.getElementById('frame-wrap');
+    const urlBar  = document.getElementById('url-bar');
+    let currentQuery = EXPERIENCES[0].query;
+
+    // Build sidebar
+    EXPERIENCES.forEach((e) => {
+      const li = document.createElement('li');
+      const b = document.createElement('button');
+      b.className = 'exp';
+      b.dataset.id = e.id;
+      b.innerHTML =
+        `<span class="emoji">${e.emoji}</span>` +
+        `<span class="name">${e.name}<span class="sub">${e.sub}</span></span>` +
+        `<span class="key">${e.key}</span>`;
+      b.addEventListener('click', () => load(e.query, e.id));
+      li.appendChild(b);
+      listEl.appendChild(li);
+    });
+
+    function setActive(id) {
+      document.querySelectorAll('.exp').forEach((el) =>
+        el.classList.toggle('active', el.dataset.id === id));
+    }
+
+    function load(query, id) {
+      currentQuery = query;
+      frame.src = '/' + query;
+      urlBar.innerHTML = 'localhost preview → <b>/' + query + '</b>';
+      if (id !== undefined) setActive(id);
+      else document.querySelectorAll('.exp').forEach((el) => el.classList.remove('active'));
+    }
+
+    // Date override
+    document.getElementById('date-go').addEventListener('click', () => {
+      const v = document.getElementById('date-input').value;
+      if (v) load('?date=' + v);
+    });
+    // Real "today" — no params, the router uses the real local date.
+    function loadReal() { load(''); }
+
+    // Viewport width toggles
+    const seg = document.getElementById('viewport-seg');
+    seg.addEventListener('click', (ev) => {
+      const btn = ev.target.closest('button'); if (!btn) return;
+      seg.querySelectorAll('button').forEach((b) => b.classList.remove('on'));
+      btn.classList.add('on');
+      const w = +btn.dataset.w;
+      wrap.style.width = w ? w + 'px' : '100%';
+    });
+    function setViewport(w) {
+      seg.querySelectorAll('button').forEach((b) =>
+        b.classList.toggle('on', +b.dataset.w === w));
+      wrap.style.width = w ? w + 'px' : '100%';
+    }
+
+    document.getElementById('reload').addEventListener('click', () => { frame.src = frame.src; });
+    document.getElementById('open-tab').addEventListener('click', () => window.open('/' + currentQuery, '_blank'));
+    document.getElementById('open-all').addEventListener('click', () => {
+      EXPERIENCES.forEach((e, i) => setTimeout(() => window.open('/' + e.query, '_blank'), i * 250));
+    });
+
+    // Keyboard shortcuts (ignore while typing in the date field)
+    document.addEventListener('keydown', (ev) => {
+      if (ev.target.tagName === 'INPUT') return;
+      const k = ev.key.toLowerCase();
+      const idx = EXPERIENCES.findIndex((e) => e.key === k);
+      if (idx >= 0) { const e = EXPERIENCES[idx]; load(e.query, e.id); return; }
+      if (k === 'r') { loadReal(); return; }
+      if (k === '[' || k === ']') {
+        const cur = EXPERIENCES.findIndex((e) => e.query === currentQuery);
+        const base = cur < 0 ? 0 : cur;
+        const next = (base + (k === ']' ? 1 : EXPERIENCES.length - 1)) % EXPERIENCES.length;
+        const e = EXPERIENCES[next]; load(e.query, e.id); return;
+      }
+      if (ev.shiftKey && k === '!') setViewport(375); // Shift+1
+      if (ev.shiftKey && k === '@') setViewport(768); // Shift+2
+      if (ev.shiftKey && k === '#') setViewport(0);   // Shift+3
+    });
+
+    // Start on the birthday experience
+    load(EXPERIENCES[0].query, EXPERIENCES[0].id);
+  </script>
+</body>
+</html>
+

@@ -68,6 +68,11 @@ Add a URL parameter to force a specific day without waiting for the right date:
 
 The date override uses your **local timezone** (all date detection is in the browser — no server involvement).
 
+**Dev console:** open **`http://localhost:8080/dev.html`** for a preview harness — a sidebar of
+all experiences with a live iframe preview, `?date` override, responsive-width toggles
+(phone/tablet/full), and keyboard shortcuts (`0`–`6`, `b`, `r`, `[` `]`). It's unlisted (nothing
+links to it) and pure static.
+
 ---
 
 ## Automated checks

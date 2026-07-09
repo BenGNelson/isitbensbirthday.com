@@ -32,14 +32,15 @@ PATTERNS=(
   '\bREDACTED\b'                         # real ZIP that leaked via a joke address
 )
 
-# Files git would commit: tracked files, honoring .gitignore. --cached would only
-# catch staged; use ls-files (tracked) plus staged additions.
-mapfile -t FILES < <(git ls-files)
-
+# Scan the working-tree content of every file git tracks/stages (honors
+# .gitignore, so .env / *.local.md / CLAUDE.md are excluded). Uses git ls-files
+# -z piped to xargs so it works on old bash (macOS 3.2 has no `mapfile`) and on
+# paths with spaces. Case-insensitive (-i), skip binary (-I).
+# Exclude this script itself — it legitimately contains the patterns above.
 FOUND=0
 for pat in "${PATTERNS[@]}"; do
-  # -I skips binary; print file:line:match
-  if hits=$(printf '%s\0' "${FILES[@]}" | xargs -0 grep -InE "${pat}" 2>/dev/null); then
+  hits=$(git ls-files -z -- ':!:scripts/check-secrets.sh' | xargs -0 grep -IniE "${pat}" 2>/dev/null)
+  if [[ -n "${hits}" ]]; then
     echo "❌ Forbidden pattern /${pat}/ found:"
     echo "${hits}" | sed 's/^/    /'
     FOUND=1
