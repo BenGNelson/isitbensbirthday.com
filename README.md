@@ -70,6 +70,22 @@ The date override uses your **local timezone** (all date detection is in the bro
 
 ---
 
+## Automated checks
+
+```bash
+make test          # static checks + smoke tests + secret scan (needs `make dev` running)
+make test-static   # offline only: JS syntax, PHP lint, day-module & router invariants
+make test-smoke    # HTTP checks against the running container
+make check-secrets # fail if any personal info would be committed
+```
+
+`scripts/test.sh` verifies every day module exposes `window.<Day>.init` with a matching CSS
+file, the router maps all weekdays, each route serves, `log.php` behaves (204 / 400 / 405) and
+writes its log, gzip is applied, and missing paths 404. JS syntax is checked with `node` (falls
+back to a throwaway `node:20-alpine` container); PHP is linted inside the running web container.
+
+---
+
 ## Project Structure
 
 ```
@@ -91,14 +107,16 @@ isitbensbirthday/
 │       └── log.php           # Monday login logger (the only server-side code)
 ├── scripts/
 │   ├── deploy.sh             # SSH → git pull on the droplet
+│   ├── test.sh               # Static + smoke test suite
+│   ├── check-secrets.sh      # PII/secret scanner
 │   ├── open-all.sh           # Open all 8 experiences locally
 │   ├── read-log.sh           # Print debug.log (local or --remote)
 │   └── format-log.py         # Render login attempts as a table
 ├── logs/                     # debug.log lands here (gitignored)
-├── Makefile                  # open / dev / down / deploy / log* targets
+├── Makefile                  # open / dev / down / test / deploy / log* targets
 ├── .env.example              # Config template
-├── DROPLET.md                # Full production/droplet runbook
-├── CLAUDE.md                 # Architecture notes for AI assistants
+├── DROPLET.md                # Hosting & deployment runbook (genericized)
+├── MOBILE_NOTES.md           # Mobile-responsiveness audit notes
 └── README.md
 ```
 
@@ -149,9 +167,9 @@ Cloudflare Pages, GitHub Pages, S3, plain nginx). **Caveat:** the Monday login l
 
 This site is about Ben. To fork it for someone else:
 
-1. **Name**: search `site/js/` for `"Ben"` and update to your subject's name
-2. **Birthday date**: in `site/js/main.js`, change the check near line 50 — `date.getMonth() === 6 && date.getDate() === 5` — to your target date (months are 0-indexed, so July = 6)
-3. Update `site/js/birthday.js` content to match (the celebration page references July 5th explicitly)
+1. **Name**: search `site/js/` for `Ben` and update to your subject's name
+2. **Birthday date**: in `site/js/main.js`, change the `isBirthday()` check — `date.getMonth() === 6 && date.getDate() === 5` — to your target date (months are 0-indexed, so July = 6)
+3. **Date references in copy**: search `site/js/` for `July 5` and update every match — **all eight** day files reference the date in their jokes, not just the birthday page
 
 ---
 
