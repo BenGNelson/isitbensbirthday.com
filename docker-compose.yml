@@ -4,7 +4,11 @@ services:
     ports:
       - "${HOST_PORT:-8080}:80"
     volumes:
-      # Hot-reload: mount site/ directly so file changes are served immediately
-      # without rebuilding the image. Remove this volume for production builds.
-      - ./site:/usr/share/nginx/html:ro
+      # Hot-reload: mount site/ so HTML/CSS/JS/PHP edits are served immediately
+      # without rebuilding the image. Remove for a production-style build.
+      - ./site:/var/www/html:ro
+      # Persist the PHP logger's output on the host so `make log` / `make
+      # log-table` can read it. log.php writes to ../../logs/debug.log, which
+      # from /var/www/html/api resolves to /var/www/logs.
+      - ./logs:/var/www/logs
     restart: unless-stopped
