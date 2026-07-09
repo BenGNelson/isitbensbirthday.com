@@ -14,7 +14,7 @@ window.Friday = {
 		'frog',
 		'Station 2: no movement detected in 73.4 minutes. Sensor integrity: nominal.',
 		'Specimen 3-C: jumping. Event duration: 0.8s. Horizontal distance: 0.62 m. Classified: non-birthday related.',
-		'Field note: known Subject coordinates surveilled. No birthday. Observation continues.',
+		'Field note: known subject coordinates surveilled. No birthday. Observation continues.',
 		'Data gap 14:32–14:47 UTC. Cause: Specimen 9-A submerged primary acoustic sensor. Resolved.',
 		'Station 11: passive monitoring. Nothing to report. This is the expected finding.',
 		'Specimen 9-D: entering torpor position. Duration: 22 min. (Confirmed active at 22:01.) Non-event.',
@@ -30,7 +30,7 @@ window.Friday = {
 		'frog',
 		'Station 3: humidity 91%. Frog cutaneous hydration: adequate. Birthday status: negative.',
 		'Longitudinal trend analysis complete. Conclusion: consistent with all prior findings.',
-		'Note: one specimen appeared to orient toward Subject coordinates. Filed: inconclusive.',
+		'Note: one specimen appeared to orient toward subject coordinates. Filed: inconclusive.',
 		'Uptime: 13,505 days of continuous observation. Determinations issued: 13,505. All negative.',
 	],
 
@@ -55,9 +55,9 @@ window.Friday = {
 		},
 		{
 			citation:
-				'Subject, B.G. & Anuran Panel (2019). Continued Absence of Birthday Conditions: A 32-Year Longitudinal Study. <em>Journal of Temporal Herpetology</em>, 44(2), 118–134.',
+				'Padsworth, L.R. & Anuran Panel (2019). Continued Absence of Birthday Conditions: A 32-Year Longitudinal Study. <em>Journal of Temporal Herpetology</em>, 44(2), 118–134.',
 			abstract:
-				"We present 32 years of continuous field observation data regarding the birthday status of subject Ben. Results are consistent across all observation periods. The study period included the subject's actual birthday (July 5th) on 32 occasions, none of which were detected. Authors conclude: it is not his birthday. Continued observation is recommended. <strong>Note: Ben was listed as co-author in error. He is the subject, not a researcher. The Institute regrets this administrative oversight.</strong>",
+				"We present 32 years of continuous field observation data regarding the birthday status of the subject (identified in Institute records only as Ben). Results are consistent across all observation periods. The study period included the subject's actual birthday (July 5th) on 32 occasions, none of which were detected. Authors conclude: it is not his birthday. Continued observation is recommended. <strong>Note: the subject was listed as co-author in error. He is the subject, not a researcher. The Institute regrets this administrative oversight.</strong>",
 		},
 		{
 			citation:
@@ -106,7 +106,7 @@ window.Friday = {
               <div class="ob-header-text">
                 <div class="ob-institute-name">Anuran Behavioral Research Institute</div>
                 <div class="ob-institute-tagline">Continuous Field Observation Since 1987 &nbsp;·&nbsp; Est. 2003 &nbsp;·&nbsp; Member: International Herpetological Science Council</div>
-                <div class="ob-institute-address">14 Ribbit Road, Suite 3 &nbsp;·&nbsp; Bogmere, OH REDACTED &nbsp;·&nbsp; abri@abri-institute.edu</div>
+                <div class="ob-institute-address">14 Ribbit Road, Suite 3 &nbsp;·&nbsp; Bogmere, XX 00000 &nbsp;·&nbsp; abri@abri-institute.edu</div>
               </div>
             </div>
             <div class="ob-determination-box">
@@ -132,11 +132,11 @@ window.Friday = {
             <div class="ob-two-col">
               <div class="ob-main-col">
                 <h2 class="ob-section-title">About the Institute</h2>
-                <p class="ob-body">The Anuran Behavioral Research Institute was founded in 1987 by Dr. Lily R. Padsworth, PhD, following a series of promising but inconclusive field observations near the known residential coordinates of one Ben. Frogs — members of the order Anura, meaning "without tail" in Greek — were selected as field observers for their sensitivity to environmental stimuli, including tympanic membrane activity and cutaneous moisture levels. The Institute has maintained continuous field observation since that date, with a singular research objective: to determine, with scientific certainty, whether it is Ben's birthday.</p>
+                <p class="ob-body">The Anuran Behavioral Research Institute was founded in 1987 by Dr. Lily R. Padsworth, PhD, following a series of promising but inconclusive field observations near the known residential coordinates of a local individual identified in Institute records only as Ben (surname withheld for privacy). Frogs — members of the order Anura, meaning "without tail" in Greek — were selected as field observers for their sensitivity to environmental stimuli, including tympanic membrane activity and cutaneous moisture levels. The Institute has maintained continuous field observation since that date, with a singular research objective: to determine, with scientific certainty, whether it is Ben's birthday.</p>
                 <p class="ob-body">To date, the Institute has issued 13,505 daily determinations. All have concluded: <strong>it is not Ben's birthday.</strong> Continued observation is recommended.</p>
 
                 <h3 class="ob-subsection-title">Our Methodology</h3>
-                <p class="ob-body">ABRI employs a proprietary observational framework known as the Subject Anuran Inference Protocol (NAIP), which correlates frog vocalization frequency, tympanic membrane activity, and cutaneous moisture levels near the Subject Coordinates with known festive atmospheric conditions. Field observers document specimen movement, call patterns, foraging behavior, and ambient vocalizations at 15-minute intervals, 24 hours per day. There are over 7,000 described species of frog; ABRI works with 14 of them.</p>
+                <p class="ob-body">ABRI employs a proprietary observational framework known as the Standardized Anuran Inference Protocol (SAIP), which correlates frog vocalization frequency, tympanic membrane activity, and cutaneous moisture levels near the Subject Coordinates with known festive atmospheric conditions. Field observers document specimen movement, call patterns, foraging behavior, and ambient vocalizations at 15-minute intervals, 24 hours per day. There are over 7,000 described species of frog; ABRI works with 14 of them.</p>
                 <p class="ob-body">Note: Frog-based behavioral observation was formally discontinued as a primary methodology in 2018, following the Padsworth Review (see: <em>Padsworth 2018, "On Limitations"</em>). The Institute transitioned to a passive environmental monitoring framework at that time. The live field data feed below reflects current specimen activity from our 14 active field stations.</p>
 
                 <h3 class="ob-subsection-title">Leadership</h3>
@@ -247,7 +247,7 @@ window.Friday = {
               </div>
               <p class="ob-letter-body">Dear Sighting Report Submitter,</p>
               <p class="ob-letter-body">Thank you for your submission to the ABRI Birthday Sighting Registry (Form FSR-14B, Rev. 2019). Your report has been received and assigned reference number <strong id="ob-ref-num">FSR-2024-XXXX</strong>.</p>
-              <p class="ob-letter-body">After thorough review by our panel, your report has been assessed as <strong>INCONCLUSIVE</strong>. Specifically, the panel identified insufficient anuran corroboration for the claimed birthday conditions. While we appreciate the detail provided, the frog activity data submitted does not meet the evidentiary threshold established under the Subject Anuran Inference Protocol (NAIP §4.2.1).</p>
+              <p class="ob-letter-body">After thorough review by our panel, your report has been assessed as <strong>INCONCLUSIVE</strong>. Specifically, the panel identified insufficient anuran corroboration for the claimed birthday conditions. While we appreciate the detail provided, the frog activity data submitted does not meet the evidentiary threshold established under the Standardized Anuran Inference Protocol (SAIP §4.2.1).</p>
               <p class="ob-letter-body">Our current field determination remains: <strong>NOT HIS BIRTHDAY.</strong></p>
               <p class="ob-letter-body">We encourage continued vigilance and welcome future submissions. Please allow 6–18 months for processing of any follow-up reports. If you believe this determination was made in error, you may appeal in writing to Dr. Lily Padsworth, PhD. Appeals are reviewed quarterly. The next quarterly review is scheduled for a later quarter.</p>
               <p class="ob-letter-body">With professional regards,</p>
