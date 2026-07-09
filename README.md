@@ -38,7 +38,13 @@ docker compose up
 # 3. Open http://localhost:8080
 ```
 
-The `docker-compose.yml` mounts `./site` as a volume, so **edits to HTML/CSS/JS are reflected immediately** — just refresh the browser. No rebuild needed during development.
+Local dev runs **Apache + PHP (`php:8.3-apache`)** — the same stack as the production droplet
+(see [`DROPLET.md`](DROPLET.md)). The `docker-compose.yml` mounts `./site` as a volume, so
+**edits to HTML/CSS/JS/PHP are reflected immediately** — just refresh the browser. No rebuild
+needed during development.
+
+Because it's real Apache + PHP, the Monday login logger (`site/api/log.php`) actually runs
+locally and writes to `logs/debug.log` — view it with `make log` or `make log-table`.
 
 To stop: `docker compose down`
 
@@ -68,36 +74,31 @@ The date override uses your **local timezone** (all date detection is in the bro
 
 ```
 isitbensbirthday/
-├── docker-compose.yml        # Local dev only
-├── Dockerfile                # nginx:alpine + site files
+├── docker-compose.yml        # Local dev (php:8.3-apache — mirrors prod)
+├── Dockerfile                # php:8.3-apache + site files
+├── apache/
+│   ├── 000-default.conf      # Local dev vhost (mirrors prod behavior)
+│   └── prod-*.conf           # Verbatim copies of the live droplet vhosts (reference)
 ├── nginx/
-│   └── nginx.conf            # Nginx config
+│   └── nginx.conf            # UNUSED — kept only as an alt static-serving reference
 ├── site/
 │   ├── index.html            # Single entry point
-│   ├── css/
-│   │   ├── main.css          # Global reset
-│   │   ├── birthday.css
-│   │   ├── sunday.css
-│   │   ├── monday.css
-│   │   ├── tuesday.css
-│   │   ├── wednesday.css
-│   │   ├── thursday.css
-│   │   ├── friday.css
-│   │   └── saturday.css
+│   ├── css/                  # main.css (reset) + one file per day
 │   ├── js/
 │   │   ├── main.js           # Date detection + experience router
-│   │   ├── birthday.js
-│   │   ├── sunday.js
-│   │   ├── monday.js
-│   │   ├── tuesday.js
-│   │   ├── wednesday.js
-│   │   ├── thursday.js
-│   │   ├── friday.js
-│   │   └── saturday.js
-│   └── assets/               # Reserved for images/fonts if needed
+│   │   └── <day>.js          # birthday, sunday … saturday
+│   └── api/
+│       └── log.php           # Monday login logger (the only server-side code)
 ├── scripts/
-│   └── deploy.sh             # SSH deploy script
+│   ├── deploy.sh             # SSH → git pull on the droplet
+│   ├── open-all.sh           # Open all 8 experiences locally
+│   ├── read-log.sh           # Print debug.log (local or --remote)
+│   └── format-log.py         # Render login attempts as a table
+├── logs/                     # debug.log lands here (gitignored)
+├── Makefile                  # open / dev / down / deploy / log* targets
 ├── .env.example              # Config template
+├── DROPLET.md                # Full production/droplet runbook
+├── CLAUDE.md                 # Architecture notes for AI assistants
 └── README.md
 ```
 
@@ -107,34 +108,40 @@ isitbensbirthday/
 
 ## Deployment
 
-The project ships as a Docker image (nginx:alpine + static files). Pick whichever option fits your setup:
+**Production is not Docker.** The live site runs directly on a DigitalOcean droplet:
+**Apache2 + mod_php** serving the `site/` directory of a `git` checkout at
+`/opt/isitbensbirthday`. Deploying is just `git pull` — no build, no restart. The Docker
+setup above exists only to reproduce that Apache+PHP stack locally.
 
-### 1. Docker (simplest)
+👉 **Full details — architecture, TLS, "how to change X", re-provisioning — are in
+[`DROPLET.md`](DROPLET.md).**
+
+### The deploy loop
 
 ```bash
-docker compose up -d
+# 1. Edit + verify locally (docker compose up → localhost:8080)
+# 2. Commit and push — the droplet pulls from GitHub, so pushing is required:
+git add -A && git commit -m "…" && git push origin main
+# 3. Deploy:
+make deploy      # scripts/deploy.sh: SSH → git pull on the droplet
 ```
 
-Serves on port 8080 by default. Override via `HOST_PORT` in `.env` (copy `.env.example` to get started).
-
-### 2. Any static host
-
-Copy the `site/` directory to any web server, CDN, or platform — Netlify, Cloudflare Pages, S3 + CloudFront, GitHub Pages, etc. No build step required; it's plain HTML/CSS/JS.
-
-### 3. Self-hosted Nginx or Apache
-
-Point your `root` / `DocumentRoot` at `site/` and enable the SPA fallback so all unmatched routes serve `index.html`. The included `nginx/nginx.conf` can be used as a reference.
-
-### Remote deploys via deploy.sh
-
-`scripts/deploy.sh` SSHs into a remote server, runs `git pull`, and exits. Configure it via `.env`:
+Configure the target in `.env` (copy from `.env.example`). Deploy as the user that **owns
+the deploy path** (not `root`):
 
 ```
-DEPLOY_HOST=your.server.ip
-DEPLOY_USER=root
+DEPLOY_HOST=your-droplet-ip-or-hostname
+DEPLOY_USER=your-deploy-user
 DEPLOY_PATH=/opt/isitbensbirthday
 DEPLOY_BRANCH=main
 ```
+
+### Hosting it elsewhere
+
+The 7 day pages are pure static HTML/CSS/JS and will run on any static host (Netlify,
+Cloudflare Pages, GitHub Pages, S3, plain nginx). **Caveat:** the Monday login logger
+(`site/api/log.php`) needs a PHP runtime — on a static-only host that endpoint simply no-ops
+(the page still works; nothing gets logged).
 
 ---
 
@@ -150,7 +157,14 @@ This site is about Ben. To fork it for someone else:
 
 ## Architecture Notes
 
-- **No backend.** All date logic runs in the browser using `new Date()` in the user's local timezone. The server just serves static files.
+- **Almost no backend.** All date logic runs in the browser using `new Date()` in the user's
+  local timezone. The server just serves static files — with one exception: `site/api/log.php`,
+  a tiny PHP endpoint the Monday page POSTs login attempts to (see below).
 - **Single entry point.** `index.html` loads `js/main.js`, which detects the date and dynamically injects the correct `<link>` and `<script>` tags for that day's experience. Unused day files are never downloaded.
 - **Modular.** Each experience is isolated in `css/{day}.css` + `js/{day}.js`. Changing one day can't break another.
-- **Hot reload in dev.** `docker-compose.yml` mounts `./site` as a read-only volume, so you can edit files locally and refresh without rebuilding.
+- **Dev mirrors prod.** Both local dev and the droplet run **Apache + mod_php (PHP 8.3)**, so
+  what you test locally is what runs in production. `docker-compose.yml` mounts `./site` for
+  hot reload. Full production anatomy: [`DROPLET.md`](DROPLET.md).
+- **The Monday logger.** `js/monday.js` POSTs each fake-login attempt to `api/log.php`, which
+  appends a JSON line to `logs/debug.log` (self-trimming to 500 lines, stored outside the web
+  root). Read it with `make log` / `make log-table` (add `-remote` for the droplet).

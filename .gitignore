@@ -1,4 +1,13 @@
+# Secrets & environment
 .env
+
+# AI assistant / local-only working files (never commit)
 .claude/
+CLAUDE.md
+DROPLET.local.md
+
+# Scratch
 TODO.md
+
+# Runtime
 logs/
