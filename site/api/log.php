@@ -23,24 +23,39 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 $data = json_decode(file_get_contents('php://input'), true);
-if (!$data) {
+if (!is_array($data)) {
     http_response_code(400);
     exit;
 }
 
 // Ensure the logs directory exists
 $log_dir = dirname($log_file);
-if (!is_dir($log_dir)) {
-    mkdir($log_dir, 0755, true);
+if (!is_dir($log_dir) && !mkdir($log_dir, 0755, true) && !is_dir($log_dir)) {
+    http_response_code(500);
+    exit;
 }
 
-// Append the new entry
-file_put_contents($log_file, json_encode($data) . "\n", FILE_APPEND | LOCK_EX);
-
-// Trim to last MAX_LINES lines so the file self-manages its size
-$lines = file($log_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-if (count($lines) > MAX_LINES) {
-    file_put_contents($log_file, implode("\n", array_slice($lines, -MAX_LINES)) . "\n", LOCK_EX);
+// Append + trim as ONE locked read-modify-write, so concurrent POSTs near the
+// MAX_LINES boundary can't lose or corrupt each other's entries. 'c+' opens for
+// read/write and creates the file without truncating.
+$fp = fopen($log_file, 'c+');
+if ($fp === false) {
+    http_response_code(500);
+    exit;
 }
+if (flock($fp, LOCK_EX)) {
+    $existing = stream_get_contents($fp);
+    $lines = $existing === '' ? [] : explode("\n", rtrim($existing, "\n"));
+    $lines[] = json_encode($data);
+    if (count($lines) > MAX_LINES) {
+        $lines = array_slice($lines, -MAX_LINES);
+    }
+    ftruncate($fp, 0);
+    rewind($fp);
+    fwrite($fp, implode("\n", $lines) . "\n");
+    fflush($fp);
+    flock($fp, LOCK_UN);
+}
+fclose($fp);
 
 http_response_code(204);
