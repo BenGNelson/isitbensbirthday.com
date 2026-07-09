@@ -42,39 +42,47 @@ echo "=================================================="
 echo ""
 
 # ── SSH into the droplet and deploy ───────────────────────────
-ssh -o StrictHostKeyChecking=no "${DEPLOY_USER}@${DEPLOY_HOST}" bash -s << EOF
+# The droplet serves DEPLOY_PATH/site directly via Apache, so "deploy" just
+# means fast-forwarding the checkout to origin/DEPLOY_BRANCH. No build, no
+# restart. The repo must already exist (bootstrap: see DROPLET.md).
+ssh -o StrictHostKeyChecking=accept-new "${DEPLOY_USER}@${DEPLOY_HOST}" bash -s << EOF
 set -euo pipefail
 
-echo "--- Checking for required tools ---"
-command -v git || { echo "ERROR: git not installed"; exit 1; }
+echo "--- On \$(hostname) as \$(whoami) ---"
+command -v git >/dev/null || { echo "ERROR: git not installed"; exit 1; }
 
-echo "--- Configuring git safe directory ---"
-git config --global --add safe.directory "${DEPLOY_PATH}"
+if [ ! -d "${DEPLOY_PATH}/.git" ]; then
+  echo "ERROR: ${DEPLOY_PATH} is not a git checkout."
+  echo "Bootstrap it first (see DROPLET.md § First-time provision), e.g.:"
+  echo "  git clone <your-repo-url> ${DEPLOY_PATH}"
+  exit 1
+fi
 
-echo "--- Setting up deploy path: ${DEPLOY_PATH} ---"
-mkdir -p "${DEPLOY_PATH}"
 cd "${DEPLOY_PATH}"
 
-if [ ! -d ".git" ]; then
-  echo "--- Cloning repository ---"
-  git clone . . 2>/dev/null || true
-  # If no remote is configured, just ensure files are here
-else
-  echo "--- Switching remote to HTTPS ---"
-  CURRENT_URL=\$(git remote get-url origin)
-  HTTPS_URL=\$(echo "\${CURRENT_URL}" | sed 's|git@github.com:|https://github.com/|')
-  git remote set-url origin "\${HTTPS_URL}"
-
-echo "--- Pulling latest code from branch: ${DEPLOY_BRANCH} ---"
-  git fetch origin
-  git checkout "${DEPLOY_BRANCH}"
-  git pull origin "${DEPLOY_BRANCH}"
+# If the deploy user doesn't own the repo (e.g. deploying as root), git needs a
+# safe.directory override. Add it once, idempotently — the old script appended
+# a duplicate on every deploy.
+if ! git config --global --get-all safe.directory 2>/dev/null | grep -qx "${DEPLOY_PATH}"; then
+  git config --global --add safe.directory "${DEPLOY_PATH}"
 fi
+
+# Never clobber uncommitted edits made directly on the droplet.
+if [ -n "\$(git status --porcelain)" ]; then
+  echo "ERROR: ${DEPLOY_PATH} has uncommitted local changes — refusing to pull."
+  git status --short
+  exit 1
+fi
+
+echo "--- Pulling ${DEPLOY_BRANCH} ---"
+git fetch origin
+git checkout "${DEPLOY_BRANCH}"
+git pull --ff-only origin "${DEPLOY_BRANCH}"
 
 echo ""
 echo "=================================================="
-echo "  Deployment complete!"
-echo "  Apache2 is already serving from ${DEPLOY_PATH}/site — no restart needed."
+echo "  Deployed \$(git rev-parse --short HEAD): \$(git log -1 --pretty=%s)"
+echo "  Apache serves ${DEPLOY_PATH}/site directly — no restart needed."
 echo "=================================================="
 EOF
 
