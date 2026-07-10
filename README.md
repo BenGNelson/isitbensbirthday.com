@@ -68,7 +68,7 @@ The date override uses your **local timezone** (all date detection is in the bro
 **Dev console:** open **`http://localhost:8080/dev.html`** for a preview harness — a sidebar of
 all experiences with a live iframe preview, `?date` override, responsive-width toggles
 (phone/tablet/full), and keyboard shortcuts (`0`–`6`, `b`, `r`, `[` `]`). It's unlisted (nothing
-links to it) and pure static.
+links to it) and pure static. In production it's gated behind HTTP Basic Auth; locally it's open.
 
 ---
 
@@ -85,17 +85,21 @@ make check-secrets # fail if any personal info would be committed
 file, the router maps all weekdays, each route serves, gzip is applied, and missing paths 404.
 JS syntax is checked with `node` (falling back to a throwaway `node:20-alpine` container).
 
+**CI:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs the static checks + secret scan
+on every push and pull request to `main` (GitHub Actions). Deploys stay manual.
+
 ---
 
 ## Project Structure
 
 ```
 isitbensbirthday/
+├── .github/workflows/ci.yml  # CI — static tests + secret scan on push/PR (GitHub Actions)
 ├── docker-compose.yml        # Local dev (php:8.3-apache — mirrors prod)
 ├── Dockerfile                # php:8.3-apache + site files
 ├── apache/
 │   ├── 000-default.conf      # Local dev vhost (mirrors prod behavior)
-│   └── prod-*.conf           # Verbatim copies of the live droplet vhosts (reference)
+│   └── prod-*.conf           # Near-verbatim (genericized) copies of the live vhosts (reference)
 ├── nginx/
 │   └── nginx.conf            # UNUSED — kept only as an alt static-serving reference
 ├── site/
@@ -130,6 +134,13 @@ reproduce that Apache stack locally.
 
 👉 **Full details — architecture, TLS, "how to change X", re-provisioning — are in
 [`DROPLET.md`](DROPLET.md).**
+
+### Production hardening
+
+The droplet is locked down: `ufw` (deny inbound except SSH + 80/443), `fail2ban` (SSH jail),
+`unattended-upgrades` (automatic security patches), and `mod_php` disabled (the site is fully
+static). The `dev.html` preview console is gated behind Apache Basic Auth in production (open
+locally). See [`DROPLET.md`](DROPLET.md) for specifics.
 
 ### The deploy loop
 

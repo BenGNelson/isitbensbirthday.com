@@ -166,11 +166,19 @@ Add your SSH public key to the deploy user's `~/.ssh/authorized_keys` so `make d
 ## 7. Operational notes
 
 - **Deploy as the checkout owner** (not root) — see §4.
-- **Firewall:** consider `ufw allow OpenSSH && ufw allow 'Apache Full' && ufw enable`.
+- **Firewall:** `ufw` is **enabled**, default-deny inbound, allowing only OpenSSH (22) and
+  `Apache Full` (80/443).
+- **Brute-force protection:** `fail2ban` is installed with the default `sshd` jail active.
+- **`mod_php` is disabled** — the site is fully static, so PHP is unused. Re-enable with
+  `a2enmod php8.3 && systemctl reload apache2` only if server-side code is ever reintroduced.
+- **Auto-updates:** `unattended-upgrades` is enabled (security patches apply automatically).
+  Still reboot periodically for kernel updates (`apt upgrade && reboot`) — the site is down
+  only for the ~30–60s reboot.
+- **Dev console is gated in prod:** `dev.html` sits behind Apache Basic Auth (the `<Files>`
+  block in the :443 vhost + `/etc/apache2/.htpasswd`); the day pages are unaffected. Local
+  dev (`localhost:8080/dev.html`) is open.
 - **Config drift:** the live vhosts can be edited on the server independently of the repo.
   After any on-server change, update `apache/prod-*.conf` here so this runbook stays true.
-- **Reboots:** apply kernel/security updates periodically (`apt upgrade && reboot`) — the site
-  is down only for the ~30–60s reboot.
 
 ---
 
