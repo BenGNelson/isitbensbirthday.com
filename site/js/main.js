@@ -83,5 +83,32 @@
     document.body.appendChild(script);
   }
 
+  /**
+   * Stage 0 of the easter-egg hunt: a breadcrumb for anyone who opens DevTools.
+   * Sets the FRAME (a week-long hunt that climaxes at the Monday BirthdayCorp
+   * login) without spoiling the per-day clues — those are earned day by day
+   * (e.g. the password lives with Friday's frogs). Purely cosmetic; no secrets.
+   * TODO: make this day-aware (show today's clue status + tease the next day).
+   */
+  function printConsoleBreadcrumb() {
+    try {
+      var title = 'background:#111;color:#ff4fa3;font-size:15px;font-weight:bold;' +
+                  'padding:6px 12px;border-radius:4px 4px 0 0;';
+      var body = 'background:#0b0f0b;color:#39ff14;line-height:1.55;padding:10px 12px;' +
+                 'font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;';
+      console.log('%c🎂 BirthdayCorp™ · SYSOPS console', title);
+      console.log(
+        '%cYou opened the console. Good instinct, detective.\n\n' +
+        'This is a week-long hunt. A dormant terminal wakes on Mondays — but it\n' +
+        'wants credentials, and those are scattered across the week’s experiences.\n\n' +
+        'Come back each day. Collect what surfaces. By the time the terminal\n' +
+        'boots, you’ll have everything you need.\n\n' +
+        'Progress is tracked. The finale earns it.',
+        body
+      );
+    } catch (e) { /* console styling unsupported — no big deal */ }
+  }
+
+  printConsoleBreadcrumb();
   loadExperience(getExperienceName());
 })();
