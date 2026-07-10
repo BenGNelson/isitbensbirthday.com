@@ -21,15 +21,15 @@ window.Thursday = {
       price: '$18.00',
     },
     {
-      icon: '🌭',
+      icon: '💼',
       name: 'The Executive',
       desc: 'Identical to The Classic in every measurable way. However, it arrives in a briefcase. The briefcase is non-negotiable.',
       price: '$47.00',
     },
     {
-      icon: '🌭',
+      icon: '⬛',
       name: 'The Enigmatic',
-      desc: 'We cannot tell you what is in The Enigmatic. We simply cannot. Members only. No exceptions. We are sorry.',
+      desc: 'We cannot tell you what is in The Enigmatic. Three members have been told. Two no longer attend meetings. The third is Gerald. Members only. We are sorry.',
       price: 'Price upon inquiry',
     },
   ],
@@ -39,13 +39,13 @@ window.Thursday = {
       avatar: '👴',
       name: 'Gerald W.',
       title: 'Founding Member · Class of 1987',
-      bio: 'Gerald founded the Society after a pivotal hot dog experience at a regional fair. He has not elaborated. He is the Gerald from the Sunday museum donation. He is everywhere.',
+      bio: 'Gerald founded the Society after a pivotal hot dog experience at a regional fair in 1987. He has never elaborated, and we have learned not to ask. He does not appear to age. He is the Gerald from the Sunday museum donation. He is everywhere.',
     },
     {
       avatar: '👩',
       name: 'Patricia H.',
       title: 'Senior Member · Hot Dog Liaison',
-      bio: 'Patricia joined in 1994 and has served as Hot Dog Liaison for 30 years. Her role has never been formally defined. She seems fine with this.',
+      bio: 'Patricia has served as Hot Dog Liaison for 30 years. The role has never been formally defined, and no hot dog has ever been liaised. She considers this a success.',
     },
     {
       avatar: '🧑',
@@ -122,7 +122,7 @@ window.Thursday = {
       </header>
 
       <section class="hd-hero">
-        <p class="hd-hero-eyebrow">Now Accepting Orders · Delivery Available July 5th Only</p>
+        <p class="hd-hero-eyebrow">Now Accepting Orders · Delivery Available One (1) Day Per Year</p>
         <h1>The World's Premier<br><em>Hot Dog</em> Institution</h1>
         <p>
           Founded 1987. Devoted entirely to hot dogs.
@@ -150,8 +150,9 @@ window.Thursday = {
             <div class="hd-join-panel">
               <h3>Become a Member</h3>
               <p>
-                Membership is by hot dog invitation only. If you have not received
-                a hot dog invitation, you have not been invited. This is not a loophole.
+                Membership is by hot dog invitation only. The invitation is a hot dog.
+                If you have not received a hot dog, you have not been invited. If you have
+                received a hot dog, please eat it; that was not the invitation.
               </p>
               <div class="hd-join-btn-wrap">
                 <button class="hd-join-btn" id="hd-join-btn">JOIN NOW</button>
@@ -210,7 +211,7 @@ window.Thursday = {
       '(Please stop trying to click this)',
       '(The button is exercising its right to not be clicked)',
       '(This is a certified evasion button)',
-      '(The button has filed for restraining order)',
+      '(The button has retained counsel. Its counsel is also a hot dog.)',
       '(You cannot catch it. It has been trained for this.)',
       '(Just click it!)',
     ];

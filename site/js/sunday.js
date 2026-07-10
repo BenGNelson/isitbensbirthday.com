@@ -11,7 +11,7 @@ window.Sunday = {
       title: 'Untitled (Loading Spinner)',
       year: '2024',
       medium: 'Digital oil on void',
-      desc: 'The artist confronts the liminal space between want and arrival. A study in perpetual almost-ness.',
+      desc: 'The artist confronts the liminal space between want and arrival. A study in perpetual almost-ness. The spinner is not, technically, loading anything. It has nothing to load. It spins for you.',
       icon: '⏳',
       class: '',
       guide: 'The spinner — always moving, never arriving — invites us to consider the nature of time itself. The artist reportedly spent three years in a waiting room seeking inspiration. The waiting room was, itself, still loading.',
@@ -23,7 +23,7 @@ window.Sunday = {
       desc: 'A plea, unanswered. An intimacy, unacknowledged. The read receipt haunts.',
       icon: '📱',
       class: '',
-      guide: 'A bold meditation on the horror of the unread. Note the meticulous attention to the ellipsis — three dots, hovering, promising, delivering nothing. The artist has said this work "came to him at 2am." We believe him.',
+      guide: 'A bold meditation on the horror of the unread. Note the meticulous attention to the ellipsis — three dots, hovering, promising, delivering nothing. The artist has said this work "came to him at 2am." Museum records confirm he was, at that time, awake, and checking whether it was his birthday. It was not.',
     },
     {
       title: 'Birthday: Not Today (Diptych)',
@@ -32,7 +32,7 @@ window.Sunday = {
       desc: 'The left panel depicts absence. The right panel also depicts absence. The gap between them is where the birthday lives.',
       icon: '🖼️',
       class: 'dark-bg',
-      guide: 'Perhaps the most daring work in the collection. Critics have called it "bold," "confusing," and "why are there two empty frames." The artist responded: "yes."',
+      guide: 'Perhaps the most daring work in the collection. Critics have called it "bold," "confusing," and "why are there two empty frames." The artist responded: "yes." It has toured six cities. In each, it was hung upside down. No one could tell.',
     },
     {
       title: 'The Unblown Candle',
@@ -64,10 +64,10 @@ window.Sunday = {
   ],
 
   shopItems: [
-    { icon: '🛍️', name: 'Pre-Birthday Tote Bag', price: '$38.00' },
+    { icon: '🛍️', name: 'Tote Bag (Empty, Like the Frames)', price: '$38.00' },
     { icon: '📚', name: 'Exhibition Catalogue', price: '$55.00' },
     { icon: '🖨️', name: 'Signed Print: "The Unblown Candle"', price: '$220.00' },
-    { icon: '☕', name: 'Museum Tumbler', price: '$28.00' },
+    { icon: '☕', name: 'Tumbler — Holds Beverages, Not Cake', price: '$28.00' },
   ],
 
   init(app) {
@@ -133,14 +133,15 @@ window.Sunday = {
 
       <section class="mu-donation">
         <h2>Support the Institute</h2>
-        <p>Your donation funds future exhibitions, curatorial salaries, and the search for Ben's birthday.</p>
+        <p>Your donation funds future exhibitions, curatorial salaries, and a private detective we have retained to locate Ben's birthday. He has been on the case for two years. He has found many birthdays. None of them are the one.</p>
         <div class="mu-thermometer-wrap">
           <div class="mu-thermometer-bg">
             <div class="mu-thermometer-fill" id="thermo-fill"></div>
           </div>
           <p class="mu-thermometer-label">
             <strong>$3 raised</strong> of <strong>$1,000,000</strong> goal.
-            Thank you, Gerald.
+            Every dollar brings us fractionally closer to a birthday.
+            Thank you, Gerald. Thank you especially, Gerald — you are all three dollars.
           </p>
         </div>
       </section>

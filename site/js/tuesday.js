@@ -25,7 +25,7 @@ window.Tuesday = {
           <div class="gov-header-right">
             OMB No. 2024-BDY<br>
             Expires: July 5th<br>
-            Burden: 47 hours
+            Public Burden: 47 hours (see reverse). Actual Burden: your entire afternoon.
           </div>
         </div>
         <nav class="gov-header-nav">
@@ -43,7 +43,7 @@ window.Tuesday = {
         <span>
           <strong>NOTICE:</strong> You have accessed this portal on a non-birthday date.
           Completion of Form BDY-404 is required before you may proceed.
-          Failure to comply may result in a strongly-worded follow-up email.
+          Failure to comply may result in a follow-up form (Form BDY-405), which requires Form BDY-404.
         </span>
       </div>
 
@@ -65,7 +65,8 @@ window.Tuesday = {
           <div class="gov-regulation">
             Reg. 47-B §12(c): "No person shall access the Birthday Portal on a non-birthday date
             without first completing Form BDY-404 in full. Completion does not guarantee access.
-            Access may be granted at the sole discretion of the Birthday. The Birthday is July 5th."
+            Access may be granted at the sole discretion of the Birthday. The Birthday is July 5th.
+            The Birthday is aware of this form. The Birthday has chosen not to respond."
           </div>
         </div>
 
@@ -108,7 +109,7 @@ window.Tuesday = {
               <div class="gov-field">
                 <label>4. Your Legal Name (Confirmation) <span class="gov-required">*</span></label>
                 <input type="text" placeholder="Re-enter your legal name exactly as entered above">
-                <p class="gov-helper">Must match Field 3 exactly. Middle initial must match. Punctuation must match.</p>
+                <p class="gov-helper">Must match Field 3 exactly. Middle initial must match. Punctuation must match. Field 3 does not match Field 3.</p>
               </div>
 
               <div class="gov-field">
@@ -174,7 +175,7 @@ window.Tuesday = {
               <div class="gov-field">
                 <label>8. Government-Issued Birthday Awareness Certificate Number</label>
                 <input type="text" placeholder="Format: BDY-XXXX-XXXX">
-                <p class="gov-helper">Leave blank if you do not have one. Most people do not have one.</p>
+                <p class="gov-helper">Leave blank if you do not have one. Having one is grounds for additional review. Nobody has one. The certificate does not exist.</p>
               </div>
 
               <div class="gov-field">
@@ -194,13 +195,15 @@ window.Tuesday = {
                 <p class="gov-helper">
                   Your typed signature serves as your legal attestation that everything above is true,
                   accurate, and that you understand it will not help you.
+                  Unsigned signatures will be considered signed. Signed signatures will be reviewed
+                  for authenticity by Gerald.
                 </p>
               </div>
             </div>
 
             <div class="gov-submit-row">
               <button type="submit" class="gov-submit-btn">Submit Form BDY-404</button>
-              <p class="gov-submit-note">Processing time: 6–8 birthdays</p>
+              <p class="gov-submit-note">Processing time: 6–8 birthdays. Yours does not count.</p>
             </div>
           </form>
 

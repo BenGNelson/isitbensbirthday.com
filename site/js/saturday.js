@@ -22,7 +22,7 @@ window.Saturday = {
     'Those were hot dogs. All of them. None of them were birthday cakes.',
     'We see you selected the hot dogs again. These are still hot dogs.',
     'We are beginning to worry about your ability to identify birthday cakes.',
-    'A birthday cake has: frosting, candles, the words "Happy Birthday." Not: a bun, mustard, or relish. Please reflect on this.',
+    'A birthday cake has: frosting, candles, the words "Happy Birthday." A hot dog has: none of these, and yet you keep choosing it. We are not angry. We are documenting.',
     'EMERGENCY ACCESS DENIED. Maximum attempts reached. Your hot dog selections have been logged. Please return on July 5th when the portal is aligned and you have, hopefully, learned what a birthday cake is.',
   ],
 
@@ -40,9 +40,9 @@ window.Saturday = {
       { label: 'BIRTHDAY DIMENSION',       value: '■ OFFLINE',          cls: 'red'    },
       { label: 'TEMPORAL ALIGNMENT',       value: '✗ MISALIGNED',       cls: 'red'    },
       { label: 'CAKE PARTICLE DENSITY',    value: '0.000 / cubic meter',cls: 'yellow' },
-      { label: 'CANDLE IGNITION PROTOCOL', value: 'SUSPENDED',          cls: 'yellow' },
-      { label: 'CONFETTI COMPRESSION',     value: 'N/A',                cls: 'yellow' },
-      { label: 'PARTY PROTOCOL STATUS',    value: 'DORMANT',            cls: 'red'    },
+      { label: 'CANDLE IGNITION PROTOCOL', value: 'SUSPENDED (fire marshal, interdimensional)', cls: 'yellow' },
+      { label: 'CONFETTI COMPRESSION',     value: '0.0 kJ (last streamer archived 2019)',      cls: 'yellow' },
+      { label: 'PARTY PROTOCOL STATUS',    value: 'DORMANT (was: THRIVING)',                   cls: 'red'    },
       { label: 'ESTIMATED REACTIVATION',   value: 'JULY 5TH',           cls: 'cyan'   },
     ];
 
@@ -84,7 +84,7 @@ window.Saturday = {
 
         <h1 class="sp-title">Birthday Portal Offline</h1>
         <p class="sp-subtitle">
-          Portal reactivation requires: July 5th · Global temporal alignment · Sufficient cake particles
+          Portal reactivation requires: July 5th · Global temporal alignment · Sufficient cake particles · One (1) birthday · Today is not it
         </p>
 
         <div class="sp-status-panel">
@@ -107,7 +107,7 @@ window.Saturday = {
           <div class="sp-emergency-title">⚠ Emergency Override Protocol</div>
           <p>
             Authorized personnel may attempt emergency portal access via biometric verification.
-            Unauthorized access will result in hot dogs. We have been very clear about this.
+            Unauthorized access will result in hot dogs. This is not a metaphor. There will be hot dogs.
           </p>
           <button class="sp-emergency-btn" id="sp-emergency-btn">INITIATE EMERGENCY ACCESS</button>
         </div>
@@ -210,8 +210,9 @@ window.Saturday = {
 
       // After second attempt, shuffle labels slightly to add confusion
       if (this.captchaAttempts === 2) {
-        instrEl.innerHTML = 'Select all images containing a <strong>birthday cake</strong>. '
-          + 'Look carefully. One of these may be a birthday cake. (Hint: it is not.)';
+        instrEl.innerHTML = 'Look closer. Really look. '
+          + 'We have added no new images because there are no new images. '
+          + 'Select the <strong>birthday cake</strong>.';
       }
     });
   },

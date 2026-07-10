@@ -33,7 +33,7 @@ window.Monday = {
         <aside>
           <div class="co-card">
             <h1 class="co-login-title">Sign in</h1>
-            <p class="co-login-subtitle">BirthdayCorp™ Enterprise Suite &mdash; Secure Portal</p>
+            <p class="co-login-subtitle">BirthdayCorp™ Enterprise Suite &mdash; Please sign in to confirm it is not your birthday.</p>
 
             <div class="co-form-group">
               <label for="co-username">Email or username</label>
@@ -105,7 +105,7 @@ window.Monday = {
               <div class="co-kpi">
                 <p class="co-kpi-label">Days Until Birthday Event</p>
                 <p class="co-kpi-value">${daysUntil}</p>
-                <p class="co-kpi-delta" style="color:#888">days remaining</p>
+                <p class="co-kpi-delta" style="color:#888">days remaining · no contingency plan filed</p>
               </div>
               <div class="co-kpi">
                 <p class="co-kpi-label">Stakeholder Alignment</p>
@@ -115,7 +115,7 @@ window.Monday = {
               <div class="co-kpi">
                 <p class="co-kpi-label">Synergies Identified</p>
                 <p class="co-kpi-value yellow">0</p>
-                <p class="co-kpi-delta">— same as last quarter</p>
+                <p class="co-kpi-delta">— synergy pipeline empty since founding</p>
               </div>
             </div>
 
@@ -175,7 +175,7 @@ window.Monday = {
               <span class="co-action-badge" style="background:var(--co-red)">WARN</span>
               <div class="co-action-text">
                 Zero (0) birthday-related activities detected today
-                <small>This has been flagged. No one is doing anything about it.</small>
+                <small>Flagged for review. The review has also not been scheduled.</small>
               </div>
             </div>
           </div>
@@ -187,8 +187,8 @@ window.Monday = {
             <h2 class="co-cal-title">Schedule a Birthday Sync</h2>
             <p class="co-cal-subtitle">Select an available date below.</p>
             <div class="co-cal-note">
-              ⚠️ All dates are currently unavailable except <strong>July 5th</strong>,
-              which is marked <strong>MANDATORY — ALL HANDS</strong>.
+              ⚠️ All 364 other dates are marked <strong>UNAVAILABLE</strong>. July 5th is
+              marked <strong>MANDATORY — ALL HANDS — NO EXCEPTIONS — BRING NOTHING, A CAKE WILL NOT BE PROVIDED</strong>.
             </div>
             <button class="co-cal-btn" id="co-cal-btn">View Calendar</button>
             <div class="co-cal-grid" id="co-cal-grid" style="display:none"></div>
@@ -199,9 +199,7 @@ window.Monday = {
             <div style="font-size:0.8rem; color:var(--co-muted); line-height:1.8">
               <div>🔴 Ben's Birthday: <strong>NOT TODAY</strong></div>
               <div>🔴 Cake Status: <strong>NONE</strong></div>
-              <div>🔴 Candles: <strong>UNLIT</strong></div>
-              <div>🔴 Celebration: <strong>PENDING</strong></div>
-              <div>🔴 Fun: <strong>DEFERRED</strong></div>
+              <div>🔴 Morale: <strong>LINKED TO CAKE STATUS</strong></div>
               <div style="margin-top:8px; font-size:0.7rem; font-style:italic">
                 All systems will transition to 🟢 on July 5th.
               </div>
@@ -246,7 +244,7 @@ window.Monday = {
     // Forgot password — standard corporate response, no visible joke
     forgot.addEventListener('click', (e) => {
       e.preventDefault();
-      forgotNote.textContent = 'If an account exists for this email address, password reset instructions have been sent.';
+      forgotNote.textContent = 'If an account exists for this address, reset instructions were sent to whoever last celebrated a birthday here. That was a while ago.';
       forgotNote.style.display = 'block';
     });
 

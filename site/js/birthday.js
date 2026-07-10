@@ -20,10 +20,16 @@ window.Birthday = {
     "SCIENTISTS BAFFLED",
   ],
 
+  subtitles: [
+    "This has been foretold. The prophecy is complete. There is cake.",
+    "Astronomers were warned. They did nothing. There is cake.",
+    "Seven experts signed off on this. There is cake.",
+  ],
+
   tickerItems: [
     "BREAKING: It is Ben's Birthday",
     "Markets surge 400% on birthday news",
-    "Local man reportedly 'feeling it'",
+    "Local man confirms he is, in fact, feeling it",
     "Scientists confirm: today is, in fact, July 5th",
     "Experts unanimously recommend: cake",
     "Birthday candles classified as genuine fire hazard",
@@ -32,7 +38,7 @@ window.Birthday = {
     "Ben has survived another full rotation around the sun",
     "Cake supplies running critically low",
     "This is not a drill",
-    "We repeat: this is not a drill",
+    "We regret to confirm this is not a drill",
     "More at 11",
   ],
 
@@ -40,12 +46,12 @@ window.Birthday = {
     { title: "Awake",                    desc: "You opened your eyes today.",                              pts: 0    },
     { title: "Alive",                    desc: "Vitals detected. Statistically impressive.",               pts: 5    },
     { title: "Calendar Literate",        desc: "You successfully identified July 5th.",                    pts: 10   },
-    { title: "Birthday Proximity",       desc: "You are within 0 days of Ben's birthday.",                 pts: 25   },
+    { title: "Birthday Proximity",       desc: "You are 0 days from Ben's birthday. This is the closest anyone has ever been.", pts: 25   },
     { title: "It's Him",                 desc: "This is Ben's birthday. Ben is here.",                     pts: 9999 },
     { title: "Another Year Survived",    desc: "Statistics were against you. You did it.",                 pts: 50   },
     { title: "Cake Adjacent",            desc: "There is probably cake somewhere near you.",               pts: 25   },
     { title: "Candle Threat: Elevated",  desc: "Fire hazard assessment: elevated.",                       pts: 15   },
-    { title: "Getting Older",            desc: "There is no stopping this. We've tried.",                 pts: 0    },
+    { title: "Getting Older",            desc: "There is no stopping this. A committee was formed. The committee has aged.", pts: 0    },
     { title: "Chronologically Advancing",desc: "Time marches forward regardless of your feelings.",       pts: 1    },
   ],
 
@@ -67,6 +73,8 @@ window.Birthday = {
       </button>
     `).join('');
 
+    const subtitle = this.subtitles[Math.floor(Math.random() * this.subtitles.length)];
+
     return `
       <canvas id="confetti-canvas" aria-hidden="true"></canvas>
 
@@ -79,7 +87,7 @@ window.Birthday = {
         <div class="bd-hero">
           <div class="bd-pre-title">⚠️ ALERT — VERIFIED — CONFIRMED ⚠️</div>
           <h1 class="bd-title">IT IS<br><span class="bd-name">BEN'S</span><br>BIRTHDAY</h1>
-          <p class="bd-subtitle">This has been foretold. The prophecy is complete. There is cake.</p>
+          <p class="bd-subtitle">${subtitle}</p>
 
           <section class="bd-candles">
             <p class="bd-candle-label">Blow out the candles:</p>
@@ -232,7 +240,7 @@ window.Birthday = {
       remaining--;
 
       if (remaining === 0) {
-        status.textContent = '🎂 All candles blown out! Make a wish!';
+        status.textContent = '🎂 Wish submitted. Please allow 4–6 business weeks for processing.';
         status.classList.add('wish');
         if (this.confetti) this.confetti.burst();
       } else {
@@ -256,7 +264,7 @@ window.Birthday = {
       if (this.chaosLevel >= 10) {
         document.body.classList.add('chaos-10');
         btn.textContent = '🎉🎉🎉 MAXIMUM BIRTHDAY 🎉🎉🎉';
-        label.textContent = 'CHAOS LEVEL: MAXIMUM. THERE IS NO GOING BACK.';
+        label.textContent = 'CHAOS LEVEL: MAXIMUM. OSHA HAS BEEN NOTIFIED.';
         return;
       }
 

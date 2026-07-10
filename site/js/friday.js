@@ -11,7 +11,7 @@ window.Friday = {
 		'Station 4: ambient temp 11.8°C. Frog activity: nil. Temporal conditions: non-festive.',
 		'Cross-referencing with historical non-birthday corpus. Match confidence: 99.97%.',
 		'Specimen 12-A: foraging at water margin. Heading: 247°. Pace: 0.3 m/s. Subject coordinates: 0 anomalies.',
-		'frog',
+		'heron.',
 		'Station 2: no movement detected in 73.4 minutes. Sensor integrity: nominal.',
 		'Specimen 3-C: jumping. Event duration: 0.8s. Horizontal distance: 0.62 m. Classified: non-birthday related.',
 		'Field note: known subject coordinates surveilled. No birthday. Observation continues.',
@@ -20,10 +20,11 @@ window.Friday = {
 		'Specimen 9-D: entering torpor position. Duration: 22 min. (Confirmed active at 22:01.) Non-event.',
 		'Environmental scan complete. No birthday-adjacent atmospheric conditions detected.',
 		'Specimen 1-F: awake. Activity type: ambiguous. Filed under: inconclusive (non-birthday).',
+		'Specimen 7-B: [OBSERVER NOTE — do not log] it knows we are watching. it has stopped eating. resume normal logging.',
 		'Comparative index against Subject Baseline Dataset (2019–2024): deviation 0.002%. Stable.',
-		'Station 7: brief vocalization. Re-assessed as wind through reeds. Non-birthday wind.',
+		'Station 7: brief vocalization. Re-assessed as wind through reeds. Reeds re-assessed as frog. Inconclusive.',
 		'Field team note: morale good. Determination unchanged.',
-		'Frog cohort (n=14): all accounted for. Group behavior: non-festive.',
+		'Frog cohort (n=13): all accounted for. Group behavior: non-festive.',
 		'Auto-ping: ABRI Central Server. Status: online. Current determination: NOT HIS BIRTHDAY.',
 		'Signal interference at station 6 (13 sec). Data recovered. No birthday occurred during gap.',
 		'Specimen 4-B: tympanic membrane activity detected. Birthday likelihood: 0.003%.',
@@ -31,7 +32,7 @@ window.Friday = {
 		'Station 3: humidity 91%. Frog cutaneous hydration: adequate. Birthday status: negative.',
 		'Longitudinal trend analysis complete. Conclusion: consistent with all prior findings.',
 		'Note: one specimen appeared to orient toward subject coordinates. Filed: inconclusive.',
-		'Uptime: 13,505 days of continuous observation. Determinations issued: 13,505. All negative.',
+		'Uptime: 13,505 days of continuous observation. Determinations issued: 13,506. Discrepancy under review.',
 	],
 
 	papers: [
@@ -132,7 +133,7 @@ window.Friday = {
             <div class="ob-two-col">
               <div class="ob-main-col">
                 <h2 class="ob-section-title">About the Institute</h2>
-                <p class="ob-body">The Anuran Behavioral Research Institute was founded in 1987 by Dr. Lily R. Padsworth, PhD, following a series of promising but inconclusive field observations near the known residential coordinates of a local individual identified in Institute records only as Ben (surname withheld for privacy). Frogs — members of the order Anura, meaning "without tail" in Greek — were selected as field observers for their sensitivity to environmental stimuli, including tympanic membrane activity and cutaneous moisture levels. The Institute has maintained continuous field observation since that date, with a singular research objective: to determine, with scientific certainty, whether it is Ben's birthday.</p>
+                <p class="ob-body">The Anuran Behavioral Research Institute was founded in 1987 by Dr. Lily R. Padsworth, PhD, following a series of promising but inconclusive field observations near the known residential coordinates of a local individual identified in Institute records only as Ben (surname withheld for privacy). Frogs — members of the order Anura, meaning "without tail" in Greek — were selected as field observers because they were available, and because Dr. Padsworth already had fourteen. The Institute has maintained continuous field observation since that date, with a singular research objective: to determine, with scientific certainty, whether it is Ben's birthday.</p>
                 <p class="ob-body">To date, the Institute has issued 13,505 daily determinations. All have concluded: <strong>it is not Ben's birthday.</strong> Continued observation is recommended.</p>
 
                 <h3 class="ob-subsection-title">Our Methodology</h3>
@@ -142,10 +143,10 @@ window.Friday = {
                 <h3 class="ob-subsection-title">Leadership</h3>
                 <p class="ob-body"><strong>Dr. Lily R. Padsworth, PhD</strong> (Director) &mdash; Dr. Padsworth has led the Institute since its founding. Her work in anuran temporal inference has been cited 4 times, including once by herself in a later paper and once in error.</p>
                 <p class="ob-body"><strong>Dr. Kermit J. Greenwell, PhD</strong> (Senior Research Fellow) &mdash; Dr. Greenwell oversees acoustic triangulation operations and tympanic membrane data collection across all active field stations.</p>
-                <p class="ob-body"><strong>Research Staff:</strong> 23 full-time field observers, 2 data analysts, 1 statistician (Dr. Anura B. Gilmore, part-time, contract, since 2009, same contract).</p>
+                <p class="ob-body"><strong>Research Staff:</strong> 23 full-time field observers (14 frogs), 2 data analysts, 1 statistician (Dr. Anura B. Gilmore, part-time, contract, since 2009, same contract, has never been seen).</p>
 
                 <h3 class="ob-subsection-title">Funding</h3>
-                <p class="ob-body">The Institute's annual operating budget of $4.2 million is provided in full by an anonymous donor who has asked to remain anonymous, and who is not Ben.</p>
+                <p class="ob-body">The Institute's annual operating budget of $4.2 million is provided in full by an anonymous donor who has asked to remain anonymous, whose identity is known only to the Institute, and who is not Ben. The donor's stated funding condition is that observation never stop.</p>
               </div>
 
               <aside class="ob-aside">
@@ -185,7 +186,7 @@ window.Friday = {
             <div class="ob-field-header">
               <div>
                 <h2 class="ob-section-title">Live Field Data</h2>
-                <p class="ob-body ob-body-sm">Real-time observation log from 14 active field stations. Data is transmitted continuously from our single field station. Timestamps reflect local field observer time (UTC-5).</p>
+                <p class="ob-body ob-body-sm">Real-time observation log from 14 active field stations. Data is transmitted continuously from all 14 field stations, which is one field station. Timestamps reflect local field observer time (UTC-5).</p>
               </div>
               <div class="ob-live-badge">
                 <span class="ob-live-dot"></span> LIVE
@@ -249,7 +250,7 @@ window.Friday = {
               <p class="ob-letter-body">Thank you for your submission to the ABRI Birthday Sighting Registry (Form FSR-14B, Rev. 2019). Your report has been received and assigned reference number <strong id="ob-ref-num">FSR-2024-XXXX</strong>.</p>
               <p class="ob-letter-body">After thorough review by our panel, your report has been assessed as <strong>INCONCLUSIVE</strong>. Specifically, the panel identified insufficient anuran corroboration for the claimed birthday conditions. While we appreciate the detail provided, the frog activity data submitted does not meet the evidentiary threshold established under the Standardized Anuran Inference Protocol (SAIP §4.2.1).</p>
               <p class="ob-letter-body">Our current field determination remains: <strong>NOT HIS BIRTHDAY.</strong></p>
-              <p class="ob-letter-body">We encourage continued vigilance and welcome future submissions. Please allow 6–18 months for processing of any follow-up reports. If you believe this determination was made in error, you may appeal in writing to Dr. Lily Padsworth, PhD. Appeals are reviewed quarterly. The next quarterly review is scheduled for a later quarter.</p>
+              <p class="ob-letter-body">We encourage continued vigilance and welcome future submissions. Please allow 6–18 months for processing of any follow-up reports. If you believe this determination was made in error, you may appeal in writing to Dr. Lily Padsworth, PhD. Appeals are reviewed quarterly. The next quarterly review is scheduled for the fourth quarter of 2003.</p>
               <p class="ob-letter-body">With professional regards,</p>
               <p class="ob-letter-body"><em>Office of Sighting Report Review<br>Anuran Behavioral Research Institute<br>Est. 2003</em></p>
               <button class="ob-letter-dismiss" id="ob-letter-dismiss">Submit another report</button>
