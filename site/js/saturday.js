@@ -33,6 +33,60 @@ window.Saturday = {
     app.innerHTML = this.buildHTML();
     this.startCountdown();
     this.initCaptcha();
+    this.maybeLoadAdHell();
+  },
+
+  // ── Ad Hell: the escalating pop-up-ad gauntlet (reusable module) ─
+  // Comedy layered ON TOP of the page — it does NOT gate or touch the
+  // sat-portal clue (which lives in the emergency CAPTCHA lockout).
+  // Auto-erupts once per browser session, ~3s after load; fully
+  // escapable (triple-Esc / real closes / 45s failsafe).
+  //   ?adhell=off → skip entirely (tests)   ?adhell=on → force now
+  maybeLoadAdHell() {
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get('adhell');
+    if (mode === 'off') return;
+    const force = mode === 'on';
+
+    try {
+      if (!force && sessionStorage.getItem('adhell_saturday_seen')) return;
+    } catch (e) { /* private mode — just proceed */ }
+
+    // Erupt — but never cover the sat-portal emergency CAPTCHA while the player
+    // is mid-attempt (that overlay carries the ARG clue). Wait it out instead.
+    const fire = () => {
+      if (!window.AdHell) return;
+      const cap = document.getElementById('sp-captcha-overlay');
+      if (cap && cap.classList.contains('open')) { setTimeout(fire, 4000); return; }
+      window.AdHell.start({ delay: 0 });
+    };
+
+    const launch = () => {
+      if (!window.AdHell) return;   // load failed → leave 'seen' unset so a later load retries
+      try { sessionStorage.setItem('adhell_saturday_seen', '1'); } catch (e) {}
+      setTimeout(fire, force ? 0 : 3000);
+    };
+
+    if (window.AdHell) { launch(); return; }
+
+    // Inject CSS + JS; only launch once BOTH are ready, so the force path can't
+    // flash unstyled full-screen ads before adhell.css applies.
+    let cssReady = false, jsReady = false;
+    const ready = () => { if (cssReady && jsReady) launch(); };
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'css/adhell.css';
+    link.onload = () => { cssReady = true; ready(); };
+    link.onerror = () => { cssReady = true; ready(); };   // proceed even if CSS 404s
+    document.head.appendChild(link);
+
+    const script = document.createElement('script');
+    script.src = 'js/adhell.js';
+    script.onload = () => { jsReady = true; ready(); };
+    // If the script fails to load, the page still works — Ad Hell is purely
+    // additive, and 'seen' stays unset so a later load can retry.
+    document.head.appendChild(script);
   },
 
   buildHTML() {
