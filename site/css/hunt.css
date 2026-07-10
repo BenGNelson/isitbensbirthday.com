@@ -1,0 +1,165 @@
+/* ============================================================
+   hunt.css — candle-counter HUD + toast + finale for the ARG (hunt.js).
+   Site-wide, layered above every day experience. Deliberately neutral
+   (dark glassy pill + light text) so it reads over any day's background.
+   ============================================================ */
+
+/* ── HUD shell (hidden until the hunt starts) ─────────────── */
+.hunt-hud {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.hunt-hud.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* ── Toggle pill (🕯️ x/N) ─────────────────────────────────── */
+.hunt-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 999px;
+  background: rgba(17, 20, 17, 0.82);
+  color: #f4f4f4;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.hunt-toggle:hover { background: rgba(17, 20, 17, 0.94); }
+.hunt-flame { font-size: 15px; filter: drop-shadow(0 0 4px rgba(255, 176, 60, 0.0)); transition: filter 0.4s ease; }
+.hunt-count { font-variant-numeric: tabular-nums; }
+
+.hunt-hud.complete .hunt-flame { filter: drop-shadow(0 0 7px rgba(255, 176, 60, 0.9)); }
+.hunt-hud.pulse .hunt-toggle { animation: hunt-pulse 0.9s ease; }
+@keyframes hunt-pulse {
+  0%, 100% { transform: scale(1); }
+  30%      { transform: scale(1.12); }
+}
+
+/* ── Clue panel ────────────────────────────────────────────── */
+.hunt-panel {
+  width: 230px;
+  max-width: 78vw;
+  background: rgba(12, 15, 12, 0.92);
+  color: #eaeaea;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  padding: 12px 12px 10px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: none;
+}
+.hunt-panel.open { display: block; }
+.hunt-panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #ff6fb0;
+  margin-bottom: 9px;
+}
+.hunt-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.hunt-item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+.hunt-mark { width: 16px; text-align: center; flex: 0 0 auto; }
+.hunt-item.locked .hunt-text { color: #8b8f8b; }
+.hunt-item.got .hunt-text { color: #baf7b0; }
+.hunt-foot {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 10.5px;
+  color: #9aa09a;
+  line-height: 1.45;
+}
+
+/* ── Toast ─────────────────────────────────────────────────── */
+.hunt-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 78px;
+  transform: translate(-50%, 16px);
+  z-index: 9999;
+  max-width: 90vw;
+  background: rgba(12, 15, 12, 0.95);
+  color: #eafce6;
+  border: 1px solid rgba(120, 255, 120, 0.28);
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.hunt-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ── Finale overlay ────────────────────────────────────────── */
+.hunt-finale {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(6, 8, 12, 0);
+  transition: background 0.5s ease;
+}
+.hunt-finale.show { background: rgba(6, 8, 12, 0.78); }
+.hunt-finale-card {
+  max-width: 24rem;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(160deg, #1b1030, #3a0f2b);
+  color: #fdf2f8;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 1.25rem;
+  padding: 2.25rem 1.75rem;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2), opacity 0.5s ease;
+}
+.hunt-finale.show .hunt-finale-card { transform: scale(1); opacity: 1; }
+.hunt-finale-cake { font-size: 3.5rem; line-height: 1; animation: hunt-bob 3s ease-in-out infinite; }
+.hunt-finale-card h2 { font-size: 1.5rem; margin: 0.75rem 0 0.4rem; }
+.hunt-finale-card p { color: #e7c6dd; font-size: 0.95rem; margin-bottom: 1.5rem; }
+.hunt-finale-close {
+  background: #db2777; color: #fff; font-weight: 600;
+  padding: 0.6rem 1.6rem; border-radius: 999px;
+  box-shadow: 0 8px 20px rgba(219, 39, 96, 0.4);
+}
+@keyframes hunt-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* ── Respect reduced-motion ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .hunt-hud, .hunt-toast, .hunt-finale, .hunt-finale-card { transition: none; }
+  .hunt-hud.pulse .hunt-toggle, .hunt-finale-cake { animation: none; }
+}
+
+/* ── Small screens: keep it out of the thumb zone ──────────── */
+@media (max-width: 480px) {
+  .hunt-hud { right: 10px; bottom: 10px; }
+  .hunt-toast { bottom: 70px; }
+}

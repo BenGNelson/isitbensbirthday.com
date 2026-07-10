@@ -92,10 +92,13 @@
    */
   function printConsoleBreadcrumb() {
     try {
+      // NOTE: a background + padding on a MULTI-LINE %c block gets clipped in
+      // Chrome DevTools (it sizes to the first line). So only the single-line
+      // title uses a padded block; the multi-line body is plain colored text.
       var title = 'background:#111;color:#ff4fa3;font-size:15px;font-weight:bold;' +
-                  'padding:6px 12px;border-radius:4px 4px 0 0;';
-      var body = 'background:#0b0f0b;color:#39ff14;line-height:1.55;padding:10px 12px;' +
-                 'font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;';
+                  'padding:6px 12px;border-radius:4px;';
+      var body = 'color:#39ff14;font-size:12px;line-height:1.7;' +
+                 'font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;';
       console.log('%c🎂 BirthdayCorp™ · SYSOPS console', title);
       console.log(
         '%cYou opened the console. Good instinct, detective.\n\n' +
@@ -109,6 +112,23 @@
     } catch (e) { /* console styling unsupported — no big deal */ }
   }
 
+  /**
+   * Loads the site-wide easter-egg hunt engine + candle-counter HUD
+   * (hunt.js / hunt.css). Independent of the day module; exposes window.Hunt
+   * so each day's clue can report itself via Hunt.find('<id>').
+   */
+  function loadHunt() {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'css/hunt.css';
+    document.head.appendChild(link);
+
+    var script = document.createElement('script');
+    script.src = 'js/hunt.js';
+    document.body.appendChild(script);
+  }
+
   printConsoleBreadcrumb();
+  loadHunt();
   loadExperience(getExperienceName());
 })();
