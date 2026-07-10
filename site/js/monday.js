@@ -376,11 +376,11 @@ window.Monday = {
       grid.appendChild(d);
     });
 
-    // July 1 = Wednesday (day index 3) in a reference year
-    // Offset: 3 blank cells
-    for (let i = 0; i < 3; i++) {
-      const d = document.createElement('div');
-      grid.appendChild(d);
+    // Blank cells so July 1 lands under its real weekday (month 6 = July, 0-indexed).
+    const year = new Date().getFullYear();
+    const offset = new Date(year, 6, 1).getDay();      // 0=Sun … 6=Sat
+    for (let i = 0; i < offset; i++) {
+      grid.appendChild(document.createElement('div'));
     }
 
     for (let day = 1; day <= 31; day++) {
