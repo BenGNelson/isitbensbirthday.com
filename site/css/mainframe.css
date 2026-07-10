@@ -1,0 +1,85 @@
+/* ============================================================
+   mainframe.css — green CRT terminal for the hidden BirthdayCorp
+   SYSOPS mainframe (see js/mainframe.js).
+   ============================================================ */
+
+.mf-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #020a03;
+  color: #33ff77;
+  font-family: "SF Mono", ui-monospace, "DejaVu Sans Mono", Menlo, Consolas, monospace;
+  font-size: 15px;
+  line-height: 1.55;
+  overflow: hidden;
+  animation: mf-flicker 4s infinite steps(60);
+}
+
+.mf-crt {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding: 22px clamp(14px, 4vw, 48px);
+  overflow-y: auto;
+  text-shadow: 0 0 6px rgba(51, 255, 119, 0.55);
+  box-sizing: border-box;
+  /* subtle screen-curvature vignette */
+  background:
+    radial-gradient(120% 120% at 50% 50%, transparent 60%, rgba(0,0,0,0.55) 100%);
+}
+
+.mf-line { white-space: pre-wrap; word-break: break-word; }
+.mf-echo   { color: #b8ffcf; }
+.mf-ok     { color: #33ff77; }
+.mf-warn   { color: #ffcc33; text-shadow: 0 0 6px rgba(255, 204, 51, 0.5); }
+.mf-err    { color: #ff5b5b; text-shadow: 0 0 6px rgba(255, 91, 91, 0.5); }
+.mf-dim    { color: #2fae66; }
+.mf-accent { color: #8affb0; }
+
+.mf-input-line { display: flex; align-items: baseline; gap: 8px; }
+.mf-prompt { color: #8affb0; white-space: nowrap; }
+.mf-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: #b8ffcf;
+  font: inherit;
+  text-shadow: inherit;
+  caret-color: #33ff77;
+  padding: 0;
+}
+
+/* CRT scanline overlay */
+.mf-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0)   0px,
+    rgba(0, 0, 0, 0)   2px,
+    rgba(0, 0, 0, 0.22) 3px,
+    rgba(0, 0, 0, 0.22) 4px
+  );
+  mix-blend-mode: multiply;
+  animation: mf-scan 8s linear infinite;
+}
+
+@keyframes mf-flicker {
+  0%, 100% { opacity: 1; }
+  48%      { opacity: 0.97; }
+  50%      { opacity: 0.92; }
+  52%      { opacity: 0.98; }
+}
+@keyframes mf-scan {
+  from { background-position-y: 0; }
+  to   { background-position-y: 100px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mf-screen { animation: none; }
+  .mf-scanlines { animation: none; }
+}

