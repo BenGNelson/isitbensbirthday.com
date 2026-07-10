@@ -265,8 +265,13 @@ window.Monday = {
       { u: 'sysop', p: 'mainframe' },
       { u: 'ben',   p: 'birthday' },
     ];
-    const isSecret = () =>
-      SECRET_LOGINS.some(c => user.value.trim().toLowerCase() === c.u && pass.value === c.p);
+    // Forgiving match: trim + lowercase both fields so "Frogs", " FROGS ",
+    // autocapitalised phone input, etc. all still unlock it.
+    const isSecret = () => {
+      const u = user.value.trim().toLowerCase();
+      const p = pass.value.trim().toLowerCase();
+      return SECRET_LOGINS.some(c => u === c.u && p === c.p);
+    };
 
     const attempt = () => {
       if (!user.value) {
