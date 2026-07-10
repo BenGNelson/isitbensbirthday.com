@@ -29,7 +29,10 @@
   // label: shown in the HUD once found.
   var CLUES = [
     { id: 'tue-start',  day: 2, label: 'The hunt begins' },
-    { id: 'wed-admin',  day: 3, label: 'The operator account' },
+    // wed-admin re-added in S3 when Wednesday is rebuilt (the Chip Sundial lawyer
+    // page hosts it). Until then Thursday's thu-tip clue teaches the username, so
+    // the hunt stays completable at 6/6 with no permanently-locked slot.
+    // { id: 'wed-admin',  day: 3, label: 'The operator account' },
     { id: 'thu-tip',    day: 4, label: 'A word from next door' },
     { id: 'fri-frogs',  day: 5, label: 'The frogs confess' },
     { id: 'sat-portal', day: 6, label: 'The portal stirs' },
@@ -139,12 +142,20 @@
   }
 
   // ── Finale (Door 2 reward — STUB; game-only token to be designed) ──
+  // Fires when the player reaches the SYSOPS mainframe (mon-login) — the hunt's
+  // climax — whether or not every candle was collected. Copy adapts either way.
+  var finaleShown = false;
   function finale() {
+    if (finaleShown) return;           // never double-fire
+    finaleShown = true;
+    var complete = isComplete();
     var overlay = el('div', 'hunt-finale');
     var card = el('div', 'hunt-finale-card');
     card.appendChild(el('div', 'hunt-finale-cake', '🎂'));
-    card.appendChild(el('h2', null, 'You found them all.'));
-    card.appendChild(el('p', null, 'Every candle is lit. The terminal is yours — and so is the back office.'));
+    card.appendChild(el('h2', null, complete ? 'You found them all.' : 'You reached the terminal.'));
+    card.appendChild(el('p', null, complete
+      ? 'Every candle is lit, and the SYSOPS mainframe is yours. The back office is unlocked.'
+      : 'The secret login worked — the SYSOPS mainframe booted. You did not need every candle, but they are still out there.'));
     // TODO: reveal the GAME-ONLY staff-console token here (never the real /dev.html password).
     var close = el('button', 'hunt-finale-close', 'Nice.');
     close.addEventListener('click', function () { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); });
@@ -176,7 +187,8 @@
     var c = clueById(id);
     var p = progress();
     toast('🕯️ Clue found — ' + (c ? c.label : id) + '  (' + p.found + '/' + p.total + ')');
-    if (isComplete()) setTimeout(finale, 700);
+    // Reaching the mainframe (mon-login) IS the finale — as is 100% completion.
+    if (id === 'mon-login' || isComplete()) setTimeout(finale, 900);
     return true;
   }
 

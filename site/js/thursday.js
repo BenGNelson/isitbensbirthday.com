@@ -201,9 +201,16 @@ window.Thursday = {
   initMovingButton() {
     const btn  = document.getElementById('hd-join-btn');
     const note = document.getElementById('hd-join-note');
+    if (!btn || !note) return;
+
     let escaped = 0;
     let offsetX = 0;
     let offsetY = 0;
+
+    // Desktop: flee from cursor in real time — but a persistent member
+    // eventually wears it down. After enough evasions it stops fleeing and
+    // becomes catchable (the win-state). It is genuinely catchable.
+    const maxMouseEscapes = 7;
 
     // Desktop: flee from cursor in real time
     const mouseEscapeMessages = [
@@ -213,10 +220,12 @@ window.Thursday = {
       '(This is a certified evasion button)',
       '(The button has retained counsel. Its counsel is also a hot dog.)',
       '(You cannot catch it. It has been trained for this.)',
-      '(Just click it!)',
+      '(Fine. FINE. The button is tired. Go ahead and click it.)',
     ];
 
     btn.addEventListener('mousemove', (e) => {
+      if (escaped >= maxMouseEscapes) return; // worn down — now catchable
+
       const rect   = btn.getBoundingClientRect();
       const cx     = rect.left + rect.width / 2;
       const cy     = rect.top  + rect.height / 2;
@@ -270,11 +279,32 @@ window.Thursday = {
       touchEscapes++;
     }, { passive: false });
 
-    // Fires after desktop catch or after mobile exhausts escapes
+    // Fires after desktop catch or after mobile exhausts escapes.
+    // This is the single most-earned moment on the page, so it hides the
+    // Thursday hunt clue: Gerald IS the mainframe 'admin', and Friday holds
+    // "the word." Idempotent — clicking again just re-shows the reveal.
+    let caught = false;
     btn.addEventListener('click', () => {
-      note.textContent = '(You caught it. It let you. There is no membership form.)';
       btn.disabled = true;
       btn.style.background = 'var(--hd-muted)';
+
+      // Beat one: the deadpan win-state.
+      note.textContent = '(You caught it. It let you. There is no membership form.)';
+
+      // Beat two: the diegetic reveal, arriving a moment later.
+      setTimeout(() => {
+        note.innerHTML =
+          '(There is no membership form. There is only the Directory —<br>' +
+          'and one member who keeps his last initial hidden. That is Gerald.<br>' +
+          'At BirthdayCorp, Gerald is the one who signs in as <strong>admin</strong>.<br>' +
+          'He will not tell you the word himself. Nobody says the word aloud<br>' +
+          'until Friday. Come back Friday, and Friday will say it.<br>' +
+          'This is still not Ben’s birthday. Gerald checked.)';
+      }, 1400);
+
+      if (caught) return; // record the clue exactly once
+      caught = true;
+      if (window.Hunt) window.Hunt.find('thu-tip');
     });
   },
 

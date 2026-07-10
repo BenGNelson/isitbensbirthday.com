@@ -350,6 +350,42 @@ body {
   line-height: 1.6;
 }
 
+/* 🥚 The redaction-failure line that leaks the tue-start clue. */
+.gov-ticket-leak {
+  margin-top: 6px;
+  cursor: pointer;
+  color: #6b5300;
+  background: repeating-linear-gradient(
+    -45deg, #fff6cc, #fff6cc 6px, #ffefa8 6px, #ffefa8 12px);
+  outline: 1px dashed #b58a00;
+  outline-offset: 2px;
+  transition: background 0.15s ease;
+}
+
+.gov-ticket-leak:hover,
+.gov-ticket-leak:focus-visible {
+  background: #fff3b0;
+}
+
+.gov-ticket-leak-tag {
+  font-weight: 700;
+  color: var(--gov-red);
+  letter-spacing: 0.05em;
+}
+
+.gov-ticket-leak.found {
+  cursor: default;
+  background: #eef7ee;
+  outline-color: #2f7d32;
+  color: var(--gov-text);
+}
+
+.gov-ticket-leak-flag {
+  margin-top: 4px;
+  font-weight: 700;
+  color: #2f7d32;
+}
+
 /* Footer */
 .gov-footer {
   background: var(--gov-blue);
@@ -359,6 +395,13 @@ body {
   text-align: center;
   font-family: Arial, sans-serif;
   line-height: 1.8;
+}
+
+.gov-footer-tease {
+  display: inline-block;
+  margin-top: 6px;
+  color: rgba(255,255,255,0.35);
+  font-style: italic;
 }
 
 /* ── Mobile ───────────────────────────────────────────────── */

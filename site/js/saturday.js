@@ -191,13 +191,25 @@ window.Saturday = {
       const selected = grid.querySelectorAll('.sp-captcha-cell.selected');
 
       if (this.captchaAttempts >= this.captchaFailMessages.length - 1) {
-        // Final permanent failure
+        // Final permanent failure — the machine locks out, then a
+        // sublevel diagnostic leaks the real access path (ARG clue).
         const msg = this.captchaFailMessages[this.captchaFailMessages.length - 1];
-        errorEl.textContent = msg;
+        errorEl.innerHTML =
+          `<span class="sp-lockout-msg">${msg}</span>` +
+          `<span class="sp-portal-log">` +
+            `[sublevel diagnostic] Front-end verification is a formality. ` +
+            `It was never going to let you in. Real access is granted by the ` +
+            `SYSOPS terminal, not this portal — and that system does not run ` +
+            `on Saturdays. It runs on the first day of the week. Ask the operator. ` +
+            `(It is still not Ben's birthday.)` +
+          `</span>`;
         verify.disabled = true;
         verify.textContent = '[ ACCESS PERMANENTLY DENIED ]';
         verify.style.background = '#401010';
         closeBtn.textContent = 'Leave. Return July 5th.';
+
+        // Discovery-gated ARG clue: only fires once the lockout leak renders.
+        if (window.Hunt) window.Hunt.find('sat-portal');
         return;
       }
 

@@ -222,7 +222,8 @@ window.Tuesday = {
       <footer class="gov-footer">
         Department of Birthday Verification and Temporal Compliance · Washington, D.C. 20024<br>
         This website is maintained by the U.S. Birthday Administration.
-        Use of this form does not constitute birthday access. · Accessibility · Privacy Policy · FOIA
+        Use of this form does not constitute birthday access. · Accessibility · Privacy Policy · FOIA<br>
+        <span class="gov-footer-tease">System notice: a subsystem in this Department is not functioning as intended. Records indicate it worsens on Wednesday.</span>
       </footer>
     `;
   },
@@ -261,7 +262,8 @@ window.Tuesday = {
       attempts++;
 
       const caseNum = 'BDY-' + Math.floor(Math.random() * 9000 + 1000) + '-' + new Date().getFullYear();
-      ticket.innerHTML = `
+
+      let ticketHTML = `
         Case No.: ${caseNum}<br>
         Submitted: ${new Date().toLocaleString()}<br>
         Status: REJECTED<br>
@@ -270,6 +272,41 @@ window.Tuesday = {
         Assigned Reviewer: Gerald<br>
         Expected Review: Never
       `;
+
+      // 🥚 tue-start — the hunt begins. On the SECOND rejection onward, a redaction
+      // failure leaks an internal IT note onto the ticket. It announces that a game
+      // exists and seeds Monday's SYSOPS mainframe finale — without giving away the
+      // credentials. Fires only on a deliberate click of the leaked line.
+      if (attempts >= 2) {
+        ticketHTML += `
+          <div class="gov-ticket-leak" id="gov-ticket-leak" role="button" tabindex="0"
+               title="This line should not be visible.">
+            ─────────────────────────────<br>
+            <span class="gov-ticket-leak-tag">INTERNAL — DO NOT DISPLAY</span><br>
+            Gerald — if this one keeps resubmitting, escalate to SYSOPS.
+            The mainframe still thinks it's 2024. Login's the same as always,
+            nobody's changed it. Do NOT let this print on the ticket. — BirthdayCorp IT
+          </div>
+        `;
+      }
+
+      ticket.innerHTML = ticketHTML;
+
+      const leak = document.getElementById('gov-ticket-leak');
+      if (leak) {
+        const reveal = () => {
+          if (leak.classList.contains('found')) return;
+          leak.classList.add('found');
+          leak.setAttribute('aria-pressed', 'true');
+          leak.insertAdjacentHTML('beforeend',
+            `<div class="gov-ticket-leak-flag">[REDACTION FAILURE ACKNOWLEDGED — Incident #BDY-0705 opened]</div>`);
+          if (window.Hunt) window.Hunt.find('tue-start');
+        };
+        leak.addEventListener('click', reveal);
+        leak.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); reveal(); }
+        });
+      }
 
       rejection.classList.add('visible');
       rejection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });

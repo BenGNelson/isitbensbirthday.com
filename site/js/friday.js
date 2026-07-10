@@ -26,6 +26,7 @@ window.Friday = {
 		'Field team note: morale good. Determination unchanged.',
 		'Frog cohort (n=13): all accounted for. Group behavior: non-festive.',
 		'Auto-ping: ABRI Central Server. Status: online. Current determination: NOT HIS BIRTHDAY.',
+		'Auto-ping: Central Server. Realm: BirthdayCorp/SYSOPS. Credential class accepted: [frogs]. Access: DENIED (wrong day — reconciliation Monday).',
 		'Signal interference at station 6 (13 sec). Data recovered. No birthday occurred during gap.',
 		'Specimen 4-B: tympanic membrane activity detected. Birthday likelihood: 0.003%.',
 		'frog',
@@ -250,6 +251,8 @@ window.Friday = {
               <p class="ob-letter-body">Thank you for your submission to the ABRI Birthday Sighting Registry (Form FSR-14B, Rev. 2019). Your report has been received and assigned reference number <strong id="ob-ref-num">FSR-2024-XXXX</strong>.</p>
               <p class="ob-letter-body">After thorough review by our panel, your report has been assessed as <strong>INCONCLUSIVE</strong>. Specifically, the panel identified insufficient anuran corroboration for the claimed birthday conditions. While we appreciate the detail provided, the frog activity data submitted does not meet the evidentiary threshold established under the Standardized Anuran Inference Protocol (SAIP §4.2.1).</p>
               <p class="ob-letter-body">Our current field determination remains: <strong>NOT HIS BIRTHDAY.</strong></p>
+              <p class="ob-letter-body">Per SAIP &sect;7, all sighting reports are filed under the Institute's standing case designation. Your report has been appended, as all reports before it have been, to case <strong>PADSWORTH v. FROGS</strong>. This is a clerical formality. Every matter the Institute has ever opened &mdash; every report, every determination, every renewed grant &mdash; is, and has always been, filed under <strong>FROGS</strong>. There has only ever been the one case. There has only ever needed to be.</p>
+              <p class="ob-letter-body">Should you wish to contest this filing, note that Institute records are sealed until <strong>Monday</strong>, when Central Server (realm: <em>BirthdayCorp&nbsp;/&nbsp;SYSOPS</em>) performs its weekly reconciliation. Access is restricted to authorized staff. The Institute reminds you only that the case name is also the key, and that a key is of no use on the wrong day.</p>
               <p class="ob-letter-body">We encourage continued vigilance and welcome future submissions. Please allow 6–18 months for processing of any follow-up reports. If you believe this determination was made in error, you may appeal in writing to Dr. Lily Padsworth, PhD. Appeals are reviewed quarterly. The next quarterly review is scheduled for the fourth quarter of 2003.</p>
               <p class="ob-letter-body">With professional regards,</p>
               <p class="ob-letter-body"><em>Office of Sighting Report Review<br>Anuran Behavioral Research Institute<br>Est. 2003</em></p>
@@ -346,19 +349,26 @@ window.Friday = {
 		const refEl = document.getElementById('ob-ref-num');
 		const dismiss = document.getElementById('ob-letter-dismiss');
 
+		if (!form || !wrap || !letter) return;
+
 		form.addEventListener('submit', (e) => {
 			e.preventDefault();
 			const refNum =
 				'FSR-2024-' + Math.floor(1000 + Math.random() * 9000);
-			refEl.textContent = refNum;
+			if (refEl) refEl.textContent = refNum;
 			wrap.style.display = 'none';
 			letter.style.display = 'block';
+			// 🥚 Filing the report reveals the standing case designation —
+			// PADSWORTH v. FROGS. Everything at the Institute is filed under
+			// FROGS. The letter names the key; Monday's realm is where it fits.
+			if (window.Hunt) window.Hunt.find('fri-frogs');
 		});
 
-		dismiss.addEventListener('click', () => {
-			form.reset();
-			letter.style.display = 'none';
-			wrap.style.display = 'block';
-		});
+		if (dismiss)
+			dismiss.addEventListener('click', () => {
+				form.reset();
+				letter.style.display = 'none';
+				wrap.style.display = 'block';
+			});
 	},
 };

@@ -192,12 +192,41 @@ window.Sunday = {
       card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') handler(); });
     });
 
-    // Audio tour button cycles through artworks
+    // A stop that is not in the catalogue and not on the public map.
+    // Reachable only by cycling the tour PAST every visible work — the
+    // wrap-around drops you in the basement. Never shown on page load.
+    const openHidden = () => {
+      if (!overlay || !eyebrow || !title || !body) return;
+      eyebrow.textContent = '🎧 Audio Guide — Stop ∅ · Gallery 4 / Basement (Not On The Public Map)';
+      title.textContent   = 'Uncatalogued — Note From The Former Systems Administrator';
+      body.textContent    =
+        'You have reached a work not listed in the catalogue. It hangs in a ' +
+        'part of the building the public map does not acknowledge. The Institute ' +
+        'acquired it from a former systems administrator who worked here before ' +
+        'the incident. He left only this note, framed here, which reads: ' +
+        '"IT WASN\'T THE FROGS\' FAULT. THE LOGIN STILL WORKS. TRY IT MONDAY." ' +
+        'The Institute does not know what this means. The Institute has never ' +
+        'owned a computer. It is, we should stress, still not Ben\'s birthday. ' +
+        'Please do not mention the basement to the other visitors.';
+      overlay.classList.add('open');
+      if (window.Hunt) window.Hunt.find('sun-door');
+    };
+
+    // Audio tour button cycles through artworks; once every visible stop has
+    // been played, the next press wraps around into the hidden basement stop.
     let tourIdx = 0;
-    document.getElementById('start-audio-guide').addEventListener('click', () => {
-      open(tourIdx % this.artworks.length);
-      tourIdx++;
-    });
+    const tourBtn = document.getElementById('start-audio-guide');
+    if (tourBtn) {
+      tourBtn.addEventListener('click', () => {
+        if (tourIdx >= this.artworks.length) {
+          openHidden();
+          tourIdx = 0;   // resume the ordinary loop afterward
+        } else {
+          open(tourIdx);
+          tourIdx++;
+        }
+      });
+    }
 
     const close = () => overlay.classList.remove('open');
     closeBtn.addEventListener('click', close);

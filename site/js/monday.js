@@ -335,6 +335,8 @@ window.Monday = {
   // (mirrors main.js's on-demand loading pattern; nothing downloads until unlocked).
   unlockMainframe() {
     const app = this.app;
+    // 🎮 ARG: reaching the SYSOPS mainframe is the hunt's finale (see hunt.js).
+    if (window.Hunt) window.Hunt.find('mon-login');
     if (!document.getElementById('mainframe-css')) {
       const link = document.createElement('link');
       link.id = 'mainframe-css';

@@ -428,6 +428,27 @@ body::after {
   text-align: center;
 }
 
+.sp-lockout-msg {
+  display: block;
+}
+
+/* Leaked sublevel diagnostic on the permanent-lockout screen — reads
+   like a dying-terminal log line pointing at the SYSOPS mainframe. */
+.sp-portal-log {
+  display: block;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--sp-border);
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  color: var(--sp-green);
+  opacity: 0.85;
+  text-align: left;
+  text-shadow: 0 0 6px rgba(32, 224, 96, 0.4);
+}
+
 .sp-captcha-close {
   display: block;
   margin-top: 12px;
