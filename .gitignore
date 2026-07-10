@@ -1,6 +1,10 @@
 # Secrets & environment
 .env
 
+# Apache Basic Auth password file (belt-and-suspenders — the real one lives on
+# the droplet at /etc/apache2/.htpasswd, never in the repo)
+.htpasswd
+
 # AI assistant / local-only working files (never commit)
 .claude/
 CLAUDE.md
