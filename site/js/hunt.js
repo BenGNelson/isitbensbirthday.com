@@ -29,10 +29,10 @@
   // label: shown in the HUD once found.
   var CLUES = [
     { id: 'tue-start',  day: 2, label: 'The hunt begins' },
-    // wed-admin re-added in S3 when Wednesday is rebuilt (the Chip Sundial lawyer
-    // page hosts it). Until then Thursday's thu-tip clue teaches the username, so
-    // the hunt stays completable at 6/6 with no permanently-locked slot.
-    // { id: 'wed-admin',  day: 3, label: 'The operator account' },
+    // wed-admin lives on the rebuilt Wednesday (SUNDIAL & SUNDIAL — the Chip Sundial
+    // lawyer page): the CASE MANAGEMENT SYSTEM login whose operator is the greyed,
+    // never-changed default `admin`. Thursday's thu-tip reinforces the same username.
+    { id: 'wed-admin',  day: 3, label: 'The operator account' },
     { id: 'thu-tip',    day: 4, label: 'A word from next door' },
     { id: 'fri-frogs',  day: 5, label: 'The frogs confess' },
     { id: 'sat-portal', day: 6, label: 'The portal stirs' },
