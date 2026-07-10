@@ -5,10 +5,10 @@ How this site is hosted and deployed, and how to reproduce it. This is the
 values. (The maintainer keeps the filled-in version in a gitignored
 `DROPLET.local.md`; machine-readable values live in `.env`.)
 
-> **TL;DR:** A small Linux VPS runs **Apache2 + mod_php** and serves the `site/`
-> directory of a plain `git` checkout. Deploying is literally **`git pull`** — no
-> build, no restart, no Docker in production. TLS is handled by certbot and
-> auto-renews. The only server-side code is `site/api/log.php`.
+> **TL;DR:** A small Linux VPS runs **Apache2** and serves the `site/` directory of
+> a plain `git` checkout. The site is **fully static** — no server-side code.
+> Deploying is literally **`git pull`** — no build, no restart, no Docker in
+> production. TLS is handled by certbot and auto-renews.
 
 ---
 
@@ -18,8 +18,7 @@ values. (The maintainer keeps the filled-in version in a gitignored
 |---|---|
 | Host | a Linux VPS (e.g. DigitalOcean droplet), `<DROPLET_IP>` |
 | OS | Ubuntu 24.04 LTS |
-| Web server | Apache 2.4 (Ubuntu), running as `www-data` |
-| PHP | 8.3 via **mod_php** (no php-fpm) |
+| Web server | Apache 2.4 (Ubuntu), running as `www-data`, serving static files |
 | Domain | `<your-domain>` + `www.` → `<DROPLET_IP>` (both A records) |
 | TLS | Let's Encrypt via certbot; auto-renew (`certbot.timer`) |
 | Deploy path | `<DEPLOY_PATH>` (a git checkout, owned by the deploy user) |
@@ -51,13 +50,11 @@ Apache on the VPS
         ├─ /                → site/index.html  → loads js/main.js
         │                      main.js reads the LOCAL date (browser), picks the day,
         │                      injects css/<day>.css + js/<day>.js, calls <Day>.init().
-        ├─ /css/*, /js/*    → served static (gzipped via mod_deflate)
-        └─ /api/log.php     → executed by mod_php (the ONLY server-side code)
-                               appends JSON to <DEPLOY_PATH>/logs/debug.log
+        └─ /css/*, /js/*    → served static (gzipped via mod_deflate)
 ```
 
-Key point: **all date/day logic is client-side.** The server only serves files and runs
-`log.php`. There is no database, no app server, no framework.
+Key point: **everything is client-side.** The server only serves static files — there is no
+server-side code, database, app server, or framework.
 
 ---
 
@@ -67,8 +64,6 @@ Key point: **all date/day logic is client-side.** The server only serves files a
 |---|---|
 | Git checkout (repo root) | `<DEPLOY_PATH>` (owned by the deploy user) |
 | Served files (DocumentRoot) | `<DEPLOY_PATH>/site` |
-| PHP logger | `<DEPLOY_PATH>/site/api/log.php` |
-| Login attempt log | `<DEPLOY_PATH>/logs/debug.log` (owned `www-data:www-data`) |
 | Apache vhosts (enabled) | `/etc/apache2/sites-enabled/<your-domain>{,-le-ssl}.conf` |
 | Apache logs | `/var/log/apache2/{access,error}.log` |
 | TLS certs | `/etc/letsencrypt/live/<your-domain>/` |
@@ -78,9 +73,8 @@ the maintainer's email/domain genericized). Editing them in the repo does **not*
 server — they aren't symlinked into `/etc/apache2`. To change the real vhost, edit the file
 under `/etc/apache2/sites-available/` on the server and `sudo systemctl reload apache2`.
 
-**Nothing outside `site/` is web-accessible** — `.git/`, `.env`, `scripts/`, and `logs/`
-sit in the repo root, one level above DocumentRoot, so they can't be fetched over HTTP.
-That's why `log.php` writes to `../../logs/` (outside the web root) by design.
+**Nothing outside `site/` is web-accessible** — `.git/`, `.env`, and `scripts/` sit in the repo
+root, one level above DocumentRoot, so they can't be fetched over HTTP.
 
 ---
 
@@ -117,14 +111,6 @@ routed by `site/js/main.js`. See README "Customizing" and CLAUDE.md.
 **Change the birthday date** — `site/js/main.js` (`getMonth() === 6 && getDate() === 5`,
 month is 0-indexed) plus the July-5th references in `site/js/birthday.js` and `monday.js`.
 
-**Read the login log**
-```bash
-make log-remote          # raw JSON lines over SSH
-make log-table-remote    # formatted table
-```
-The log self-trims to the last 500 lines (`MAX_LINES` in `log.php`). It's owned by `www-data`
-(Apache writes it) and world-readable, so the deploy user can read it without sudo.
-
 **Edit the Apache vhost**
 ```bash
 ssh root@<DROPLET_IP>
@@ -154,16 +140,13 @@ sudo tail -f /var/log/apache2/error.log
 
 ```bash
 # On a fresh Ubuntu 24.04 VPS, as root:
-apt update && apt install -y apache2 php libapache2-mod-php git certbot python3-certbot-apache
-a2enmod php8.3 deflate rewrite ssl
+apt update && apt install -y apache2 git certbot python3-certbot-apache
+a2enmod deflate rewrite ssl
 
 # Create the deploy user (or reuse one) and the checkout:
 adduser <DEPLOY_USER> && usermod -aG sudo <DEPLOY_USER>
 install -d -o <DEPLOY_USER> -g <DEPLOY_USER> <DEPLOY_PATH>
 sudo -u <DEPLOY_USER> git clone <your-repo-url> <DEPLOY_PATH>
-
-# Log dir must be writable by Apache (www-data):
-install -d -o www-data -g www-data <DEPLOY_PATH>/logs
 
 # Vhost: copy apache/prod-<your-domain>.conf to
 #   /etc/apache2/sites-available/<your-domain>.conf (edit paths/domain), then:
@@ -184,8 +167,6 @@ Add your SSH public key to the deploy user's `~/.ssh/authorized_keys` so `make d
 
 - **Deploy as the checkout owner** (not root) — see §4.
 - **Firewall:** consider `ufw allow OpenSSH && ufw allow 'Apache Full' && ufw enable`.
-- **`log.php` stores plaintext** of whatever visitors type into the fake Monday login.
-  Treat `logs/debug.log` as sensitive; it's outside the web root and not fetchable over HTTP.
 - **Config drift:** the live vhosts can be edited on the server independently of the repo.
   After any on-server change, update `apache/prod-*.conf` here so this runbook stays true.
 - **Reboots:** apply kernel/security updates periodically (`apt upgrade && reboot`) — the site
@@ -197,10 +178,10 @@ Add your SSH public key to the deploy user's `~/.ssh/authorized_keys` so `make d
 
 ```bash
 ssh root@<DROPLET_IP> '
-  apache2ctl -v; apache2ctl -S; apache2ctl -M | grep -Ei "php|deflate|rewrite|ssl";
+  apache2ctl -v; apache2ctl -S; apache2ctl -M | grep -Ei "deflate|rewrite|ssl";
   cat /etc/apache2/sites-enabled/*;
-  php -v; certbot certificates;
-  ls -la <DEPLOY_PATH> <DEPLOY_PATH>/site <DEPLOY_PATH>/logs;
+  certbot certificates;
+  ls -la <DEPLOY_PATH> <DEPLOY_PATH>/site;
   git -C <DEPLOY_PATH> remote -v; git -C <DEPLOY_PATH> log --oneline -3;
   ufw status; systemctl list-timers | grep certbot'
 ```

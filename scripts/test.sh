@@ -4,7 +4,7 @@
 #   --static   offline checks (no server needed): JS syntax, PHP lint,
 #              day module/CSS presence, router invariants, HTML sanity.
 #   --smoke    HTTP checks against the running dev container (needs
-#              `docker compose up`): routes, log.php, error codes, gzip.
+#              `docker compose up`): routes, assets, error codes, gzip.
 # With no args, runs both. Also runs scripts/check-secrets.sh.
 #
 # Usage:  ./scripts/test.sh [--static|--smoke]   |   make test
@@ -44,13 +44,12 @@ run_static() {
     skip "js syntax: no node and no docker available"
   fi
 
-  # PHP lint — run inside the running web container if present.
-  if docker compose ps --status running 2>/dev/null | grep -q web; then
-    if docker compose exec -T web php -l /var/www/html/api/log.php >/dev/null 2>&1; then
-      pass "php lint: api/log.php"; else fail "php lint: api/log.php"; fi
-  else
-    skip "php lint: web container not running (docker compose up)"
-  fi
+  # Hidden mainframe module (loaded on the Monday secret login) mirrors the
+  # day-module contract: window.Mainframe.init + matching CSS.
+  grep -qE "window\.Mainframe\s*=" site/js/mainframe.js && pass "mainframe defines window.Mainframe" || fail "mainframe missing window.Mainframe"
+  grep -qE "\binit\s*\(" site/js/mainframe.js && pass "mainframe has init()" || fail "mainframe missing init()"
+  [ -f site/css/mainframe.css ] && pass "mainframe has css" || fail "mainframe missing css"
+  grep -q "unlockMainframe" site/js/monday.js && pass "monday.js wires the secret unlock" || fail "monday.js missing unlockMainframe"
 
   # Each day defines window.<Name> with an init(), and has a matching CSS file.
   for d in "${DAYS[@]}"; do
@@ -99,32 +98,18 @@ run_smoke() {
     [ "$(code "${BASE}/${q}")" = 200 ] && pass "GET /${q} → 200" || fail "GET /${q} not 200"
   done
 
-  # Static assets.
-  [ "$(code "${BASE}/css/main.css")" = 200 ] && pass "css/main.css → 200" || fail "css/main.css"
-  [ "$(code "${BASE}/js/main.js")" = 200 ]   && pass "js/main.js → 200"   || fail "js/main.js"
+  # Static assets, including the hidden mainframe module.
+  [ "$(code "${BASE}/css/main.css")" = 200 ]      && pass "css/main.css → 200"      || fail "css/main.css"
+  [ "$(code "${BASE}/js/main.js")" = 200 ]        && pass "js/main.js → 200"        || fail "js/main.js"
+  [ "$(code "${BASE}/js/mainframe.js")" = 200 ]   && pass "js/mainframe.js → 200"   || fail "js/mainframe.js"
+  [ "$(code "${BASE}/css/mainframe.css")" = 200 ] && pass "css/mainframe.css → 200" || fail "css/mainframe.css"
 
-  # log.php: valid POST → 204 and writes exactly one line.
-  local before after
-  before="$(wc -l < logs/debug.log 2>/dev/null || echo 0)"
-  if [ "$(code -X POST -H 'Content-Type: application/json' -d '{"event":"selftest"}' "${BASE}/api/log.php")" = 204 ]; then
-    pass "POST /api/log.php → 204"
-    after="$(wc -l < logs/debug.log 2>/dev/null || echo 0)"
-    [ "$after" -eq "$((before+1))" ] && pass "log.php wrote one line" || fail "log.php did not write a line"
-  else
-    fail "POST /api/log.php not 204"
-  fi
-
-  [ "$(code -X POST -H 'Content-Type: application/json' -d 'not-json' "${BASE}/api/log.php")" = 400 ] \
-    && pass "malformed POST → 400" || fail "malformed POST not 400"
-  [ "$(code "${BASE}/api/log.php")" = 405 ] && pass "GET /api/log.php → 405" || fail "GET log.php not 405"
+  # Missing path 404s (no SPA fallback, by design).
   [ "$(code "${BASE}/does-not-exist.html")" = 404 ] && pass "missing path → 404" || fail "missing path not 404"
 
   # gzip via mod_deflate.
   curl -sI -H 'Accept-Encoding: gzip' "${BASE}/js/main.js" | grep -qi '^content-encoding: gzip' \
     && pass "gzip applied to js" || fail "gzip not applied"
-
-  # Log dir not web-accessible (defense-in-depth).
-  [ "$(code "${BASE}/logs/debug.log")" != 200 ] && pass "logs/ not web-accessible" || fail "logs/ IS web-accessible!"
 }
 
 MODE="${1:-all}"

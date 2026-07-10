@@ -1,4 +1,4 @@
-.PHONY: open dev down deploy test test-static test-smoke check-secrets log log-remote log-table log-table-remote help
+.PHONY: open dev down deploy test test-static test-smoke check-secrets help
 
 open: ## Open all 8 day experiences in your browser
 	@./scripts/open-all.sh
@@ -23,18 +23,6 @@ check-secrets: ## Fail if any personal info would be committed
 
 deploy: ## Deploy to production (runs tests + secret scan first)
 	@./scripts/test.sh --static && ./scripts/check-secrets.sh && ./scripts/deploy.sh
-
-log: ## Print the local debug log to stdout (pipeable)
-	@cat logs/debug.log 2>/dev/null || echo "(no log file yet)"
-
-log-remote: ## Print the remote debug log to stdout over SSH (pipeable)
-	@./scripts/read-log.sh --remote
-
-log-table: ## Show local login attempts as a formatted table
-	@cat logs/debug.log 2>/dev/null | python3 scripts/format-log.py
-
-log-table-remote: ## Show remote login attempts as a formatted table
-	@./scripts/read-log.sh --remote | python3 scripts/format-log.py
 
 help: ## Show available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
