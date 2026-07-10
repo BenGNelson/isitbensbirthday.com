@@ -163,6 +163,7 @@ window.Sunday = {
           <p class="mu-modal-eyebrow" id="modal-eyebrow">🎧 Audio Guide — Stop 1 of ${this.artworks.length}</p>
           <h2 id="modal-title">Loading…</h2>
           <p id="modal-body"></p>
+          <button class="mu-modal-next" id="modal-next" style="display:none">Next stop &#9656;</button>
         </div>
       </div>
     `;
@@ -176,13 +177,18 @@ window.Sunday = {
     const closeBtn = document.getElementById('modal-close');
     let currentIdx = 0;
 
+    const nextBtn = document.getElementById('modal-next');
+    let tourPos = 0;
+
     const open = (idx) => {
       currentIdx = idx;
+      tourPos = idx;
       const a = this.artworks[idx];
       eyebrow.textContent = `🎧 Audio Guide — Stop ${idx + 1} of ${this.artworks.length}`;
       title.textContent   = `${a.title}, ${a.year}`;
       body.textContent    = a.guide;
       overlay.classList.add('open');
+      if (nextBtn) { nextBtn.style.display = ''; nextBtn.textContent = 'Next stop ▸'; }
     };
 
     // Click on any artwork card
@@ -209,21 +215,24 @@ window.Sunday = {
         'owned a computer. It is, we should stress, still not Ben\'s birthday. ' +
         'Please do not mention the basement to the other visitors.';
       overlay.classList.add('open');
+      tourPos = this.artworks.length;
+      if (nextBtn) nextBtn.style.display = 'none';   // the basement is the end of the tour
       if (window.Hunt) window.Hunt.find('sun-door');
     };
 
-    // Audio tour button cycles through artworks; once every visible stop has
-    // been played, the next press wraps around into the hidden basement stop.
-    let tourIdx = 0;
+    // "Start Audio Tour" opens Stop 1; the in-modal "Next stop ▸" button walks
+    // through every visible work, and one press PAST the last stop descends into
+    // the hidden Gallery 4 / Basement (the sun-door clue). A next button (not
+    // repeated presses of the tour button, which the open modal would block).
     const tourBtn = document.getElementById('start-audio-guide');
-    if (tourBtn) {
-      tourBtn.addEventListener('click', () => {
-        if (tourIdx >= this.artworks.length) {
-          openHidden();
-          tourIdx = 0;   // resume the ordinary loop afterward
+    if (tourBtn) tourBtn.addEventListener('click', () => open(0));
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (tourPos + 1 < this.artworks.length) {
+          open(tourPos + 1);
         } else {
-          open(tourIdx);
-          tourIdx++;
+          openHidden();               // one press past the last visible work → basement
         }
       });
     }

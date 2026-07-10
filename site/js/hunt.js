@@ -154,8 +154,8 @@
     card.appendChild(el('div', 'hunt-finale-cake', '🎂'));
     card.appendChild(el('h2', null, complete ? 'You found them all.' : 'You reached the terminal.'));
     card.appendChild(el('p', null, complete
-      ? 'Every candle is lit, and the SYSOPS mainframe is yours. The back office is unlocked.'
-      : 'The secret login worked — the SYSOPS mainframe booted. You did not need every candle, but they are still out there.'));
+      ? 'Every candle is lit and the SYSOPS mainframe is yours. The staff back office is still sealed — that door opens another day.'
+      : 'The secret login worked and the SYSOPS mainframe booted. You didn\'t need every candle, but they\'re still out there — and the back office stays sealed a while longer.'));
     // TODO: reveal the GAME-ONLY staff-console token here (never the real /dev.html password).
     var close = el('button', 'hunt-finale-close', 'Nice.');
     close.addEventListener('click', function () { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); });

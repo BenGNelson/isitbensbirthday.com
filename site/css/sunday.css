@@ -244,11 +244,15 @@ body {
   justify-content: center;
   padding: 24px;
   opacity: 0;
-  transition: opacity 0.3s;
+  visibility: hidden;        /* when closed, don't intercept clicks on the page */
+  pointer-events: none;      /* (opacity:0 alone still captures every click) */
+  transition: opacity 0.3s, visibility 0.3s;
 }
 
 .mu-modal-overlay.open {
   opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 .mu-modal {
@@ -298,6 +302,21 @@ body {
   color: var(--mu-brown);
   line-height: 1.8;
 }
+
+.mu-modal-next {
+  margin-top: 1.5rem;
+  padding: 0.55rem 1.15rem;
+  background: var(--mu-dark);
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.mu-modal-next:hover { opacity: 0.85; }
 
 /* Donation section */
 .mu-donation {
