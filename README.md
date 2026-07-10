@@ -1,5 +1,7 @@
 # Is It Ben's Birthday?
 
+_AI-assisted build._
+
 A single-page birthday website that detects your local date and shows one of 8 completely different experiences — one per day of the week, plus a special page on July 5th.
 
 ## The 8 Experiences
