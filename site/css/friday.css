@@ -709,6 +709,125 @@ input, select, textarea {
   }
 }
 
+/* ── Field Simulator (🐸🎮 Flappy Frog) ───────────────────── */
+.ob-sim-stage {
+  max-width: 480px;
+  margin: 18px 0 12px;
+  border: 1px solid var(--ob-border);
+  background: #cfe8d6;
+  /* keep the canvas 4:3 and never let it overflow the column */
+  line-height: 0;
+}
+
+#ob-sim-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* taps flap the frog instead of scrolling/zooming the page */
+  touch-action: none;
+  cursor: pointer;
+}
+
+.ob-sim-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  max-width: 480px;
+  margin-bottom: 12px;
+}
+
+.ob-sim-btn {
+  min-width: 180px;
+}
+
+.ob-sim-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.82rem;
+  color: var(--ob-muted);
+}
+
+/* ── Specimen skin picker ─────────────────────────────────── */
+.ob-sim-skins {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: 480px;
+  margin-bottom: 14px;
+}
+
+.ob-sim-skins-label {
+  font-size: 0.65rem;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ob-muted);
+  margin-right: 2px;
+}
+
+.ob-sim-skin {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: Arial, sans-serif;
+  font-size: 0.72rem;
+  color: var(--ob-text);
+  background: var(--ob-aside-bg);
+  border: 1px solid var(--ob-border);
+  border-radius: 2px;
+  padding: 5px 9px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.ob-sim-skin:hover:not(:disabled) {
+  border-color: var(--ob-blue-l);
+}
+
+.ob-sim-skin-on {
+  border-color: var(--ob-blue);
+  background: #e0f0e6;
+  font-weight: bold;
+}
+
+.ob-sim-skin-locked {
+  color: var(--ob-muted-l);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.ob-sim-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+}
+
+.ob-sim-lock {
+  color: var(--ob-muted-l);
+  font-size: 0.66rem;
+}
+
+.ob-sim-note {
+  max-width: 480px;
+  font-style: italic;
+}
+
+@media (max-width: 767px) {
+  .ob-sim-btn {
+    width: auto;
+    min-height: 44px;
+  }
+
+  .ob-sim-meta {
+    gap: 10px;
+  }
+}
+
 /* ── Reduced motion: keep the live dot but stop it flashing ── */
 @media (prefers-reduced-motion: reduce) {
   .ob-live-dot {
