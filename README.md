@@ -12,7 +12,7 @@ A single-page birthday website that detects your local date and shows one of 8 c
 | **Sunday** | The Institute of Pre-Birthday Contemporary Art | Stuffy fine-art museum. Every exhibit is an object that is not Ben's birthday. |
 | **Monday** | BirthdayCorp™ Enterprise Suite | Corporate dashboard. Login never works. KPIs are bad. Progress bar stuck at 47%. |
 | **Tuesday** | URGENT: Form BDY-404 Required | Government portal. 47 fields. Always rejected. |
-| **Wednesday** | BirthdAI™ v0.0.1-alpha | A broken AI birthday detection system by MERIDIAN™ (formerly Synapse Dynamics LLC). Submit a support ticket. Dispute the findings. The AI has never detected a birthday. |
+| **Wednesday** | SUNDIAL, SUNDIAL, SUNDIAL & SUNDIAL — Attorneys at Law | A late-night-TV injury-lawyer mill. Four name partners who are all one man named Chip. Record: 0–1. Everyone qualifies; the countdown never expires; submitting the intake form sues you. Their only case ever: *The People v. It Not Being His Birthday.* |
 | **Thursday** | The Hot Dog Appreciation Society | An extremely earnest professional website about hot dogs. The JOIN NOW button runs away from your cursor. |
 | **Friday** | Anuran Behavioral Research Institute (ABRI) | A completely sincere academic institute conducting continuous frog-based field observation to determine whether it is Ben's birthday. Every study concludes it is not. Founded in 1987 / Est. 2003 / Since 1991. |
 | **Saturday** | Chrono-Celebration Nexus (Offline) | Sci-fi portal, currently offline. The CAPTCHA only shows hot dogs. It always fails. |
@@ -59,7 +59,7 @@ Add a URL parameter to force a specific day without waiting for the right date:
 | `http://localhost:8080/?day=0` | Sunday (Museum) |
 | `http://localhost:8080/?day=1` | Monday (Corporate) |
 | `http://localhost:8080/?day=2` | Tuesday (Government) |
-| `http://localhost:8080/?day=3` | Wednesday (BirthdAI™) |
+| `http://localhost:8080/?day=3` | Wednesday (SUNDIAL law firm) |
 | `http://localhost:8080/?day=4` | Thursday (Hot Dogs) |
 | `http://localhost:8080/?day=5` | Friday (ABRI) |
 | `http://localhost:8080/?day=6` | Saturday (Space Portal) |

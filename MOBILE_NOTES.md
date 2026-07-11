@@ -28,12 +28,13 @@ Tested via DevTools device emulation at: iPhone SE (375px), iPhone 14 Pro (393px
 - Nav links wrap and meet 44px tap targets.
 - Submit row stacks vertically; button is full-width.
 
-### Wednesday (BirthdAI™) — *Critical fix*
-- 240px sidebar collapsed into a compact two-column metric grid above the chat.
-- Ghost title (fixed at `left: 258px`) hidden on mobile.
-- `SYNAPSE DYNAMICS LLC` text hidden (too long for 375px nav).
-- Uptime counter hidden on mobile to prevent nav overflow.
-- All action buttons meet 44px tap target.
+### Wednesday (SUNDIAL law firm)
+- Tablet (≤900px): hero collapses to one centered column; hero figure moves above the copy;
+  practice areas & reviews 3→2 columns; attorney-bio grid → single column.
+- Mobile (≤560px): top bar + phone block stack and center; stat strip → 2 columns; practice
+  areas, reviews, and form rows → single column; bios stack and center.
+- CMS "case management" login box drops its sticky/rotated offset and becomes static full-width.
+- All action buttons (`.law-btn`, `.law-cms-btn`) meet the 44px tap target.
 
 ### Thursday (Hot Dog Society)
 - Decorative nav hidden on mobile (all links are `#` — no real navigation to lose).
