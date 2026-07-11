@@ -41,7 +41,7 @@ Tested via DevTools device emulation at: iPhone SE (375px), iPhone 14 Pro (393px
 - Members two-column grid → single column on mobile.
 - **JOIN NOW button**: desktop behavior (real-time mouse flee) unchanged. On touch devices, button teleports on `touchstart` up to 5 times, then yields to a tap. Touch-specific escape messages written for the mobile experience.
 
-### Friday (OBRI)
+### Friday (ABRI)
 - Header stacks properly on mobile; institute address hidden.
 - Tab bar is horizontally scrollable on mobile; tabs meet 44px tap target.
 - Publications, field log, and sighting form all usable at 375px.
@@ -74,9 +74,6 @@ The desktop experience (button flees your cursor in real-time) cannot be replica
 
 Users on a touchscreen laptop/iPad with a mouse will get the desktop behavior (mousemove fires normally on pointer devices).
 
-### Wednesday drift effect
-The 30-second drift effect (elements shift slightly, ghost title fades in) is hidden on mobile because the ghost title's hardcoded `left: 258px` position would place it off-screen. The metric card drift animations still apply to sidebar cards on mobile. The second-scrollbar effect is still triggered.
-
 ### Sunday modal
 At 375px with 40px inner padding, the modal body text area is ~247px wide. Readable but relatively narrow. The modal content is short, so this is acceptable.
 
@@ -94,5 +91,4 @@ All URL override parameters continue to work normally. The mobile layout is pure
 |------------|--------|
 | `max-width: 900px` | Monday three-column → one column; Friday two-column → one column |
 | `max-width: 767px` | All mobile-specific styles |
-| `min-width: 768px` and `max-width: 1024px` | Wednesday sidebar width reduced to 200px |
 | `prefers-reduced-motion: reduce` | Global animation suppression |
