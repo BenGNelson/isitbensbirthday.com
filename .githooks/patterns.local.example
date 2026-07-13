@@ -1,0 +1,25 @@
+# Forbidden-pattern list for the pre-commit / commit-msg privacy hooks and for
+# scripts/check-secrets.sh.
+#
+# Copy this to  patterns.local  (gitignored) and fill in YOUR machine's real
+# values, so they are enforced locally and can never be committed to this public
+# repo. One POSIX extended-regex per line; blank lines and "#" comments ignored;
+# matching is case-insensitive.
+#
+# Use SPECIFIC values, not broad regexes, so legitimate placeholders in the repo
+# (documentation IPs, <PLACEHOLDER> tokens in DROPLET.md) don't trip the hook.
+#
+# NOTE: patterns for *shapes* (private IP ranges, private-key headers, token
+# formats) do NOT belong here — they describe a form rather than a value, so they
+# are safe to publish and live directly in scripts/check-secrets.sh.
+#
+# Examples:
+#
+#   my-hostname                # the droplet's hostname
+#   203\.0\.113\.[0-9]+        # its public IP (RFC5737 example shown)
+#   /home/myuser               # real server home path
+#   mysurname                  # anything that deanonymizes you
+#   me@example\.com            # personal email
+#   \b12345\b                  # a real ZIP that leaked via a joke address
+#
+# Activate the hooks once:  git config core.hooksPath .githooks

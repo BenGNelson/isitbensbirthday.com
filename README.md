@@ -90,6 +90,31 @@ JS syntax is checked with `node` (falling back to a throwaway `node:20-alpine` c
 **CI:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs the static checks + secret scan
 on every push and pull request to `main` (GitHub Actions). Deploys stay manual.
 
+### The secret scan, and why it's split in two
+
+This repo is public, so no committed file may contain the droplet's hostname or IP, a surname,
+an email, or a server path. `make check-secrets` enforces that — and it draws its patterns from
+**two** places, split by kind:
+
+- **Shapes** live in `scripts/check-secrets.sh` (committed). Private IP ranges, private-key
+  headers, token formats — these describe a *form*, not a value, so publishing them reveals
+  nothing.
+- **Literals** live in `.githooks/patterns.local` (**gitignored**). The actual hostname, IP,
+  surname, paths, emails.
+
+The split matters: a scanner that hardcodes the literals it forbids *publishes* them. Keep it
+that way — never put a real value in `check-secrets.sh`.
+
+**On a fresh clone, activate the guard once:**
+
+```bash
+cp .githooks/patterns.local.example .githooks/patterns.local   # fill in your real values
+git config core.hooksPath .githooks                            # pre-commit + commit-msg guards
+```
+
+Without `patterns.local`, the hooks and `check-secrets` still run, but enforce shapes only and
+say so loudly.
+
 ---
 
 ## Project Structure

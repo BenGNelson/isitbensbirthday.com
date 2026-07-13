@@ -5,6 +5,12 @@
 # the droplet at /etc/apache2/.htpasswd, never in the repo)
 .htpasswd
 
+# Real forbidden-pattern list for the privacy hooks + check-secrets.sh — this
+# machine's hostname / IPs / paths / surname. The hook machinery and a generic
+# .example ARE committed; the literals never are. A scanner that ships the list
+# of things it forbids publishes exactly what it exists to hide.
+.githooks/*.local
+
 # AI assistant / local-only working files (never commit)
 .claude/
 CLAUDE.md
