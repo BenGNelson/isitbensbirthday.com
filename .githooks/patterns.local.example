@@ -1,25 +1,24 @@
-# Forbidden-pattern list for the pre-commit / commit-msg privacy hooks and for
-# scripts/check-secrets.sh.
+# Forbidden-pattern list for the pre-commit / commit-msg privacy hooks.
 #
 # Copy this to  patterns.local  (gitignored) and fill in YOUR machine's real
 # values, so they are enforced locally and can never be committed to this public
-# repo. One POSIX extended-regex per line; blank lines and "#" comments ignored;
-# matching is case-insensitive.
+# repo. One POSIX extended-regex per line; matching is case-insensitive.
 #
-# Use SPECIFIC values, not broad regexes, so legitimate placeholders in the repo
-# (documentation IPs, <PLACEHOLDER> tokens in DROPLET.md) don't trip the hook.
+# ⚠️  ONLY a line STARTING with "#" is a comment. A trailing comment becomes part
+#     of the regex and SILENTLY disables that pattern — the hook keeps running and
+#     reports nothing. Keep every comment on its own line.
 #
-# NOTE: patterns for *shapes* (private IP ranges, private-key headers, token
-# formats) do NOT belong here — they describe a form rather than a value, so they
-# are safe to publish and live directly in scripts/check-secrets.sh.
+# Use SPECIFIC values rather than broad regexes, so legitimate placeholders in the
+# repo (documentation IPs, example mounts) don't trip the hook. Generic shape-based
+# patterns — private IP ranges, tailnet domains, absolute home paths, attribution
+# trailers — are already compiled into _patterns.sh and need no entry here.
 #
-# Examples:
+# Example (each pattern on its own line, no trailing comments):
 #
-#   my-hostname                # the droplet's hostname
-#   203\.0\.113\.[0-9]+        # its public IP (RFC5737 example shown)
-#   /home/myuser               # real server home path
-#   mysurname                  # anything that deanonymizes you
-#   me@example\.com            # personal email
-#   \b12345\b                  # a real ZIP that leaked via a joke address
+#   my-hostname
+#   203\.0\.113\.[0-9]+
+#   /mnt/myarray
+#   me@example\.com
+#   \bmysurname\b
 #
-# Activate the hooks once:  git config core.hooksPath .githooks
+# Activate the hooks once per clone:  git config core.hooksPath .githooks

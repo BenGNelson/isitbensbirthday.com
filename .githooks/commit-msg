@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Privacy guard for the commit MESSAGE: block forbidden references (host
-# identifiers, personal info) in the message itself — a scrubbed diff is no help
-# if the subject line names the box.
+# identifiers, attribution trailers, secrets) in the message.
 # Patterns come from the gitignored .githooks/patterns.local (see _patterns.sh).
 set -euo pipefail
 
