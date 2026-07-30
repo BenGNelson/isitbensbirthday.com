@@ -106,7 +106,7 @@ works. Deploying as `root` forces a `git config safe.directory` override on ever
 
 **Add / edit a day experience** — purely a repo change; deploy as usual.
 Each day is `site/css/<day>.css` + `site/js/<day>.js` exposing `window.<Day> = { init(app){} }`,
-routed by `site/js/main.js`. See README "Customizing" and CLAUDE.md.
+routed by `site/js/main.js`. See README "Customizing".
 
 **Change the birthday date** — `site/js/main.js` (`getMonth() === 6 && getDate() === 5`,
 month is 0-indexed) plus the July-5th references in `site/js/birthday.js` and `monday.js`.

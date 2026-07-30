@@ -11,9 +11,7 @@
 # of things it forbids publishes exactly what it exists to hide.
 .githooks/*.local
 
-# AI assistant / local-only working files (never commit)
-.claude/
-CLAUDE.md
+# Local-only working files (never commit)
 DROPLET.local.md
 
 # Scratch

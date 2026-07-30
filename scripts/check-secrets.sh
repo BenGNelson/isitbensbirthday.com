@@ -17,8 +17,8 @@
 #   complete list of things it existed to hide. The scanner was the leak. Don't
 #   put a literal back in this file.
 #
-# Scans the working-tree content of every file git tracks/stages, so .gitignore
-# does the excluding for free (.env, *.local, CLAUDE.md are never scanned).
+# Scans the working-tree content of every file git tracks/stages, so the ignore
+# rules do the excluding for free (.env and *.local are never scanned).
 #
 # Usage:  ./scripts/check-secrets.sh   (exit 0 = clean, 1 = leak found)
 #         make check-secrets
